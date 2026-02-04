@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VIES - Design Direction Mockups</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAFA;
+    --bg-alt: #F0F0F0;
+    --text: #1A1A2E;
+    --text-muted: #6B7280;
+    --primary: #0F4C75;
+    --primary-light: #E8F0F7;
+    --accent: #D4A843;
+    --border: #E5E7EB;
+    --success: #059669;
+    --error: #DC2626;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', sans-serif; background: #1A1A2E; color: var(--text); }
+
+  /* Navigation between directions */
+  .direction-nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: var(--text); color: white;
+    display: flex; justify-content: center; gap: 4px; padding: 12px 16px;
+    border-bottom: 2px solid var(--accent);
+  }
+  .direction-nav button {
+    background: transparent; color: #9CA3AF; border: 1px solid #374151;
+    padding: 8px 20px; border-radius: 4px; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500;
+    transition: all 0.2s;
+  }
+  .direction-nav button:hover { color: white; border-color: #6B7280; }
+  .direction-nav button.active {
+    background: var(--primary); color: white; border-color: var(--primary);
+  }
+
+  .direction { display: none; padding-top: 56px; }
+  .direction.active { display: block; }
+
+  /* Shared mockup styles */
+  .mockup-label {
+    background: var(--text); color: var(--accent); text-align: center;
+    padding: 16px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  }
+  .mockup-desc {
+    background: var(--text); color: #9CA3AF; text-align: center;
+    padding: 0 16px 24px; font-size: 14px; line-height: 1.6; max-width: 700px; margin: 0 auto;
+  }
+
+  /* ==================== */
+  /* DIRECTION A: SEARCH-FIRST */
+  /* ==================== */
+  .dir-a-header {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .dir-a-logo { display: flex; align-items: center; gap: 10px; }
+  .dir-a-logo-mark {
+    width: 36px; height: 36px; background: var(--primary); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 18px;
+  }
+  .dir-a-logo-text { font-weight: 700; font-size: 18px; color: var(--primary); }
+  .dir-a-logo-sub { font-size: 10px; color: var(--text-muted); letter-spacing: 2px; text-transform: uppercase; margin-top: -2px; }
+  .dir-a-nav { display: flex; gap: 32px; }
+  .dir-a-nav a { color: var(--text-muted); text-decoration: none; font-size: 14px; font-weight: 500; }
+  .dir-a-nav a:hover { color: var(--primary); }
+  .dir-a-contact-btn {
+    background: var(--accent); color: var(--text); border: none;
+    padding: 8px 20px; border-radius: 3px; font-weight: 600; font-size: 13px; cursor: pointer;
+  }
+
+  .dir-a-hero {
+    background: var(--bg); padding: 80px 48px; text-align: center;
+  }
+  .dir-a-hero h1 {
+    font-size: 32px; font-weight: 700; color: var(--text); margin-bottom: 12px; line-height: 1.3;
+  }
+  .dir-a-hero p { color: var(--text-muted); font-size: 16px; margin-bottom: 40px; }
+  .dir-a-search-wrap {
+    max-width: 640px; margin: 0 auto; position: relative;
+  }
+  .dir-a-search {
+    width: 100%; padding: 16px 56px 16px 20px; border: 2px solid var(--border);
+    border-radius: 4px; font-size: 16px; font-family: 'Inter', sans-serif;
+    outline: none; transition: border-color 0.2s;
+  }
+  .dir-a-search:focus { border-color: var(--primary); }
+  .dir-a-search-icon {
+    position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+    color: var(--text-muted); font-size: 20px;
+  }
+  .dir-a-search-hints {
+    display: flex; justify-content: center; gap: 8px; margin-top: 12px;
+  }
+  .dir-a-search-hint {
+    background: var(--primary-light); color: var(--primary); padding: 4px 12px;
+    border-radius: 3px; font-size: 12px; font-weight: 500;
+  }
+
+  .dir-a-dual-section {
+    display: grid; grid-template-columns: 1fr 1fr; max-width: 1280px; margin: 0 auto;
+  }
+  .dir-a-services {
+    background: var(--primary); color: white; padding: 64px 48px;
+  }
+  .dir-a-services h2 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+  .dir-a-services p { color: #B0C4D8; font-size: 14px; margin-bottom: 32px; }
+  .dir-a-service-item {
+    display: flex; align-items: flex-start; gap: 16px; margin-bottom: 24px;
+  }
+  .dir-a-service-icon {
+    width: 40px; height: 40px; background: rgba(255,255,255,0.1); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 18px;
+  }
+  .dir-a-service-title { font-weight: 600; font-size: 15px; margin-bottom: 4px; }
+  .dir-a-service-desc { color: #B0C4D8; font-size: 13px; line-height: 1.5; }
+
+  .dir-a-products {
+    background: var(--white); padding: 64px 48px;
+  }
+  .dir-a-products h2 { font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .dir-a-products > p { color: var(--text-muted); font-size: 14px; margin-bottom: 32px; }
+  .dir-a-cat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .dir-a-cat-card {
+    border: 1px solid var(--border); border-radius: 3px; padding: 20px;
+    display: flex; align-items: center; gap: 12px; cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .dir-a-cat-card:hover { border-color: var(--primary); }
+  .dir-a-cat-icon {
+    width: 40px; height: 40px; background: var(--primary-light); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); font-size: 18px;
+  }
+  .dir-a-cat-name { font-weight: 600; font-size: 14px; color: var(--text); }
+  .dir-a-cat-count { font-size: 12px; color: var(--text-muted); }
+
+  .dir-a-brands {
+    background: var(--bg); padding: 64px 48px; text-align: center;
+  }
+  .dir-a-brands h2 { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 32px; }
+  .dir-a-brand-row {
+    display: flex; justify-content: center; gap: 48px; flex-wrap: wrap;
+  }
+  .dir-a-brand-item {
+    font-size: 20px; font-weight: 700; color: #9CA3AF; letter-spacing: 2px;
+  }
+
+  .dir-a-cta {
+    background: var(--white); padding: 64px 48px; text-align: center;
+    border-top: 1px solid var(--border);
+  }
+  .dir-a-cta h2 { font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .dir-a-cta p { color: var(--text-muted); font-size: 14px; margin-bottom: 24px; }
+  .dir-a-cta-buttons { display: flex; justify-content: center; gap: 12px; }
+  .dir-a-cta-phone {
+    background: var(--primary); color: white; border: none;
+    padding: 12px 24px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .dir-a-cta-zalo {
+    background: transparent; color: var(--primary); border: 1px solid var(--primary);
+    padding: 12px 24px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+
+  /* Sticky contact */
+  .sticky-contact {
+    position: fixed; bottom: 24px; right: 24px; z-index: 100;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .sticky-btn {
+    width: 48px; height: 48px; border-radius: 4px; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+  .sticky-phone { background: var(--primary); color: white; }
+  .sticky-zalo { background: #0068FF; color: white; }
+
+  /* ==================== */
+  /* DIRECTION B: SPLIT HERO */
+  /* ==================== */
+  .dir-b-topbar {
+    background: var(--primary); color: white; padding: 8px 48px;
+    display: flex; justify-content: space-between; font-size: 13px;
+  }
+  .dir-b-topbar a { color: #B0C4D8; text-decoration: none; }
+  .dir-b-topbar a:hover { color: white; }
+  .dir-b-header {
+    background: var(--white); border-bottom: 1px solid var(--border);
+    padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 72px;
+  }
+  .dir-b-logo { display: flex; align-items: center; gap: 12px; }
+  .dir-b-logo-mark {
+    width: 42px; height: 42px; background: var(--primary); border-radius: 3px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 700; font-size: 20px;
+  }
+  .dir-b-logo-text { font-weight: 700; font-size: 20px; color: var(--text); }
+  .dir-b-search-bar {
+    flex: 1; max-width: 400px; margin: 0 40px; position: relative;
+  }
+  .dir-b-search {
+    width: 100%; padding: 10px 40px 10px 16px; border: 1px solid var(--border);
+    border-radius: 3px; font-size: 14px; font-family: 'Inter', sans-serif; outline: none;
+  }
+  .dir-b-search:focus { border-color: var(--primary); }
+  .dir-b-nav { display: flex; gap: 24px; align-items: center; }
+  .dir-b-nav a { color: var(--text); text-decoration: none; font-size: 14px; font-weight: 500; }
+  .dir-b-nav a:hover { color: var(--primary); }
+
+  .dir-b-hero {
+    display: grid; grid-template-columns: 1fr 1fr; min-height: 480px;
+  }
+  .dir-b-hero-left {
+    background: var(--bg); padding: 80px 48px; display: flex; flex-direction: column; justify-content: center;
+  }
+  .dir-b-hero-left h1 { font-size: 36px; font-weight: 700; color: var(--text); line-height: 1.25; margin-bottom: 16px; }
+  .dir-b-hero-left p { color: var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 32px; }
+  .dir-b-hero-actions { display: flex; gap: 12px; }
+  .dir-b-btn-primary {
+    background: var(--primary); color: white; border: none;
+    padding: 14px 28px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .dir-b-btn-outline {
+    background: transparent; color: var(--primary); border: 1px solid var(--primary);
+    padding: 14px 28px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .dir-b-hero-right {
+    background: var(--primary); display: flex; align-items: center; justify-content: center;
+    padding: 48px; position: relative; overflow: hidden;
+  }
+  .dir-b-hero-right::before {
+    content: ''; position: absolute; width: 300px; height: 300px;
+    border: 40px solid rgba(255,255,255,0.05); border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .dir-b-hero-right::after {
+    content: ''; position: absolute; width: 200px; height: 200px;
+    border: 30px solid rgba(255,255,255,0.05); border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .dir-b-hero-stats {
+    position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    color: white; text-align: center;
+  }
+  .dir-b-stat-num { font-size: 36px; font-weight: 700; }
+  .dir-b-stat-label { font-size: 13px; color: #B0C4D8; margin-top: 4px; }
+
+  .dir-b-services-section {
+    padding: 80px 48px; background: var(--white); max-width: 1280px; margin: 0 auto;
+  }
+  .dir-b-section-header {
+    display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 40px;
+  }
+  .dir-b-section-header h2 { font-size: 28px; font-weight: 600; color: var(--text); }
+  .dir-b-section-header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
+  .dir-b-services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .dir-b-service-card {
+    border: 1px solid var(--border); border-radius: 4px; padding: 32px;
+    transition: border-color 0.2s;
+  }
+  .dir-b-service-card:hover { border-color: var(--primary); }
+  .dir-b-service-card-icon {
+    width: 48px; height: 48px; background: var(--primary-light); border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); font-size: 22px; margin-bottom: 20px;
+  }
+  .dir-b-service-card h3 { font-size: 18px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .dir-b-service-card p { color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+  .dir-b-products-section {
+    padding: 80px 48px; background: var(--bg);
+  }
+  .dir-b-products-inner { max-width: 1280px; margin: 0 auto; }
+  .dir-b-product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .dir-b-product-card {
+    background: var(--white); border: 1px solid var(--border); border-radius: 4px;
+    overflow: hidden; transition: border-color 0.2s; cursor: pointer;
+  }
+  .dir-b-product-card:hover { border-color: var(--primary); }
+  .dir-b-product-img {
+    height: 160px; background: var(--bg-alt); display: flex;
+    align-items: center; justify-content: center; color: #9CA3AF; font-size: 32px;
+  }
+  .dir-b-product-info { padding: 16px; }
+  .dir-b-product-brand { font-size: 11px; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+  .dir-b-product-name { font-size: 15px; font-weight: 600; color: var(--text); margin-top: 4px; }
+  .dir-b-product-sku { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+  .dir-b-product-action {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+  }
+  .dir-b-quote-btn {
+    color: var(--primary); font-size: 13px; font-weight: 600;
+    background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+
+  /* ==================== */
+  /* DIRECTION C: DARK HERO */
+  /* ==================== */
+  .dir-c-header {
+    background: #0D1117; border-bottom: 1px solid #21262D;
+    padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 64px;
+  }
+  .dir-c-logo { display: flex; align-items: center; gap: 10px; }
+  .dir-c-logo-mark {
+    width: 36px; height: 36px; background: var(--accent); border-radius: 2px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text); font-weight: 700; font-size: 18px;
+  }
+  .dir-c-logo-text { font-weight: 700; font-size: 18px; color: white; }
+  .dir-c-nav { display: flex; gap: 28px; align-items: center; }
+  .dir-c-nav a { color: #8B949E; text-decoration: none; font-size: 14px; font-weight: 500; }
+  .dir-c-nav a:hover { color: white; }
+  .dir-c-search-inline {
+    padding: 8px 16px; border: 1px solid #30363D; border-radius: 3px;
+    background: transparent; color: #8B949E; font-size: 13px; width: 240px;
+    font-family: 'Inter', sans-serif; outline: none;
+  }
+  .dir-c-search-inline:focus { border-color: var(--accent); color: white; }
+  .dir-c-contact-btn {
+    background: var(--accent); color: var(--text); border: none;
+    padding: 8px 20px; border-radius: 3px; font-weight: 600; font-size: 13px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+
+  .dir-c-hero {
+    background: #0D1117; padding: 96px 48px 80px; text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .dir-c-hero::before {
+    content: ''; position: absolute; width: 600px; height: 600px;
+    border: 80px solid rgba(212,168,67,0.03); border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .dir-c-hero h1 {
+    font-size: 40px; font-weight: 700; color: white; margin-bottom: 16px;
+    line-height: 1.2; position: relative; z-index: 1;
+  }
+  .dir-c-hero h1 span { color: var(--accent); }
+  .dir-c-hero p { color: #8B949E; font-size: 16px; margin-bottom: 40px; max-width: 500px; margin-left: auto; margin-right: auto; position: relative; z-index: 1; }
+  .dir-c-hero-search {
+    max-width: 560px; margin: 0 auto; position: relative; z-index: 1;
+  }
+  .dir-c-hero-input {
+    width: 100%; padding: 16px 120px 16px 20px; border: 1px solid #30363D;
+    border-radius: 4px; background: #161B22; color: white;
+    font-size: 15px; font-family: 'Inter', sans-serif; outline: none;
+  }
+  .dir-c-hero-input:focus { border-color: var(--accent); }
+  .dir-c-hero-input::placeholder { color: #484F58; }
+  .dir-c-hero-search-btn {
+    position: absolute; right: 6px; top: 6px; bottom: 6px;
+    background: var(--accent); color: var(--text); border: none;
+    padding: 0 24px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .dir-c-hero-tags {
+    display: flex; justify-content: center; gap: 8px; margin-top: 16px;
+  }
+  .dir-c-hero-tag {
+    background: #21262D; color: #8B949E; padding: 4px 12px;
+    border-radius: 3px; font-size: 12px; cursor: pointer;
+  }
+  .dir-c-hero-tag:hover { color: white; background: #30363D; }
+
+  .dir-c-features {
+    background: var(--white); padding: 80px 48px;
+  }
+  .dir-c-features-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0;
+  }
+  .dir-c-feature-block {
+    padding: 48px; border: 1px solid var(--border);
+  }
+  .dir-c-feature-label {
+    font-size: 11px; font-weight: 600; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 2px; margin-bottom: 12px;
+  }
+  .dir-c-feature-block h3 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+  .dir-c-feature-block p { color: var(--text-muted); font-size: 14px; line-height: 1.7; }
+  .dir-c-feature-link {
+    display: inline-block; margin-top: 16px; color: var(--primary);
+    font-size: 14px; font-weight: 600; text-decoration: none;
+  }
+  .dir-c-feature-link:hover { text-decoration: underline; }
+
+  .dir-c-brands {
+    background: var(--bg); padding: 64px 48px; text-align: center;
+  }
+  .dir-c-brands p { color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px; }
+  .dir-c-brand-logos {
+    display: flex; justify-content: center; gap: 56px; flex-wrap: wrap;
+  }
+  .dir-c-brand-logo {
+    font-size: 22px; font-weight: 700; color: #C9CDD3; letter-spacing: 3px;
+  }
+
+  .dir-c-cta {
+    background: var(--primary); padding: 64px 48px; text-align: center; color: white;
+  }
+  .dir-c-cta h2 { font-size: 28px; font-weight: 600; margin-bottom: 12px; }
+  .dir-c-cta p { color: #B0C4D8; font-size: 14px; margin-bottom: 28px; }
+  .dir-c-cta-actions { display: flex; justify-content: center; gap: 12px; }
+  .dir-c-cta-btn-white {
+    background: white; color: var(--primary); border: none;
+    padding: 14px 28px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+  .dir-c-cta-btn-outline {
+    background: transparent; color: white; border: 1px solid rgba(255,255,255,0.3);
+    padding: 14px 28px; border-radius: 3px; font-weight: 600; font-size: 14px;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+  }
+
+  /* Footer shared */
+  .mock-footer {
+    background: #111827; color: #6B7280; padding: 48px; text-align: center; font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="direction-nav">
+  <button class="active" onclick="showDirection('a')">A: Search-First</button>
+  <button onclick="showDirection('b')">B: Split Hero</button>
+  <button onclick="showDirection('c')">C: Dark Hero</button>
+</div>
+
+<!-- ==================== DIRECTION A: SEARCH-FIRST ==================== -->
+<div id="dir-a" class="direction active">
+  <div class="mockup-label">Direction A: Search-First</div>
+  <div class="mockup-desc">Hero = Search bar lớn chiếm trung tâm. Top bar với SĐT/email/ngôn ngữ. Trang chủ chia đôi: Services bên trái (dark), Products bên phải (light). Tối giản, thẳng vào việc.</div>
+
+  <div class="dir-b-topbar">
+    <div>
+      <a href="#">&#9742; Báo giá: 0903 326 309</a> &nbsp;&middot;&nbsp;
+      <a href="#">&#9742; Tư vấn: 0908 748 304</a> &nbsp;&middot;&nbsp;
+      <a href="#">info@v-ies.com</a>
+    </div>
+    <div>
+      <a href="#">VI</a> &nbsp;|&nbsp; <a href="#">EN</a>    </div>
+  </div>
+
+  <div class="dir-a-header">
+    <div class="dir-a-logo">
+      <div class="dir-a-logo-mark">V</div>
+      <div>
+        <div class="dir-a-logo-text">VIES</div>
+        <div class="dir-a-logo-sub">Giải pháp kỹ thuật</div>
+      </div>
+    </div>
+    <nav class="dir-a-nav">
+      <a href="#">Dịch vụ</a>
+      <a href="#">Sản phẩm</a>
+      <a href="#">Tin tức</a>
+      <a href="#">Về chúng tôi</a>
+    </nav>
+    <button class="dir-a-contact-btn">Liên hệ</button>
+  </div>
+
+  <div class="dir-a-hero">
+    <h1>Tìm sản phẩm công nghiệp</h1>
+    <p>Vòng bi, gối đỡ, thiết bị truyền động và linh kiện chính hãng từ đa thương hiệu</p>
+    <div class="dir-a-search-wrap">
+      <input class="dir-a-search" placeholder="Nhập mã sản phẩm: 6205, 22210 E, NU308..." />
+      <span class="dir-a-search-icon">&#8981;</span>
+    </div>
+    <div class="dir-a-search-hints">
+      <span class="dir-a-search-hint">6205-2RS</span>
+      <span class="dir-a-search-hint">22210 E</span>
+      <span class="dir-a-search-hint">NU308 ECP</span>
+      <span class="dir-a-search-hint">UCF205</span>
+    </div>
+  </div>
+
+  <div class="dir-a-dual-section">
+    <div class="dir-a-services">
+      <h2>Dịch vụ kỹ thuật</h2>
+      <p>Đội ngũ kỹ sư từ SKF, hiểu sâu về ứng dụng thực tế</p>
+      <div class="dir-a-service-item">
+        <div class="dir-a-service-icon">&#9881;</div>
+        <div>
+          <div class="dir-a-service-title">Tư vấn kỹ thuật</div>
+          <div class="dir-a-service-desc">Tư vấn chọn vòng bi, chất bôi trơn phù hợp cho từng ứng dụng cụ thể</div>
+        </div>
+      </div>
+      <div class="dir-a-service-item">
+        <div class="dir-a-service-icon">&#9776;</div>
+        <div>
+          <div class="dir-a-service-title">Đo và phân tích rung động</div>
+          <div class="dir-a-service-desc">Phát hiện sớm vấn đề tiềm ẩn, lên kế hoạch bảo trì chủ động</div>
+        </div>
+      </div>
+      <div class="dir-a-service-item">
+        <div class="dir-a-service-icon">&#9951;</div>
+        <div>
+          <div class="dir-a-service-title">Lắp đặt và bôi trơn</div>
+          <div class="dir-a-service-desc">Hướng dẫn lắp đặt đúng kỹ thuật, tư vấn quy trình bôi trơn</div>
+        </div>
+      </div>
+    </div>
+    <div class="dir-a-products">
+      <h2>Sản phẩm</h2>
+      <p>Đa thương hiệu, đa dạng chủng loại</p>
+      <div class="dir-a-cat-grid">
+        <div class="dir-a-cat-card">
+          <div class="dir-a-cat-icon">&#9900;</div>
+          <div>
+            <div class="dir-a-cat-name">Vòng bi</div>
+            <div class="dir-a-cat-count">Bearings</div>
+          </div>
+        </div>
+        <div class="dir-a-cat-card">
+          <div class="dir-a-cat-icon">&#9783;</div>
+          <div>
+            <div class="dir-a-cat-name">Gối đỡ</div>
+            <div class="dir-a-cat-count">Housings</div>
+          </div>
+        </div>
+        <div class="dir-a-cat-card">
+          <div class="dir-a-cat-icon">&#8982;</div>
+          <div>
+            <div class="dir-a-cat-name">Truyền động</div>
+            <div class="dir-a-cat-count">Power Transmission</div>
+          </div>
+        </div>
+        <div class="dir-a-cat-card">
+          <div class="dir-a-cat-icon">&#9684;</div>
+          <div>
+            <div class="dir-a-cat-name">Bôi trơn</div>
+            <div class="dir-a-cat-count">Lubrication</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dir-a-brands">
+    <h2>Thương hiệu đối tác</h2>
+    <div class="dir-a-brand-row">
+      <div class="dir-a-brand-item">SKF</div>
+      <div class="dir-a-brand-item">FAG</div>
+      <div class="dir-a-brand-item">NSK</div>
+      <div class="dir-a-brand-item">TIMKEN</div>
+      <div class="dir-a-brand-item">NTN</div>
+      <div class="dir-a-brand-item">KOYO</div>
+    </div>
+  </div>
+
+  <div class="dir-a-cta">
+    <h2>Cần tư vấn hoặc báo giá?</h2>
+    <p>Đội ngũ kỹ sư VIES sẵn sàng hỗ trợ bạn</p>
+    <div class="dir-a-cta-buttons">
+      <button class="dir-a-cta-phone">&#9742; 0903 326 309</button>
+      <button class="dir-a-cta-zalo">Zalo: 0908 748 304</button>
+    </div>
+  </div>
+
+  <div class="mock-footer">VIES &copy; 2026 &middot; Giải pháp kỹ thuật công nghiệp</div>
+</div>
+
+<!-- ==================== DIRECTION B: SPLIT HERO ==================== -->
+<div id="dir-b" class="direction">
+  <div class="mockup-label">Direction B: Split Hero</div>
+  <div class="mockup-desc">Hero chia đôi: bên trái text + CTA, bên phải stats trên nền primary. Search bar nằm trên header. Services và Products tách section rõ ràng. Cân bằng giữa "giới thiệu" và "hành động".</div>
+
+  <div class="dir-b-topbar">
+    <div>
+      <a href="#">&#9742; Báo giá: 0903 326 309</a> &nbsp;&middot;&nbsp;
+      <a href="#">&#9742; Tư vấn: 0908 748 304</a> &nbsp;&middot;&nbsp;
+      <a href="#">info@v-ies.com</a>
+    </div>
+    <div>
+      <a href="#">VI</a> &nbsp;|&nbsp; <a href="#">EN</a>    </div>
+  </div>
+
+  <div class="dir-b-header">
+    <div class="dir-b-logo">
+      <div class="dir-b-logo-mark">V</div>
+      <div class="dir-b-logo-text">VIES</div>
+    </div>
+    <div class="dir-b-search-bar">
+      <input class="dir-b-search" placeholder="Tìm sản phẩm: 6205, 22210..." />
+    </div>
+    <nav class="dir-b-nav">
+      <a href="#">Dịch vụ</a>
+      <a href="#">Sản phẩm</a>
+      <a href="#">Tin tức</a>
+      <a href="#">Liên hệ</a>
+    </nav>
+  </div>
+
+  <div class="dir-b-hero">
+    <div class="dir-b-hero-left">
+      <h1>Giải pháp kỹ thuật<br/>cho công nghiệp</h1>
+      <p>Tư vấn, cung cấp vòng bi và linh kiện công nghiệp chính hãng. Đội ngũ kỹ sư giàu kinh nghiệm từ SKF, phục vụ nhà máy sản xuất trên toàn quốc.</p>
+      <div class="dir-b-hero-actions">
+        <button class="dir-b-btn-primary">Xem dịch vụ</button>
+        <button class="dir-b-btn-outline">Yêu cầu báo giá</button>
+      </div>
+    </div>
+    <div class="dir-b-hero-right">
+      <div class="dir-b-hero-stats">
+        <div>
+          <div class="dir-b-stat-num">10+</div>
+          <div class="dir-b-stat-label">Năm kinh nghiệm</div>
+        </div>
+        <div>
+          <div class="dir-b-stat-num">6+</div>
+          <div class="dir-b-stat-label">Thương hiệu</div>
+        </div>
+        <div>
+          <div class="dir-b-stat-num">500+</div>
+          <div class="dir-b-stat-label">Khách hàng</div>
+        </div>
+        <div>
+          <div class="dir-b-stat-num">100%</div>
+          <div class="dir-b-stat-label">Chính hãng</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dir-b-services-section">
+    <div class="dir-b-section-header">
+      <div>
+        <h2>Dịch vụ kỹ thuật</h2>
+        <p>Giải pháp từ đội ngũ kỹ sư chuyên nghiệp</p>
+      </div>
+    </div>
+    <div class="dir-b-services-grid">
+      <div class="dir-b-service-card">
+        <div class="dir-b-service-card-icon">&#9881;</div>
+        <h3>Tư vấn kỹ thuật</h3>
+        <p>Chọn đúng vòng bi và chất bôi trơn cho từng ứng dụng cụ thể trong nhà máy</p>
+      </div>
+      <div class="dir-b-service-card">
+        <div class="dir-b-service-card-icon">&#9776;</div>
+        <h3>Phân tích rung động</h3>
+        <p>Phát hiện sớm vấn đề tiềm ẩn, lên kế hoạch bảo trì chủ động cho thiết bị</p>
+      </div>
+      <div class="dir-b-service-card">
+        <div class="dir-b-service-card-icon">&#9951;</div>
+        <h3>Lắp đặt & Bôi trơn</h3>
+        <p>Hướng dẫn lắp đặt đúng kỹ thuật và tư vấn quy trình bôi trơn phù hợp</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="dir-b-products-section">
+    <div class="dir-b-products-inner">
+      <div class="dir-b-section-header">
+        <div>
+          <h2>Sản phẩm</h2>
+          <p>Vòng bi và linh kiện công nghiệp đa thương hiệu</p>
+        </div>
+      </div>
+      <div class="dir-b-product-grid">
+        <div class="dir-b-product-card">
+          <div class="dir-b-product-img">&#9900;</div>
+          <div class="dir-b-product-info">
+            <div class="dir-b-product-brand">SKF</div>
+            <div class="dir-b-product-name">Vòng bi cầu rãnh sâu</div>
+            <div class="dir-b-product-sku">6205-2RS1</div>
+            <div class="dir-b-product-action">
+              <button class="dir-b-quote-btn">Yêu cầu báo giá &rarr;</button>
+            </div>
+          </div>
+        </div>
+        <div class="dir-b-product-card">
+          <div class="dir-b-product-img">&#9900;</div>
+          <div class="dir-b-product-info">
+            <div class="dir-b-product-brand">FAG</div>
+            <div class="dir-b-product-name">Vòng bi đũa tự lựa</div>
+            <div class="dir-b-product-sku">22210 E1.T41A</div>
+            <div class="dir-b-product-action">
+              <button class="dir-b-quote-btn">Yêu cầu báo giá &rarr;</button>
+            </div>
+          </div>
+        </div>
+        <div class="dir-b-product-card">
+          <div class="dir-b-product-img">&#9900;</div>
+          <div class="dir-b-product-info">
+            <div class="dir-b-product-brand">NSK</div>
+            <div class="dir-b-product-name">Vòng bi đũa trụ</div>
+            <div class="dir-b-product-sku">NU308 ET2X</div>
+            <div class="dir-b-product-action">
+              <button class="dir-b-quote-btn">Yêu cầu báo giá &rarr;</button>
+            </div>
+          </div>
+        </div>
+        <div class="dir-b-product-card">
+          <div class="dir-b-product-img">&#9900;</div>
+          <div class="dir-b-product-info">
+            <div class="dir-b-product-brand">TIMKEN</div>
+            <div class="dir-b-product-name">Vòng bi côn</div>
+            <div class="dir-b-product-sku">32010X</div>
+            <div class="dir-b-product-action">
+              <button class="dir-b-quote-btn">Yêu cầu báo giá &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mock-footer">VIES &copy; 2026 &middot; Giải pháp kỹ thuật công nghiệp</div>
+</div>
+
+<!-- ==================== DIRECTION C: DARK HERO ==================== -->
+<div id="dir-c" class="direction">
+  <div class="mockup-label">Direction C: Dark Hero</div>
+  <div class="mockup-desc">Hero dark với search bar nổi bật trên nền tối, accent amber. Body chuyển sang light. 4 feature blocks dạng grid. Cảm giác "industrial tech" mạnh mẽ, khác biệt hoàn toàn.</div>
+
+  <div class="dir-c-header">
+    <div class="dir-c-logo">
+      <div class="dir-c-logo-mark">V</div>
+      <div class="dir-c-logo-text">VIES</div>
+    </div>
+    <nav class="dir-c-nav">
+      <a href="#">Dịch vụ</a>
+      <a href="#">Sản phẩm</a>
+      <a href="#">Tin tức</a>
+      <a href="#">Về VIES</a>
+    </nav>
+    <div style="display: flex; gap: 12px; align-items: center;">
+      <input class="dir-c-search-inline" placeholder="Tìm mã sản phẩm..." />
+      <button class="dir-c-contact-btn">Liên hệ</button>
+    </div>
+  </div>
+
+  <div class="dir-c-hero">
+    <h1>Giải pháp kỹ thuật<br/><span>cho công nghiệp</span></h1>
+    <p>Tư vấn chuyên sâu, cung cấp vòng bi và linh kiện chính hãng đa thương hiệu</p>
+    <div class="dir-c-hero-search">
+      <input class="dir-c-hero-input" placeholder="Nhập mã sản phẩm: 6205, 22210 E, NU308..." />
+      <button class="dir-c-hero-search-btn">Tìm kiếm</button>
+    </div>
+    <div class="dir-c-hero-tags">
+      <span class="dir-c-hero-tag">SKF 6205-2RS</span>
+      <span class="dir-c-hero-tag">FAG 22210</span>
+      <span class="dir-c-hero-tag">NSK NU308</span>
+      <span class="dir-c-hero-tag">Gối đỡ UCF205</span>
+    </div>
+  </div>
+
+  <div class="dir-c-features">
+    <div class="dir-c-features-inner">
+      <div class="dir-c-feature-block">
+        <div class="dir-c-feature-label">Dịch vụ</div>
+        <h3>Tư vấn kỹ thuật</h3>
+        <p>Đội ngũ kỹ sư từ SKF, tư vấn chọn vòng bi và chất bôi trơn phù hợp cho từng ứng dụng nhà máy</p>
+        <a href="#" class="dir-c-feature-link">Tìm hiểu thêm &rarr;</a>
+      </div>
+      <div class="dir-c-feature-block">
+        <div class="dir-c-feature-label">Dịch vụ</div>
+        <h3>Phân tích rung động</h3>
+        <p>Phát hiện sớm vấn đề tiềm ẩn của thiết bị quay, lên kế hoạch bảo trì chủ động</p>
+        <a href="#" class="dir-c-feature-link">Tìm hiểu thêm &rarr;</a>
+      </div>
+      <div class="dir-c-feature-block">
+        <div class="dir-c-feature-label">Sản phẩm</div>
+        <h3>Vòng bi & Gối đỡ</h3>
+        <p>Đa thương hiệu: SKF, FAG, NSK, Timken, NTN, KOYO. Hàng chính hãng, đa dạng chủng loại</p>
+        <a href="#" class="dir-c-feature-link">Xem sản phẩm &rarr;</a>
+      </div>
+      <div class="dir-c-feature-block">
+        <div class="dir-c-feature-label">Sản phẩm</div>
+        <h3>Bôi trơn & Bảo trì</h3>
+        <p>Mỡ bôi trơn SKF, dụng cụ lắp đặt, hệ thống bôi trơn tự động và thiết bị bảo trì</p>
+        <a href="#" class="dir-c-feature-link">Xem sản phẩm &rarr;</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="dir-c-brands">
+    <p>Thương hiệu đối tác</p>
+    <div class="dir-c-brand-logos">
+      <div class="dir-c-brand-logo">SKF</div>
+      <div class="dir-c-brand-logo">FAG</div>
+      <div class="dir-c-brand-logo">NSK</div>
+      <div class="dir-c-brand-logo">TIMKEN</div>
+      <div class="dir-c-brand-logo">NTN</div>
+      <div class="dir-c-brand-logo">KOYO</div>
+    </div>
+  </div>
+
+  <div class="dir-c-cta">
+    <h2>Cần tư vấn hoặc báo giá?</h2>
+    <p>Đội ngũ kỹ sư VIES sẵn sàng hỗ trợ bạn</p>
+    <div class="dir-c-cta-actions">
+      <button class="dir-c-cta-btn-white">&#9742; 0903 326 309</button>
+      <button class="dir-c-cta-btn-outline">Gửi yêu cầu báo giá</button>
+    </div>
+  </div>
+
+  <div class="mock-footer">VIES &copy; 2026 &middot; Giải pháp kỹ thuật công nghiệp</div>
+</div>
+
+<!-- Sticky contact (shared) -->
+<div class="sticky-contact">
+  <button class="sticky-btn sticky-phone" title="Gọi ngay">&#9742;</button>
+  <button class="sticky-btn sticky-zalo" title="Zalo">Z</button>
+</div>
+
+<script>
+function showDirection(id) {
+  document.querySelectorAll('.direction').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.direction-nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById('dir-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+</body>
+</html>
