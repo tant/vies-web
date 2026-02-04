@@ -1,0 +1,68 @@
+{
+  "common": {
+    "home": "Trang chủ",
+    "products": "Sản phẩm",
+    "news": "Tin tức",
+    "about": "Giới thiệu",
+    "contact": "Liên hệ",
+    "search": "Tìm kiếm",
+    "readMore": "Xem thêm",
+    "viewAll": "Xem tất cả",
+    "loading": "Đang tải...",
+    "noResults": "Không có kết quả"
+  },
+  "home": {
+    "hero": {
+      "title": "VIES - Chuyên cung cấp vòng bi và linh kiện công nghiệp",
+      "subtitle": "Nhà phân phối chính hãng các thương hiệu SKF, FAG, NTN, TIMKEN"
+    },
+    "featuredProducts": "Sản phẩm nổi bật",
+    "latestNews": "Tin tức mới nhất",
+    "ourBrands": "Thương hiệu đối tác"
+  },
+  "products": {
+    "title": "Danh mục sản phẩm",
+    "filter": "Bộ lọc",
+    "brand": "Thương hiệu",
+    "category": "Danh mục",
+    "sort": "Sắp xếp",
+    "requestQuote": "Yêu cầu báo giá"
+  },
+  "contact": {
+    "title": "Liên hệ",
+    "subtitle": "Chúng tôi luôn sẵn sàng hỗ trợ bạn",
+    "contactInfo": "Thông tin liên hệ",
+    "address": "Địa chỉ",
+    "phone": "Điện thoại",
+    "workingHours": "Giờ làm việc",
+    "followUs": "Theo dõi chúng tôi",
+    "formTitle": "Gửi tin nhắn cho chúng tôi",
+    "formSubtitle": "Điền thông tin bên dưới và chúng tôi sẽ liên hệ lại sớm nhất có thể",
+    "name": "Họ và tên",
+    "namePlaceholder": "Nhập họ và tên",
+    "emailPlaceholder": "example@email.com",
+    "phonePlaceholder": "Nhập số điện thoại",
+    "company": "Công ty",
+    "companyPlaceholder": "Tên công ty (nếu có)",
+    "subject": "Chủ đề",
+    "selectSubject": "Chọn chủ đề",
+    "subjectQuote": "Yêu cầu báo giá",
+    "subjectInfo": "Thông tin sản phẩm",
+    "subjectSupport": "Hỗ trợ kỹ thuật",
+    "subjectPartnership": "Hợp tác kinh doanh",
+    "subjectOther": "Khác",
+    "productInterest": "Sản phẩm quan tâm",
+    "message": "Nội dung",
+    "messagePlaceholder": "Nhập nội dung tin nhắn...",
+    "submit": "Gửi tin nhắn"
+  },
+  "about": {
+    "title": "Giới thiệu"
+  },
+  "news": {
+    "title": "Tin tức"
+  },
+  "footer": {
+    "copyright": "© {year} VIES. Tất cả quyền được bảo lưu."
+  }
+}
