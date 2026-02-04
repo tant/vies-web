@@ -68,106 +68,106 @@ const seedData = async () => {
 
   // Brand logos - using placeholder colors since actual logos need permission
   const brandsData = [
-    { name: 'SKF', slug: 'skf', website: 'https://www.skf.com', description: { vi: 'Thương hiệu vòng bi hàng đầu thế giới từ Thụy Điển', en: 'World leading bearing brand from Sweden', km: 'ម៉ាកគ្រាប់បេរីងឈានមុខពិភពលោកពីប្រទេសស៊ុយអែត' } },
-    { name: 'FAG', slug: 'fag', website: 'https://www.schaeffler.com', description: { vi: 'Thương hiệu vòng bi cao cấp từ Đức, thuộc tập đoàn Schaeffler', en: 'Premium bearing brand from Germany, part of Schaeffler Group', km: 'ម៉ាកគ្រាប់បេរីងលំដាប់ខ្ពស់ពីប្រទេសអាល្លឺម៉ង់' } },
-    { name: 'NTN', slug: 'ntn', website: 'https://www.ntn.co.jp', description: { vi: 'Thương hiệu vòng bi Nhật Bản với công nghệ tiên tiến', en: 'Japanese bearing brand with advanced technology', km: 'ម៉ាកគ្រាប់បេរីងជប៉ុនជាមួយបច្ចេកវិទ្យាទំនើប' } },
-    { name: 'TIMKEN', slug: 'timken', website: 'https://www.timken.com', description: { vi: 'Thương hiệu vòng bi Mỹ với hơn 100 năm kinh nghiệm', en: 'American bearing brand with over 100 years of experience', km: 'ម៉ាកគ្រាប់បេរីងអាមេរិកជាមួយបទពិសោធន៍ជាង ១០០ ឆ្នាំ' } },
-    { name: 'INA', slug: 'ina', website: 'https://www.schaeffler.com', description: { vi: 'Chuyên gia về hệ thống truyền động tịnh tiến', en: 'Linear motion systems specialist', km: 'អ្នកជំនាញប្រព័ន្ធចលនាលីនេអ៊ែរ' } },
-    { name: 'Lincoln', slug: 'lincoln', website: 'https://www.skf.com/lincoln', description: { vi: 'Hệ thống bôi trơn tự động hàng đầu', en: 'Leading automatic lubrication systems', km: 'ប្រព័ន្ធប្រេងរំអិលស្វ័យប្រវត្តិឈានមុខ' } },
-    { name: 'Optibelt', slug: 'optibelt', website: 'https://www.optibelt.com', description: { vi: 'Dây đai truyền động chất lượng cao từ Đức', en: 'High quality power transmission belts from Germany', km: 'ខ្សែក្រវ៉ាត់បញ្ជូនថាមពលគុណភាពខ្ពស់ពីប្រទេសអាល្លឺម៉ង់' } },
-    { name: 'SMC', slug: 'smc', website: 'https://www.smc.eu', description: { vi: 'Thiết bị khí nén công nghiệp Nhật Bản', en: 'Japanese industrial pneumatic equipment', km: 'ឧបករណ៍ខ្យល់ឧស្សាហកម្មជប៉ុន' } },
+    { name: 'SKF', slug: 'skf', website: 'https://www.skf.com', description: { vi: 'Thương hiệu vòng bi hàng đầu thế giới từ Thụy Điển', en: 'World leading bearing brand from Sweden' } },
+    { name: 'FAG', slug: 'fag', website: 'https://www.schaeffler.com', description: { vi: 'Thương hiệu vòng bi cao cấp từ Đức, thuộc tập đoàn Schaeffler', en: 'Premium bearing brand from Germany, part of Schaeffler Group' } },
+    { name: 'NTN', slug: 'ntn', website: 'https://www.ntn.co.jp', description: { vi: 'Thương hiệu vòng bi Nhật Bản với công nghệ tiên tiến', en: 'Japanese bearing brand with advanced technology' } },
+    { name: 'TIMKEN', slug: 'timken', website: 'https://www.timken.com', description: { vi: 'Thương hiệu vòng bi Mỹ với hơn 100 năm kinh nghiệm', en: 'American bearing brand with over 100 years of experience' } },
+    { name: 'INA', slug: 'ina', website: 'https://www.schaeffler.com', description: { vi: 'Chuyên gia về hệ thống truyền động tịnh tiến', en: 'Linear motion systems specialist' } },
+    { name: 'Lincoln', slug: 'lincoln', website: 'https://www.skf.com/lincoln', description: { vi: 'Hệ thống bôi trơn tự động hàng đầu', en: 'Leading automatic lubrication systems' } },
+    { name: 'Optibelt', slug: 'optibelt', website: 'https://www.optibelt.com', description: { vi: 'Dây đai truyền động chất lượng cao từ Đức', en: 'High quality power transmission belts from Germany' } },
+    { name: 'SMC', slug: 'smc', website: 'https://www.smc.eu', description: { vi: 'Thiết bị khí nén công nghiệp Nhật Bản', en: 'Japanese industrial pneumatic equipment' } },
   ]
 
   // Categories
   const categoriesData = [
-    { name: { vi: 'Vòng bi', en: 'Bearings', km: 'គ្រាប់បេរីង' }, slug: 'vong-bi', description: { vi: 'Các loại vòng bi công nghiệp chính hãng', en: 'Genuine industrial bearings', km: 'គ្រាប់បេរីងឧស្សាហកម្មពិតប្រាកដ' } },
-    { name: { vi: 'Bôi trơn', en: 'Lubrication', km: 'ប្រេងរំអិល' }, slug: 'boi-tron', description: { vi: 'Mỡ bôi trơn và hệ thống bôi trơn tự động', en: 'Lubricants and automatic lubrication systems', km: 'ប្រេងរំអិល និងប្រព័ន្ធប្រេងរំអិលស្វ័យប្រវត្តិ' } },
-    { name: { vi: 'Dụng cụ bảo trì', en: 'Maintenance Tools', km: 'ឧបករណ៍ថែទាំ' }, slug: 'dung-cu-bao-tri', description: { vi: 'Thiết bị và dụng cụ bảo trì công nghiệp', en: 'Industrial maintenance equipment and tools', km: 'ឧបករណ៍ និងឧបករណ៍ថែទាំឧស្សាហកម្ម' } },
-    { name: { vi: 'Truyền động', en: 'Power Transmission', km: 'ការបញ្ជូនថាមពល' }, slug: 'truyen-dong', description: { vi: 'Dây đai, xích và các sản phẩm truyền động', en: 'Belts, chains and transmission products', km: 'ខ្សែក្រវ៉ាត់ ច្រវ៉ាក់ និងផលិតផលបញ្ជូន' } },
-    { name: { vi: 'Gối đỡ', en: 'Bearing Housings', km: 'គ្រឿងទ្រគ្រាប់បេរីង' }, slug: 'goi-do', description: { vi: 'Gối đỡ và cụm vòng bi', en: 'Bearing housings and assemblies', km: 'គ្រឿងទ្រ និងការផ្គុំគ្រាប់បេរីង' } },
-    { name: { vi: 'Khí nén', en: 'Pneumatics', km: 'ឧបករណ៍ខ្យល់' }, slug: 'khi-nen', description: { vi: 'Thiết bị khí nén công nghiệp', en: 'Industrial pneumatic equipment', km: 'ឧបករណ៍ខ្យល់ឧស្សាហកម្ម' } },
+    { name: { vi: 'Vòng bi', en: 'Bearings' }, slug: 'vong-bi', description: { vi: 'Các loại vòng bi công nghiệp chính hãng', en: 'Genuine industrial bearings' } },
+    { name: { vi: 'Bôi trơn', en: 'Lubrication' }, slug: 'boi-tron', description: { vi: 'Mỡ bôi trơn và hệ thống bôi trơn tự động', en: 'Lubricants and automatic lubrication systems' } },
+    { name: { vi: 'Dụng cụ bảo trì', en: 'Maintenance Tools' }, slug: 'dung-cu-bao-tri', description: { vi: 'Thiết bị và dụng cụ bảo trì công nghiệp', en: 'Industrial maintenance equipment and tools' } },
+    { name: { vi: 'Truyền động', en: 'Power Transmission' }, slug: 'truyen-dong', description: { vi: 'Dây đai, xích và các sản phẩm truyền động', en: 'Belts, chains and transmission products' } },
+    { name: { vi: 'Gối đỡ', en: 'Bearing Housings' }, slug: 'goi-do', description: { vi: 'Gối đỡ và cụm vòng bi', en: 'Bearing housings and assemblies' } },
+    { name: { vi: 'Khí nén', en: 'Pneumatics' }, slug: 'khi-nen', description: { vi: 'Thiết bị khí nén công nghiệp', en: 'Industrial pneumatic equipment' } },
   ]
 
   // Products
   const productsData = [
     {
-      name: { vi: 'Vòng bi cầu SKF 6205-2RS', en: 'SKF 6205-2RS Deep Groove Ball Bearing', km: 'គ្រាប់បេរីងបាល់ស៊ីជម្រៅ SKF 6205-2RS' },
+      name: { vi: 'Vòng bi cầu SKF 6205-2RS', en: 'SKF 6205-2RS Deep Groove Ball Bearing' },
       slug: 'skf-6205-2rs',
       sku: '6205-2RS',
       brand: 'skf',
       category: 'vong-bi',
-      description: { vi: 'Vòng bi cầu một dãy, hai phớt cao su, chịu tải cao', en: 'Single row deep groove ball bearing with two rubber seals, high load capacity', km: 'គ្រាប់បេរីងបាល់មួយជួរជាមួយត្រាកៅស៊ូពីរ សមត្ថភាពផ្ទុកខ្ពស់' },
+      description: { vi: 'Vòng bi cầu một dãy, hai phớt cao su, chịu tải cao', en: 'Single row deep groove ball bearing with two rubber seals, high load capacity' },
       specifications: [
-        { key: { vi: 'Đường kính trong', en: 'Inner diameter', km: 'អង្កត់ផ្ចិតខាងក្នុង' }, value: { vi: '25mm', en: '25mm', km: '25mm' } },
-        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter', km: 'អង្កត់ផ្ចិតខាងក្រៅ' }, value: { vi: '52mm', en: '52mm', km: '52mm' } },
-        { key: { vi: 'Chiều rộng', en: 'Width', km: 'ទទឹង' }, value: { vi: '15mm', en: '15mm', km: '15mm' } },
+        { key: { vi: 'Đường kính trong', en: 'Inner diameter' }, value: { vi: '25mm', en: '25mm' } },
+        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter' }, value: { vi: '52mm', en: '52mm' } },
+        { key: { vi: 'Chiều rộng', en: 'Width' }, value: { vi: '15mm', en: '15mm' } },
       ],
       featured: true,
     },
     {
-      name: { vi: 'Vòng bi đũa FAG NU206E', en: 'FAG NU206E Cylindrical Roller Bearing', km: 'គ្រាប់បេរីងរមូរស៊ីឡាំង FAG NU206E' },
+      name: { vi: 'Vòng bi đũa FAG NU206E', en: 'FAG NU206E Cylindrical Roller Bearing' },
       slug: 'fag-nu206e',
       sku: 'NU206E',
       brand: 'fag',
       category: 'vong-bi',
-      description: { vi: 'Vòng bi đũa trụ chịu tải hướng tâm cao', en: 'Cylindrical roller bearing with high radial load capacity', km: 'គ្រាប់បេរីងរមូរស៊ីឡាំងជាមួយសមត្ថភាពផ្ទុករ៉ាឌីអាល់ខ្ពស់' },
+      description: { vi: 'Vòng bi đũa trụ chịu tải hướng tâm cao', en: 'Cylindrical roller bearing with high radial load capacity' },
       specifications: [
-        { key: { vi: 'Đường kính trong', en: 'Inner diameter', km: 'អង្កត់ផ្ចិតខាងក្នុង' }, value: { vi: '30mm', en: '30mm', km: '30mm' } },
-        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter', km: 'អង្កត់ផ្ចិតខាងក្រៅ' }, value: { vi: '62mm', en: '62mm', km: '62mm' } },
-        { key: { vi: 'Chiều rộng', en: 'Width', km: 'ទទឹង' }, value: { vi: '16mm', en: '16mm', km: '16mm' } },
+        { key: { vi: 'Đường kính trong', en: 'Inner diameter' }, value: { vi: '30mm', en: '30mm' } },
+        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter' }, value: { vi: '62mm', en: '62mm' } },
+        { key: { vi: 'Chiều rộng', en: 'Width' }, value: { vi: '16mm', en: '16mm' } },
       ],
       featured: true,
     },
     {
-      name: { vi: 'Mỡ SKF LGMT 3', en: 'SKF LGMT 3 Grease', km: 'ប្រេងរំអិល SKF LGMT 3' },
+      name: { vi: 'Mỡ SKF LGMT 3', en: 'SKF LGMT 3 Grease' },
       slug: 'skf-lgmt-3',
       sku: 'LGMT 3/1',
       brand: 'skf',
       category: 'boi-tron',
-      description: { vi: 'Mỡ bôi trơn đa dụng cho vòng bi công nghiệp', en: 'General purpose industrial bearing grease', km: 'ប្រេងរំអិលគ្រាប់បេរីងឧស្សាហកម្មគោលបំណងទូទៅ' },
+      description: { vi: 'Mỡ bôi trơn đa dụng cho vòng bi công nghiệp', en: 'General purpose industrial bearing grease' },
       specifications: [
-        { key: { vi: 'Dung tích', en: 'Capacity', km: 'សមត្ថភាព' }, value: { vi: '1kg', en: '1kg', km: '1kg' } },
-        { key: { vi: 'Nhiệt độ hoạt động', en: 'Operating temperature', km: 'សីតុណ្ហភាពប្រតិបត្តិការ' }, value: { vi: '-30°C đến +120°C', en: '-30°C to +120°C', km: '-30°C ដល់ +120°C' } },
+        { key: { vi: 'Dung tích', en: 'Capacity' }, value: { vi: '1kg', en: '1kg' } },
+        { key: { vi: 'Nhiệt độ hoạt động', en: 'Operating temperature' }, value: { vi: '-30°C đến +120°C', en: '-30°C to +120°C' } },
       ],
       featured: true,
     },
     {
-      name: { vi: 'Máy gia nhiệt cảm ứng SKF TMBH 1', en: 'SKF TMBH 1 Induction Heater', km: 'ឧបករណ៍កម្តៅបញ្ចុះ SKF TMBH 1' },
+      name: { vi: 'Máy gia nhiệt cảm ứng SKF TMBH 1', en: 'SKF TMBH 1 Induction Heater' },
       slug: 'skf-tmbh-1',
       sku: 'TMBH 1',
       brand: 'skf',
       category: 'dung-cu-bao-tri',
-      description: { vi: 'Máy gia nhiệt cảm ứng di động để lắp vòng bi', en: 'Portable induction heater for bearing mounting', km: 'ឧបករណ៍កម្តៅបញ្ចុះចល័តសម្រាប់ការដំឡើងគ្រាប់បេរីង' },
+      description: { vi: 'Máy gia nhiệt cảm ứng di động để lắp vòng bi', en: 'Portable induction heater for bearing mounting' },
       specifications: [
-        { key: { vi: 'Công suất', en: 'Power', km: 'ថាមពល' }, value: { vi: '3.6 kVA', en: '3.6 kVA', km: '3.6 kVA' } },
-        { key: { vi: 'Trọng lượng tối đa', en: 'Max weight', km: 'ទម្ងន់អតិបរមា' }, value: { vi: '40kg', en: '40kg', km: '40kg' } },
+        { key: { vi: 'Công suất', en: 'Power' }, value: { vi: '3.6 kVA', en: '3.6 kVA' } },
+        { key: { vi: 'Trọng lượng tối đa', en: 'Max weight' }, value: { vi: '40kg', en: '40kg' } },
       ],
       featured: false,
     },
     {
-      name: { vi: 'Dây đai răng Optibelt OMEGA', en: 'Optibelt OMEGA Timing Belt', km: 'ខ្សែក្រវ៉ាត់ពេលវេលា Optibelt OMEGA' },
+      name: { vi: 'Dây đai răng Optibelt OMEGA', en: 'Optibelt OMEGA Timing Belt' },
       slug: 'optibelt-omega',
       sku: 'OMEGA-HTD-8M',
       brand: 'optibelt',
       category: 'truyen-dong',
-      description: { vi: 'Dây đai răng đồng bộ chất lượng cao từ Đức', en: 'High quality synchronous timing belt from Germany', km: 'ខ្សែក្រវ៉ាត់ពេលវេលាសមកាលកម្មគុណភាពខ្ពស់ពីប្រទេសអាល្លឺម៉ង់' },
+      description: { vi: 'Dây đai răng đồng bộ chất lượng cao từ Đức', en: 'High quality synchronous timing belt from Germany' },
       specifications: [
-        { key: { vi: 'Loại', en: 'Type', km: 'ប្រភេទ' }, value: { vi: 'HTD 8M', en: 'HTD 8M', km: 'HTD 8M' } },
-        { key: { vi: 'Vật liệu', en: 'Material', km: 'សម្ភារៈ' }, value: { vi: 'Cao su HNBR', en: 'HNBR rubber', km: 'កៅស៊ូ HNBR' } },
+        { key: { vi: 'Loại', en: 'Type' }, value: { vi: 'HTD 8M', en: 'HTD 8M' } },
+        { key: { vi: 'Vật liệu', en: 'Material' }, value: { vi: 'Cao su HNBR', en: 'HNBR rubber' } },
       ],
       featured: false,
     },
     {
-      name: { vi: 'Vòng bi NTN 6308LLU', en: 'NTN 6308LLU Ball Bearing', km: 'គ្រាប់បេរីងបាល់ NTN 6308LLU' },
+      name: { vi: 'Vòng bi NTN 6308LLU', en: 'NTN 6308LLU Ball Bearing' },
       slug: 'ntn-6308llu',
       sku: '6308LLU',
       brand: 'ntn',
       category: 'vong-bi',
-      description: { vi: 'Vòng bi cầu chịu tải cao, phớt kép', en: 'High load ball bearing with double seals', km: 'គ្រាប់បេរីងបាល់ផ្ទុកខ្ពស់ជាមួយត្រាពីរ' },
+      description: { vi: 'Vòng bi cầu chịu tải cao, phớt kép', en: 'High load ball bearing with double seals' },
       specifications: [
-        { key: { vi: 'Đường kính trong', en: 'Inner diameter', km: 'អង្កត់ផ្ចិតខាងក្នុង' }, value: { vi: '40mm', en: '40mm', km: '40mm' } },
-        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter', km: 'អង្កត់ផ្ចិតខាងក្រៅ' }, value: { vi: '90mm', en: '90mm', km: '90mm' } },
-        { key: { vi: 'Chiều rộng', en: 'Width', km: 'ទទឹង' }, value: { vi: '23mm', en: '23mm', km: '23mm' } },
+        { key: { vi: 'Đường kính trong', en: 'Inner diameter' }, value: { vi: '40mm', en: '40mm' } },
+        { key: { vi: 'Đường kính ngoài', en: 'Outer diameter' }, value: { vi: '90mm', en: '90mm' } },
+        { key: { vi: 'Chiều rộng', en: 'Width' }, value: { vi: '23mm', en: '23mm' } },
       ],
       featured: true,
     },
@@ -191,6 +191,15 @@ const seedData = async () => {
             slug: brand.slug,
             website: brand.website,
             description: makeRichText(brand.description.vi),
+          },
+        })
+        // Seed English locale
+        await payload.update({
+          collection: 'brands',
+          id: created.id,
+          locale: 'en',
+          data: {
+            description: makeRichText(brand.description.en),
           },
         })
         brandMap[brand.slug] = created.id as number
@@ -223,6 +232,16 @@ const seedData = async () => {
             description: makeRichText(category.description.vi),
           },
         })
+        // Seed English locale
+        await payload.update({
+          collection: 'categories',
+          id: created.id,
+          locale: 'en',
+          data: {
+            name: category.name.en,
+            description: makeRichText(category.description.en),
+          },
+        })
         categoryMap[category.slug] = created.id as number
         console.log(`  ✓ Created category: ${category.name.vi}`)
       } else {
@@ -244,7 +263,7 @@ const seedData = async () => {
       })
 
       if (existing.docs.length === 0) {
-        await payload.create({
+        const created = await payload.create({
           collection: 'products',
           data: {
             name: product.name.vi,
@@ -259,6 +278,20 @@ const seedData = async () => {
             })),
             featured: product.featured,
             _status: 'published',
+          },
+        })
+        // Seed English locale
+        await payload.update({
+          collection: 'products',
+          id: created.id,
+          locale: 'en',
+          data: {
+            name: product.name.en,
+            description: makeRichText(product.description.en),
+            specifications: product.specifications.map(spec => ({
+              key: spec.key.en,
+              value: spec.value.en,
+            })),
           },
         })
         console.log(`  ✓ Created product: ${product.name.vi}`)

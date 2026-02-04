@@ -5,7 +5,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
-    title: locale === 'vi' ? 'Chính sách bảo hành' : locale === 'km' ? 'គោលនយោបាយធានា' : 'Warranty Policy',
+    title: locale === 'vi' ? 'Chính sách bảo hành' : 'Warranty Policy',
   }
 }
 
@@ -26,7 +26,7 @@ export default async function WarrantyPage({ params }: Props) {
       <div className="bg-primary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">
-            {locale === 'vi' ? 'Chính sách bảo hành' : locale === 'km' ? 'គោលនយោបាយធានា' : 'Warranty Policy'}
+            {locale === 'vi' ? 'Chính sách bảo hành' : 'Warranty Policy'}
           </h1>
           <p className="text-blue-100">
             {locale === 'vi' ? 'Cam kết bảo hành chính hãng cho tất cả sản phẩm' : 'Official warranty commitment for all products'}

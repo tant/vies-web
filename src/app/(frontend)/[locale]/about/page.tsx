@@ -32,57 +32,49 @@ export default async function AboutPage({ params }: Props) {
   const stats = [
     {
       value: '10+',
-      label: locale === 'vi' ? 'Năm kinh nghiệm' : locale === 'km' ? 'ឆ្នាំបទពិសោធន៍' : 'Years Experience',
+      label: locale === 'vi' ? 'Năm kinh nghiệm' : 'Years Experience',
     },
     {
       value: '1000+',
-      label: locale === 'vi' ? 'Khách hàng tin tưởng' : locale === 'km' ? 'អតិថិជនជឿទុកចិត្ត' : 'Trusted Customers',
+      label: locale === 'vi' ? 'Khách hàng tin tưởng' : 'Trusted Customers',
     },
     {
       value: '5000+',
-      label: locale === 'vi' ? 'Sản phẩm đa dạng' : locale === 'km' ? 'ផលិតផលចម្រុះ' : 'Products Available',
+      label: locale === 'vi' ? 'Sản phẩm đa dạng' : 'Products Available',
     },
     {
       value: '99%',
-      label: locale === 'vi' ? 'Khách hàng hài lòng' : locale === 'km' ? 'អតិថិជនពេញចិត្ត' : 'Customer Satisfaction',
+      label: locale === 'vi' ? 'Khách hàng hài lòng' : 'Customer Satisfaction',
     },
   ]
 
   const values = [
     {
       icon: ShieldCheckIcon,
-      title: locale === 'vi' ? 'Chất lượng' : locale === 'km' ? 'គុណភាព' : 'Quality',
+      title: locale === 'vi' ? 'Chất lượng' : 'Quality',
       description: locale === 'vi'
         ? 'Cam kết chỉ cung cấp sản phẩm chính hãng từ các thương hiệu hàng đầu thế giới.'
-        : locale === 'km'
-        ? 'ប្តេជ្ញាផ្គត់ផ្គង់តែផលិតផលពិតប្រាកដពីម៉ាកល្បីៗពិភពលោក។'
         : 'Committed to providing only genuine products from world-leading brands.',
     },
     {
       icon: UsersIcon,
-      title: locale === 'vi' ? 'Khách hàng' : locale === 'km' ? 'អតិថិជន' : 'Customer Focus',
+      title: locale === 'vi' ? 'Khách hàng' : 'Customer Focus',
       description: locale === 'vi'
         ? 'Luôn đặt lợi ích của khách hàng lên hàng đầu, tư vấn tận tâm và hỗ trợ nhanh chóng.'
-        : locale === 'km'
-        ? 'ដាក់ផលប្រយោជន៍អតិថិជនជាអាទិភាព ផ្តល់ប្រឹក្សាដោយស្មោះស្ម័គ្រ និងជំនួយរហ័ស។'
         : 'Always putting customer interests first with dedicated consultation and quick support.',
     },
     {
       icon: TruckIcon,
-      title: locale === 'vi' ? 'Giao hàng' : locale === 'km' ? 'ការដឹកជញ្ជូន' : 'Delivery',
+      title: locale === 'vi' ? 'Giao hàng' : 'Delivery',
       description: locale === 'vi'
         ? 'Giao hàng nhanh chóng trên toàn quốc và các nước trong khu vực Đông Nam Á.'
-        : locale === 'km'
-        ? 'ដឹកជញ្ជូនរហ័សទូទាំងប្រទេស និងបណ្តាប្រទេសក្នុងតំបន់អាស៊ីអាគ្នេយ៍។'
         : 'Fast delivery nationwide and to Southeast Asian countries.',
     },
     {
       icon: AwardIcon,
-      title: locale === 'vi' ? 'Uy tín' : locale === 'km' ? 'កេរ្តិ៍ឈ្មោះ' : 'Reputation',
+      title: locale === 'vi' ? 'Uy tín' : 'Reputation',
       description: locale === 'vi'
         ? 'Xây dựng niềm tin với khách hàng qua nhiều năm hoạt động và phục vụ chuyên nghiệp.'
-        : locale === 'km'
-        ? 'បង្កើតទំនុកចិត្តជាមួយអតិថិជនតាមរយៈឆ្នាំជាច្រើននៃការប្រតិបត្តិការ និងសេវាកម្មប្រកបដោយវិជ្ជាជីវៈ។'
         : 'Building trust with customers through years of operation and professional service.',
     },
   ]
@@ -97,8 +89,6 @@ export default async function AboutPage({ params }: Props) {
             <p className="text-xl text-blue-100 leading-relaxed">
               {locale === 'vi'
                 ? 'VIES - Nhà phân phối vòng bi và linh kiện công nghiệp chính hãng hàng đầu tại Việt Nam, phục vụ khách hàng trong và ngoài nước.'
-                : locale === 'km'
-                ? 'VIES - អ្នកចែកចាយគ្រាប់បេរីង និងគ្រឿងបន្លាស់ឧស្សាហកម្មពិតប្រាកដឈានមុខនៅវៀតណាម បម្រើអតិថិជនក្នុង និងក្រៅប្រទេស។'
                 : 'VIES - Leading authentic industrial bearings and components distributor in Vietnam, serving domestic and international customers.'}
             </p>
           </div>
@@ -124,28 +114,22 @@ export default async function AboutPage({ params }: Props) {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div>
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-6">
-              {locale === 'vi' ? 'Câu chuyện của chúng tôi' : locale === 'km' ? 'រឿងរ៉ាវរបស់យើង' : 'Our Story'}
+              {locale === 'vi' ? 'Câu chuyện của chúng tôi' : 'Our Story'}
             </h2>
             <div className="space-y-4 text-gray-600 leading-relaxed">
               <p>
                 {locale === 'vi'
                   ? 'Được thành lập với sứ mệnh mang đến những sản phẩm công nghiệp chất lượng cao nhất cho thị trường Việt Nam, VIES đã không ngừng phát triển và khẳng định vị thế là đối tác đáng tin cậy của hàng nghìn doanh nghiệp.'
-                  : locale === 'km'
-                  ? 'បង្កើតឡើងដោយមានបេសកកម្មនាំយកផលិតផលឧស្សាហកម្មគុណភាពខ្ពស់បំផុតមកទីផ្សារវៀតណាម VIES បានបន្តអភិវឌ្ឍន៍ និងបញ្ជាក់ពីមុខតំណែងជាដៃគូដែលគួរឱ្យទុកចិត្តរបស់សហគ្រាសរាប់ពាន់។'
                   : 'Founded with the mission of bringing the highest quality industrial products to the Vietnamese market, VIES has continuously grown and established itself as a trusted partner of thousands of businesses.'}
               </p>
               <p>
                 {locale === 'vi'
                   ? 'Chúng tôi tự hào là nhà phân phối ủy quyền của các thương hiệu vòng bi và linh kiện công nghiệp hàng đầu thế giới như SKF, FAG, NTN, TIMKEN, NSK, và KOYO.'
-                  : locale === 'km'
-                  ? 'យើងមានមោទនភាពជាអ្នកចែកចាយដែលមានការអនុញ្ញាតពីម៉ាកគ្រាប់បេរីង និងគ្រឿងបន្លាស់ឧស្សាហកម្មឈានមុខពិភពលោកដូចជា SKF, FAG, NTN, TIMKEN, NSK និង KOYO។'
                   : 'We are proud to be an authorized distributor of world-leading bearing and industrial component brands such as SKF, FAG, NTN, TIMKEN, NSK, and KOYO.'}
               </p>
               <p>
                 {locale === 'vi'
                   ? 'Với đội ngũ nhân viên giàu kinh nghiệm và hệ thống kho hàng hiện đại, chúng tôi cam kết đáp ứng mọi nhu cầu của khách hàng một cách nhanh chóng và hiệu quả.'
-                  : locale === 'km'
-                  ? 'ជាមួយនឹងក្រុមបុគ្គលិកដែលមានបទពិសោធន៍ និងប្រព័ន្ធឃ្លាំងទំនើប យើងប្តេជ្ញាបំពេញតម្រូវការរបស់អតិថិជនគ្រប់យ៉ាងយ៉ាងរហ័ស និងមានប្រសិទ្ធភាព។'
                   : 'With an experienced team and modern warehouse system, we are committed to meeting all customer needs quickly and efficiently.'}
               </p>
             </div>
@@ -168,13 +152,11 @@ export default async function AboutPage({ params }: Props) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-              {locale === 'vi' ? 'Giá trị cốt lõi' : locale === 'km' ? 'តម្លៃស្នូល' : 'Core Values'}
+              {locale === 'vi' ? 'Giá trị cốt lõi' : 'Core Values'}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               {locale === 'vi'
                 ? 'Những nguyên tắc định hướng mọi hoạt động của VIES'
-                : locale === 'km'
-                ? 'គោលការណ៍ដែលណែនាំសកម្មភាពទាំងអស់របស់ VIES'
                 : 'Principles that guide everything we do at VIES'}
             </p>
           </div>
@@ -197,13 +179,11 @@ export default async function AboutPage({ params }: Props) {
       <div className="container mx-auto px-4 py-16">
         <div className="text-center mb-12">
           <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-            {locale === 'vi' ? 'Đối tác thương hiệu' : locale === 'km' ? 'ដៃគូម៉ាក' : 'Brand Partners'}
+            {locale === 'vi' ? 'Đối tác thương hiệu' : 'Brand Partners'}
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
             {locale === 'vi'
               ? 'Chúng tôi tự hào là nhà phân phối ủy quyền của các thương hiệu hàng đầu thế giới'
-              : locale === 'km'
-              ? 'យើងមានមោទនភាពជាអ្នកចែកចាយដែលមានការអនុញ្ញាតពីម៉ាកឈានមុខពិភពលោក'
               : 'We are proud to be an authorized distributor of world-leading brands'}
           </p>
         </div>
@@ -230,13 +210,11 @@ export default async function AboutPage({ params }: Props) {
       <div className="bg-primary py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-            {locale === 'vi' ? 'Sẵn sàng hợp tác?' : locale === 'km' ? 'រួចរាល់សម្រាប់ភាពជាដៃគូ?' : 'Ready to Partner?'}
+            {locale === 'vi' ? 'Sẵn sàng hợp tác?' : 'Ready to Partner?'}
           </h2>
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
             {locale === 'vi'
               ? 'Liên hệ với chúng tôi ngay hôm nay để được tư vấn và báo giá tốt nhất'
-              : locale === 'km'
-              ? 'ទាក់ទងមកយើងថ្ងៃនេះ ដើម្បីទទួលបានការប្រឹក្សា និងការផ្តល់តម្លៃល្អបំផុត'
               : 'Contact us today for the best consultation and pricing'}
           </p>
           <div className="flex flex-wrap justify-center gap-4">

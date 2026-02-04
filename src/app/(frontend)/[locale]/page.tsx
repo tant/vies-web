@@ -71,25 +71,25 @@ export default async function HomePage({ params }: Props) {
               <div>
                 <div className="text-2xl md:text-3xl font-bold">10+</div>
                 <div className="text-sm text-blue-100">
-                  {locale === 'vi' ? 'Năm kinh nghiệm' : locale === 'km' ? 'ឆ្នាំបទពិសោធន៍' : 'Years Experience'}
+                  {locale === 'vi' ? 'Năm kinh nghiệm' : 'Years Experience'}
                 </div>
               </div>
               <div>
                 <div className="text-2xl md:text-3xl font-bold">8+</div>
                 <div className="text-sm text-blue-100">
-                  {locale === 'vi' ? 'Thương hiệu đối tác' : locale === 'km' ? 'ម៉ាកដៃគូ' : 'Partner Brands'}
+                  {locale === 'vi' ? 'Thương hiệu đối tác' : 'Partner Brands'}
                 </div>
               </div>
               <div>
                 <div className="text-2xl md:text-3xl font-bold">1000+</div>
                 <div className="text-sm text-blue-100">
-                  {locale === 'vi' ? 'Khách hàng tin tưởng' : locale === 'km' ? 'អតិថិជនជឿជាក់' : 'Trusted Customers'}
+                  {locale === 'vi' ? 'Khách hàng tin tưởng' : 'Trusted Customers'}
                 </div>
               </div>
               <div>
                 <div className="text-2xl md:text-3xl font-bold">100%</div>
                 <div className="text-sm text-blue-100">
-                  {locale === 'vi' ? 'Hàng chính hãng' : locale === 'km' ? 'ផលិតផលពិតប្រាកដ' : 'Authentic Products'}
+                  {locale === 'vi' ? 'Hàng chính hãng' : 'Authentic Products'}
                 </div>
               </div>
             </div>
@@ -102,13 +102,11 @@ export default async function HomePage({ params }: Props) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              {locale === 'vi' ? 'Danh mục sản phẩm' : locale === 'km' ? 'ប្រភេទផលិតផល' : 'Product Categories'}
+              {locale === 'vi' ? 'Danh mục sản phẩm' : 'Product Categories'}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               {locale === 'vi'
                 ? 'Đa dạng các sản phẩm vòng bi và linh kiện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới'
-                : locale === 'km'
-                ? 'ផលិតផលគ្រាប់បេរីង និងគ្រឿងបន្លាស់ឧស្សាហកម្មពិតប្រាកដចម្រុះពីម៉ាកឈានមុខពិភពលោក'
                 : 'Wide range of genuine bearings and industrial components from world-leading brands'}
             </p>
           </div>
@@ -143,8 +141,6 @@ export default async function HomePage({ params }: Props) {
               <p className="text-gray-600">
                 {locale === 'vi'
                   ? 'Các sản phẩm được khách hàng tin dùng'
-                  : locale === 'km'
-                  ? 'ផលិតផលដែលអតិថិជនជឿជាក់'
                   : 'Products trusted by our customers'}
               </p>
             </div>
@@ -213,8 +209,6 @@ export default async function HomePage({ params }: Props) {
             <p className="text-gray-600 max-w-2xl mx-auto">
               {locale === 'vi'
                 ? 'Đại lý phân phối chính thức của các thương hiệu vòng bi hàng đầu thế giới'
-                : locale === 'km'
-                ? 'អ្នកចែកចាយផ្លូវការនៃម៉ាកគ្រាប់បេរីងឈានមុខពិភពលោក'
                 : 'Official distributor of world-leading bearing brands'}
             </p>
           </div>
@@ -258,8 +252,6 @@ export default async function HomePage({ params }: Props) {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
                 {locale === 'vi'
                   ? 'Giới thiệu về vòng bi SKF'
-                  : locale === 'km'
-                  ? 'ការណែនាំអំពីគ្រាប់បេរីង SKF'
                   : 'About SKF Bearings'}
               </h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
@@ -284,7 +276,7 @@ export default async function HomePage({ params }: Props) {
                   href={`/${locale}/products?brand=skf`}
                   className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors"
                 >
-                  {locale === 'vi' ? 'Xem sản phẩm SKF' : locale === 'km' ? 'មើលផលិតផល SKF' : 'View SKF Products'}
+                  {locale === 'vi' ? 'Xem sản phẩm SKF' : 'View SKF Products'}
                   <ArrowRightIcon className="w-5 h-5" />
                 </Link>
               </div>
@@ -298,7 +290,7 @@ export default async function HomePage({ params }: Props) {
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              {locale === 'vi' ? 'Dịch vụ của chúng tôi' : locale === 'km' ? 'សេវាកម្មរបស់យើង' : 'Our Services'}
+              {locale === 'vi' ? 'Dịch vụ của chúng tôi' : 'Our Services'}
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
               {locale === 'vi'
@@ -355,15 +347,11 @@ export default async function HomePage({ params }: Props) {
           <h2 className="text-2xl md:text-3xl font-bold mb-4">
             {locale === 'vi'
               ? 'Cần tư vấn hoặc báo giá?'
-              : locale === 'km'
-              ? 'ត្រូវការប្រឹក្សា ឬសម្រង់តម្លៃ?'
               : 'Need consultation or a quote?'}
           </h2>
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
             {locale === 'vi'
               ? 'Đội ngũ kỹ thuật của VIES luôn sẵn sàng hỗ trợ bạn. Liên hệ ngay để được tư vấn miễn phí.'
-              : locale === 'km'
-              ? 'ក្រុមបច្ចេកទេសរបស់ VIES តែងតែរួចរាល់ដើម្បីជួយអ្នក។ ទាក់ទងឥឡូវនេះសម្រាប់ការប្រឹក្សាដោយឥតគិតថ្លៃ។'
               : 'Our technical team is always ready to help. Contact us now for free consultation.'}
           </p>
           <div className="flex flex-wrap justify-center gap-4">
@@ -378,7 +366,7 @@ export default async function HomePage({ params }: Props) {
               href={`/${locale}/contact`}
               className="bg-secondary hover:bg-secondary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
-              {locale === 'vi' ? 'Gửi yêu cầu báo giá' : locale === 'km' ? 'ផ្ញើសំណើសម្រង់តម្លៃ' : 'Send quote request'}
+              {locale === 'vi' ? 'Gửi yêu cầu báo giá' : 'Send quote request'}
             </Link>
           </div>
         </div>

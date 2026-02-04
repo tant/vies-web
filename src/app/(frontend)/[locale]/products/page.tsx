@@ -70,8 +70,6 @@ export default async function ProductsPage({ params, searchParams }: Props) {
           <p className="text-blue-100">
             {locale === 'vi'
               ? `Hiển thị ${products.totalDocs} sản phẩm`
-              : locale === 'km'
-              ? `បង្ហាញ ${products.totalDocs} ផលិតផល`
               : `Showing ${products.totalDocs} products`}
           </p>
         </div>
@@ -106,7 +104,7 @@ export default async function ProductsPage({ params, searchParams }: Props) {
                     href={`/${locale}/products${category ? `?category=${category}` : ''}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${!brand ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
                   >
-                    {locale === 'vi' ? 'Tất cả' : locale === 'km' ? 'ទាំងអស់' : 'All'}
+                    {locale === 'vi' ? 'Tất cả' : 'All'}
                   </Link>
                   {brands.docs.map((b) => (
                     <Link
@@ -128,7 +126,7 @@ export default async function ProductsPage({ params, searchParams }: Props) {
                     href={`/${locale}/products${brand ? `?brand=${brand}` : ''}`}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${!category ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
                   >
-                    {locale === 'vi' ? 'Tất cả' : locale === 'km' ? 'ទាំងអស់' : 'All'}
+                    {locale === 'vi' ? 'Tất cả' : 'All'}
                   </Link>
                   {categories.docs.map((c) => (
                     <Link

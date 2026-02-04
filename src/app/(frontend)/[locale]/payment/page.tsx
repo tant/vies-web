@@ -8,7 +8,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
-    title: locale === 'vi' ? 'Hình thức thanh toán' : locale === 'km' ? 'វិធីបង់ប្រាក់' : 'Payment Methods',
+    title: locale === 'vi' ? 'Hình thức thanh toán' : 'Payment Methods',
   }
 }
 
@@ -20,7 +20,7 @@ export default async function PaymentPage({ params }: Props) {
   const page = await payload.find({
     collection: 'pages',
     where: { slug: { equals: 'payment' } },
-    locale: locale as 'vi' | 'en' | 'km',
+    locale: locale as 'vi' | 'en',
     limit: 1,
   })
 

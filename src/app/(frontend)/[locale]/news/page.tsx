@@ -42,8 +42,6 @@ export default async function NewsPage({ params, searchParams }: Props) {
     const d = new Date(date)
     if (locale === 'vi') {
       return d.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric' })
-    } else if (locale === 'km') {
-      return d.toLocaleDateString('km-KH', { day: '2-digit', month: '2-digit', year: 'numeric' })
     }
     return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
   }
@@ -57,8 +55,6 @@ export default async function NewsPage({ params, searchParams }: Props) {
           <p className="text-blue-100">
             {locale === 'vi'
               ? 'Cập nhật tin tức và kiến thức ngành công nghiệp'
-              : locale === 'km'
-              ? 'ព័ត៌មាន និងចំណេះដឹងឧស្សាហកម្មថ្មីៗ'
               : 'Latest industry news and insights'}
           </p>
         </div>
@@ -144,7 +140,7 @@ export default async function NewsPage({ params, searchParams }: Props) {
                     className="px-4 py-2 bg-white rounded-lg shadow-sm hover:bg-gray-50 flex items-center gap-1"
                   >
                     <ChevronLeftIcon className="w-4 h-4" />
-                    {locale === 'vi' ? 'Trước' : locale === 'km' ? 'មុន' : 'Previous'}
+                    {locale === 'vi' ? 'Trước' : 'Previous'}
                   </Link>
                 )}
 
@@ -167,7 +163,7 @@ export default async function NewsPage({ params, searchParams }: Props) {
                     href={`/${locale}/news?page=${currentPage + 1}`}
                     className="px-4 py-2 bg-white rounded-lg shadow-sm hover:bg-gray-50 flex items-center gap-1"
                   >
-                    {locale === 'vi' ? 'Sau' : locale === 'km' ? 'បន្ទាប់' : 'Next'}
+                    {locale === 'vi' ? 'Sau' : 'Next'}
                     <ChevronRightIcon className="w-4 h-4" />
                   </Link>
                 )}

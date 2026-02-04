@@ -79,7 +79,6 @@ export default buildConfig({
     locales: [
       { label: 'Tiếng Việt', code: 'vi' },
       { label: 'English', code: 'en' },
-      { label: 'ភាសាខ្មែរ', code: 'km' },
     ],
     defaultLocale: 'vi',
     fallback: true,

@@ -7,7 +7,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
-    title: locale === 'vi' ? 'Dịch vụ' : locale === 'km' ? 'សេវាកម្ម' : 'Services',
+    title: locale === 'vi' ? 'Dịch vụ' : 'Services',
   }
 }
 
@@ -20,7 +20,7 @@ export default async function ServicesPage({ params }: Props) {
     collection: 'services',
     where: { _status: { equals: 'published' } },
     sort: 'order',
-    locale: locale as 'vi' | 'en' | 'km',
+    locale: locale as 'vi' | 'en',
   })
 
   return (
@@ -30,7 +30,7 @@ export default async function ServicesPage({ params }: Props) {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              {locale === 'vi' ? 'Dịch vụ của VIES' : locale === 'km' ? 'សេវាកម្មរបស់ VIES' : 'VIES Services'}
+              {locale === 'vi' ? 'Dịch vụ của VIES' : 'VIES Services'}
             </h1>
             <p className="text-xl text-blue-100 leading-relaxed">
               {locale === 'vi'
@@ -62,7 +62,7 @@ export default async function ServicesPage({ params }: Props) {
                 {service.benefits && service.benefits.length > 0 && (
                   <div className="bg-gray-50 rounded-xl p-6">
                     <h3 className="font-semibold text-gray-900 mb-4">
-                      {locale === 'vi' ? 'Lợi ích' : locale === 'km' ? 'អត្ថប្រយោជន៍' : 'Benefits'}
+                      {locale === 'vi' ? 'Lợi ích' : 'Benefits'}
                     </h3>
                     <ul className="grid md:grid-cols-2 gap-3">
                       {service.benefits.map((benefit, bidx) => (
@@ -92,7 +92,7 @@ export default async function ServicesPage({ params }: Props) {
       <div className="bg-primary py-16">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-2xl lg:text-3xl font-bold text-white mb-4">
-            {locale === 'vi' ? 'Cần tư vấn miễn phí?' : locale === 'km' ? 'ត្រូវការប្រឹក្សាដោយឥតគិតថ្លៃ?' : 'Need free consultation?'}
+            {locale === 'vi' ? 'Cần tư vấn miễn phí?' : 'Need free consultation?'}
           </h2>
           <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
             {locale === 'vi'
@@ -110,7 +110,7 @@ export default async function ServicesPage({ params }: Props) {
               href={`/${locale}/contact`}
               className="bg-secondary hover:bg-secondary-dark text-white px-8 py-3 rounded-lg font-semibold transition-colors"
             >
-              {locale === 'vi' ? 'Gửi yêu cầu' : locale === 'km' ? 'ផ្ញើសំណើ' : 'Send request'}
+              {locale === 'vi' ? 'Gửi yêu cầu' : 'Send request'}
             </Link>
           </div>
         </div>

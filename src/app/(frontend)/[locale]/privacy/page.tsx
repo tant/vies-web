@@ -5,7 +5,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
-    title: locale === 'vi' ? 'Chính sách bảo mật' : locale === 'km' ? 'គោលនយោបាយភាពឯកជន' : 'Privacy Policy',
+    title: locale === 'vi' ? 'Chính sách bảo mật' : 'Privacy Policy',
   }
 }
 
@@ -37,19 +37,6 @@ export default async function PrivacyPage({ params }: Props) {
         { title: '5. Cookies', content: 'Our website uses cookies to improve user experience. You can decline cookies in your browser settings, however this may affect some website functionality.' },
         { title: '6. Your Rights', content: 'You have the right to: request access to your personal information, request correction of inaccurate information, request deletion of personal information, opt-out of marketing emails.' },
         { title: '7. Contact', content: 'If you have any questions about our privacy policy, please contact: Email: info@v-ies.com, Phone: (+84) 963 048 317' },
-      ],
-    },
-    km: {
-      title: 'គោលនយោបាយភាពឯកជន',
-      updated: 'ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ: មករា ២០២៦',
-      sections: [
-        { title: '១. ព័ត៌មានដែលយើងប្រមូល', content: 'យើងប្រមូលព័ត៌មានដែលអ្នកផ្តល់ដោយផ្ទាល់ដូចជា: ឈ្មោះ អ៊ីមែល លេខទូរស័ព្ទ ឈ្មោះក្រុមហ៊ុន នៅពេលអ្នកបំពេញទម្រង់ទំនាក់ទំនង ឬស្នើសុំសម្រង់តម្លៃ។' },
-        { title: '២. របៀបប្រើប្រាស់ព័ត៌មាន', content: 'ព័ត៌មានរបស់អ្នកត្រូវបានប្រើដើម្បី: ឆ្លើយតបសំណើ និងសំណួររបស់អ្នក ផ្ញើសម្រង់តម្លៃ និងព័ត៌មានផលិតផល កែលម្អសេវាកម្ម និងបទពិសោធន៍អ្នកប្រើប្រាស់។' },
-        { title: '៣. សុវត្ថិភាពព័ត៌មាន', content: 'យើងអនុវត្តវិធានការសុវត្ថិភាពសមស្រប ដើម្បីការពារព័ត៌មានរបស់អ្នកពីការចូលប្រើដោយគ្មានការអនុញ្ញាត ការផ្លាស់ប្តូរ ការបង្ហាញ ឬការបំផ្លាញ។' },
-        { title: '៤. ការចែករំលែកព័ត៌មាន', content: 'យើងមិនលក់ ផ្លាស់ប្តូរ ឬផ្ទេរព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នកទៅភាគីទីបីទេ លើកលែងតែ: ដៃគូដឹកជញ្ជូន អាជ្ញាធរនៅពេលមានតម្រូវការច្បាប់។' },
-        { title: '៥. ខូគី', content: 'គេហទំព័ររបស់យើងប្រើខូគីដើម្បីកែលម្អបទពិសោធន៍អ្នកប្រើប្រាស់។ អ្នកអាចបដិសេធខូគីនៅក្នុងការកំណត់កម្មវិធីរុករក។' },
-        { title: '៦. សិទ្ធិរបស់អ្នក', content: 'អ្នកមានសិទ្ធិ: ស្នើសុំចូលប្រើព័ត៌មានផ្ទាល់ខ្លួនរបស់អ្នក កែតម្រូវព័ត៌មានមិនត្រឹមត្រូវ ស្នើសុំលុបព័ត៌មានផ្ទាល់ខ្លួន បដិសេធការទទួលអ៊ីមែលទីផ្សារ។' },
-        { title: '៧. ទំនាក់ទំនង', content: 'ប្រសិនបើអ្នកមានសំណួរអំពីគោលនយោបាយភាពឯកជន សូមទាក់ទង: អ៊ីមែល: info@v-ies.com ទូរស័ព្ទ: (+84) 963 048 317' },
       ],
     },
   }

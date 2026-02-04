@@ -5,12 +5,7 @@ import Link from 'next/link'
 import { useLocale, useTranslations } from 'next-intl'
 import { usePathname, useRouter } from 'next/navigation'
 import { cn } from '@/lib/utils'
-
-const locales = [
-  { code: 'vi', label: 'VI', flag: '🇻🇳' },
-  { code: 'en', label: 'EN', flag: '🇺🇸' },
-  { code: 'km', label: 'KM', flag: '🇰🇭' },
-]
+import { locales, localeDisplay, type Locale } from '@/i18n/config'
 
 export function Header() {
   const t = useTranslations('common')
@@ -23,7 +18,7 @@ export function Header() {
   const navigation = [
     { name: t('home'), href: `/${locale}` },
     { name: t('products'), href: `/${locale}/products` },
-    { name: locale === 'vi' ? 'Dịch vụ' : locale === 'km' ? 'សេវាកម្ម' : 'Services', href: `/${locale}/services` },
+    { name: t('services'), href: `/${locale}/services` },
     { name: t('news'), href: `/${locale}/news` },
     { name: t('about'), href: `/${locale}/about` },
     { name: t('contact'), href: `/${locale}/contact` },
@@ -35,7 +30,7 @@ export function Header() {
     setLangMenuOpen(false)
   }
 
-  const currentLocale = locales.find(l => l.code === locale)
+  const currentDisplay = localeDisplay[locale as Locale]
 
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm">
@@ -63,26 +58,29 @@ export function Header() {
               onClick={() => setLangMenuOpen(!langMenuOpen)}
               className="flex items-center gap-1 px-2 py-1 rounded hover:bg-white/10 transition-colors"
             >
-              <span>{currentLocale?.flag}</span>
-              <span>{currentLocale?.label}</span>
+              <span>{currentDisplay?.flag}</span>
+              <span>{currentDisplay?.label}</span>
               <ChevronDownIcon className="w-4 h-4" />
             </button>
 
             {langMenuOpen && (
               <div className="absolute right-0 top-full mt-1 bg-white rounded-lg shadow-lg py-1 min-w-[120px]">
-                {locales.map((loc) => (
-                  <button
-                    key={loc.code}
-                    onClick={() => switchLocale(loc.code)}
-                    className={cn(
-                      'w-full px-4 py-2 text-left flex items-center gap-2 hover:bg-gray-100 transition-colors',
-                      locale === loc.code ? 'bg-primary/10 text-primary' : 'text-gray-700'
-                    )}
-                  >
-                    <span>{loc.flag}</span>
-                    <span>{loc.label}</span>
-                  </button>
-                ))}
+                {locales.map((loc) => {
+                  const display = localeDisplay[loc]
+                  return (
+                    <button
+                      key={loc}
+                      onClick={() => switchLocale(loc)}
+                      className={cn(
+                        'w-full px-4 py-2 text-left flex items-center gap-2 hover:bg-gray-100 transition-colors',
+                        locale === loc ? 'bg-primary/10 text-primary' : 'text-gray-700'
+                      )}
+                    >
+                      <span>{display.flag}</span>
+                      <span>{display.label}</span>
+                    </button>
+                  )
+                })}
               </div>
             )}
           </div>

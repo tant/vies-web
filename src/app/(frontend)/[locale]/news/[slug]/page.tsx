@@ -58,8 +58,6 @@ export default async function NewsDetailPage({ params }: Props) {
     const d = new Date(date)
     if (locale === 'vi') {
       return d.toLocaleDateString('vi-VN', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
-    } else if (locale === 'km') {
-      return d.toLocaleDateString('km-KH', { weekday: 'long', day: '2-digit', month: '2-digit', year: 'numeric' })
     }
     return d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })
   }
@@ -157,7 +155,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 {/* Share */}
                 <div className="mt-10 pt-8 border-t">
                   <h4 className="font-semibold text-gray-900 mb-4">
-                    {locale === 'vi' ? 'Chia sẻ bài viết' : locale === 'km' ? 'ចែករំលែកអត្ថបទ' : 'Share this article'}
+                    {locale === 'vi' ? 'Chia sẻ bài viết' : 'Share this article'}
                   </h4>
                   <div className="flex gap-3">
                     <a
@@ -196,7 +194,7 @@ export default async function NewsDetailPage({ params }: Props) {
                 className="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
-                {locale === 'vi' ? 'Quay lại tin tức' : locale === 'km' ? 'ត្រឡប់ទៅព័ត៌មាន' : 'Back to news'}
+                {locale === 'vi' ? 'Quay lại tin tức' : 'Back to news'}
               </Link>
             </div>
           </article>
@@ -207,7 +205,7 @@ export default async function NewsDetailPage({ params }: Props) {
             {relatedNews.docs.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm p-6 sticky top-24">
                 <h3 className="font-semibold text-gray-900 mb-6">
-                  {locale === 'vi' ? 'Tin tức liên quan' : locale === 'km' ? 'ព័ត៌មានពាក់ព័ន្ធ' : 'Related News'}
+                  {locale === 'vi' ? 'Tin tức liên quan' : 'Related News'}
                 </h3>
                 <div className="space-y-6">
                   {relatedNews.docs.map((news) => (

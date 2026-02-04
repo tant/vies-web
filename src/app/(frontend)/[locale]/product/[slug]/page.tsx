@@ -98,7 +98,7 @@ export default async function ProductDetailPage({ params }: Props) {
               {typeof product.brand === 'object' && product.brand && (
                 <div className="flex items-center gap-2 mb-6">
                   <span className="text-gray-500">
-                    {locale === 'vi' ? 'Thương hiệu:' : locale === 'km' ? 'ម៉ាក:' : 'Brand:'}
+                    {locale === 'vi' ? 'Thương hiệu:' : 'Brand:'}
                   </span>
                   <Link
                     href={`/${locale}/products?brand=${product.brand.slug}`}
@@ -113,7 +113,7 @@ export default async function ProductDetailPage({ params }: Props) {
               {product.specifications && product.specifications.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-semibold text-gray-900 mb-3">
-                    {locale === 'vi' ? 'Thông số kỹ thuật' : locale === 'km' ? 'លក្ខណៈបច្ចេកទេស' : 'Specifications'}
+                    {locale === 'vi' ? 'Thông số kỹ thuật' : 'Specifications'}
                   </h3>
                   <div className="bg-gray-50 rounded-lg overflow-hidden">
                     <table className="w-full text-sm">
@@ -141,7 +141,7 @@ export default async function ProductDetailPage({ params }: Props) {
                   className="flex-1 min-w-[200px] bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
                 >
                   <PhoneIcon className="w-5 h-5" />
-                  {locale === 'vi' ? 'Gọi ngay' : locale === 'km' ? 'ហៅឥឡូវនេះ' : 'Call Now'}
+                  {locale === 'vi' ? 'Gọi ngay' : 'Call Now'}
                 </a>
                 <Link
                   href={`/${locale}/contact?product=${product.slug}`}
@@ -157,7 +157,7 @@ export default async function ProductDetailPage({ params }: Props) {
           {product.description && (
             <div className="border-t p-6 lg:p-8">
               <h3 className="font-semibold text-gray-900 mb-4">
-                {locale === 'vi' ? 'Mô tả sản phẩm' : locale === 'km' ? 'ការពិពណ៌នាផលិតផល' : 'Product Description'}
+                {locale === 'vi' ? 'Mô tả sản phẩm' : 'Product Description'}
               </h3>
               <div className="prose max-w-none text-gray-600">
                 {typeof product.description === 'string' ? (
@@ -174,7 +174,7 @@ export default async function ProductDetailPage({ params }: Props) {
         {relatedProducts.docs.length > 0 && (
           <div className="mt-12">
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {locale === 'vi' ? 'Sản phẩm liên quan' : locale === 'km' ? 'ផលិតផលពាក់ព័ន្ធ' : 'Related Products'}
+              {locale === 'vi' ? 'Sản phẩm liên quan' : 'Related Products'}
             </h2>
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {relatedProducts.docs.map((p) => (

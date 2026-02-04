@@ -3,7 +3,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
-    title: locale === 'vi' ? 'Điều khoản sử dụng' : locale === 'km' ? 'លក្ខខណ្ឌប្រើប្រាស់' : 'Terms of Service',
+    title: locale === 'vi' ? 'Điều khoản sử dụng' : 'Terms of Service',
   }
 }
 
@@ -37,20 +37,6 @@ export default async function TermsPage({ params }: Props) {
         { title: '6. Intellectual Property', content: 'All content on the website including text, images, logos, and designs are owned by VIES or its partners. Copying or distributing without written permission is strictly prohibited.' },
         { title: '7. Limitation of Liability', content: 'VIES is not liable for any direct, indirect, or incidental damages arising from the use or inability to use the website or products, unless otherwise required by law.' },
         { title: '8. Changes to Terms', content: 'VIES reserves the right to modify these terms at any time. Changes will be effective immediately upon posting on the website. Continued use of the website means you accept the changes.' },
-      ],
-    },
-    km: {
-      title: 'លក្ខខណ្ឌប្រើប្រាស់',
-      updated: 'ធ្វើបច្ចុប្បន្នភាពចុងក្រោយ: មករា ២០២៦',
-      sections: [
-        { title: '១. ការទទួលយកលក្ខខណ្ឌ', content: 'តាមរយៈការចូលប្រើ និងប្រើប្រាស់គេហទំព័រ v-ies.com អ្នកយល់ព្រមអនុវត្តតាមលក្ខខណ្ឌដែលបានចែងខាងក្រោម។ ប្រសិនបើអ្នកមិនយល់ព្រមជាមួយលក្ខខណ្ឌណាមួយ សូមកុំប្រើប្រាស់គេហទំព័រ។' },
-        { title: '២. ព័ត៌មានផលិតផល', content: 'យើងខិតខំផ្តល់ព័ត៌មានផលិតផលត្រឹមត្រូវបំផុតតាមដែលអាចធ្វើទៅបាន។ ទោះជាយ៉ាងណា លក្ខណៈបច្ចេកទេស រូបភាព និងតម្លៃអាចផ្លាស់ប្តូរដោយគ្មានការជូនដំណឹងជាមុន។' },
-        { title: '៣. ការបញ្ជាទិញ និងការបង់ប្រាក់', content: 'ការបញ្ជាទិញត្រូវបានបញ្ជាក់បន្ទាប់ពី VIES ផ្ញើអ៊ីមែល/ទូរស័ព្ទបញ្ជាក់។ យើងរក្សាសិទ្ធិក្នុងការបដិសេធការបញ្ជាទិញប្រសិនបើរកឃើញព័ត៌មានមិនត្រឹមត្រូវ។' },
-        { title: '៤. ការដឹកជញ្ជូន', content: 'ពេលវេលាដឹកជញ្ជូនគឺជាការប៉ាន់ស្មាន ហើយអាចប្រែប្រួលអាស្រ័យលើភាពអាចរកបានក្នុងស្តុក និងទីតាំងដឹកជញ្ជូន។' },
-        { title: '៥. ការប្រគល់ និងដូរ', content: 'ផលិតផលអាចប្រគល់វិញក្នុងរយៈពេល ៧ ថ្ងៃប្រសិនបើ: នៅតែមានត្រា/វេចខ្ចប់ មិនទាន់បានប្រើប្រាស់ មានវិក្កយបត្រទិញ។' },
-        { title: '៦. កម្មសិទ្ធិបញ្ញា', content: 'មាតិកាទាំងអស់នៅលើគេហទំព័ររួមទាំងអត្ថបទ រូបភាព និមិត្តសញ្ញា និងការរចនាជាកម្មសិទ្ធិរបស់ VIES ឬដៃគូរបស់ខ្លួន។' },
-        { title: '៧. ការកំណត់ទំនួលខុសត្រូវ', content: 'VIES មិនទទួលខុសត្រូវចំពោះការខូចខាតផ្ទាល់ ប្រយោល ឬចៃដន្យណាមួយដែលកើតឡើងពីការប្រើប្រាស់ ឬអសមត្ថភាពក្នុងការប្រើប្រាស់គេហទំព័រ ឬផលិតផល។' },
-        { title: '៨. ការផ្លាស់ប្តូរលក្ខខណ្ឌ', content: 'VIES រក្សាសិទ្ធិក្នុងការកែប្រែលក្ខខណ្ឌទាំងនេះនៅពេលណាក៏បាន។ ការផ្លាស់ប្តូរនឹងមានប្រសិទ្ធភាពភ្លាមៗនៅពេលប្រកាសនៅលើគេហទំព័រ។' },
       ],
     },
   }

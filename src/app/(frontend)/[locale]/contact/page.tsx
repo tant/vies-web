@@ -65,8 +65,6 @@ export default async function ContactPage({ params, searchParams }: Props) {
                     <p className="text-gray-600 text-sm">
                       {locale === 'vi'
                         ? 'Số 16, Đường DD3-1, P. Tân Hưng Thuận, Q.12, TP.HCM'
-                        : locale === 'km'
-                        ? 'លេខ 16, ផ្លូវ DD3-1, សង្កាត់តានហ៊ុងធួន, ស្រុក 12, ទីក្រុងហូជីមិញ'
                         : 'No. 16, DD3-1 Street, Tan Hung Thuan Ward, District 12, Ho Chi Minh City'}
                     </p>
                   </div>
@@ -116,8 +114,6 @@ export default async function ContactPage({ params, searchParams }: Props) {
                     <p className="text-gray-600 text-sm">
                       {locale === 'vi'
                         ? 'Thứ 2 - Thứ 7: 8:00 - 17:30'
-                        : locale === 'km'
-                        ? 'ច័ន្ទ - សៅរ៍: 8:00 - 17:30'
                         : 'Mon - Sat: 8:00 AM - 5:30 PM'}
                     </p>
                   </div>

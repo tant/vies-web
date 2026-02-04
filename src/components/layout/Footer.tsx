@@ -21,18 +21,18 @@ export function Footer() {
   const quickLinks = [
     { name: tCommon('home'), href: `/${locale}` },
     { name: tCommon('products'), href: `/${locale}/products` },
-    { name: locale === 'vi' ? 'Dịch vụ' : locale === 'km' ? 'សេវាកម្ម' : 'Services', href: `/${locale}/services` },
+    { name: tCommon('services'), href: `/${locale}/services` },
     { name: tCommon('news'), href: `/${locale}/news` },
     { name: tCommon('about'), href: `/${locale}/about` },
     { name: tCommon('contact'), href: `/${locale}/contact` },
   ]
 
   const supportLinks = [
-    { name: locale === 'vi' ? 'Giao hàng và đổi trả' : locale === 'km' ? 'ការដឹកជញ្ជូន និងការប្ដូរ' : 'Shipping & Returns', href: `/${locale}/shipping` },
-    { name: locale === 'vi' ? 'Hình thức thanh toán' : locale === 'km' ? 'វិធីបង់ប្រាក់' : 'Payment', href: `/${locale}/payment` },
-    { name: locale === 'vi' ? 'Chính sách bảo hành' : locale === 'km' ? 'គោលនយោបាយធានា' : 'Warranty', href: `/${locale}/warranty` },
-    { name: locale === 'vi' ? 'Câu hỏi thường gặp' : locale === 'km' ? 'សំណួរញឹកញាប់' : 'FAQ', href: `/${locale}/faq` },
-    { name: locale === 'vi' ? 'Chính sách bảo mật' : locale === 'km' ? 'គោលនយោបាយភាពឯកជន' : 'Privacy', href: `/${locale}/privacy` },
+    { name: locale === 'vi' ? 'Giao hàng và đổi trả' : 'Shipping & Returns', href: `/${locale}/shipping` },
+    { name: locale === 'vi' ? 'Hình thức thanh toán' : 'Payment', href: `/${locale}/payment` },
+    { name: locale === 'vi' ? 'Chính sách bảo hành' : 'Warranty', href: `/${locale}/warranty` },
+    { name: locale === 'vi' ? 'Câu hỏi thường gặp' : 'FAQ', href: `/${locale}/faq` },
+    { name: locale === 'vi' ? 'Chính sách bảo mật' : 'Privacy', href: `/${locale}/privacy` },
   ]
 
   return (
@@ -54,8 +54,6 @@ export function Footer() {
             <p className="text-sm text-gray-400 mb-4">
               {locale === 'vi'
                 ? 'Nhà phân phối vòng bi và linh kiện công nghiệp chính hãng hàng đầu Việt Nam.'
-                : locale === 'km'
-                ? 'អ្នកចែកចាយគ្រាប់បេរីង និងគ្រឿងបន្លាស់ឧស្សាហកម្មពិតប្រាកដឈានមុខនៅវៀតណាម។'
                 : 'Leading authentic industrial bearings and components distributor in Vietnam.'}
             </p>
             <div className="flex gap-3 mb-6">
@@ -94,7 +92,7 @@ export function Footer() {
           {/* Quick Links */}
           <div>
             <h3 className="text-white font-semibold mb-4">
-              {locale === 'vi' ? 'Liên kết' : locale === 'km' ? 'តំណភ្ជាប់' : 'Quick Links'}
+              {locale === 'vi' ? 'Liên kết' : 'Quick Links'}
             </h3>
             <ul className="space-y-2">
               {quickLinks.map((link) => (
@@ -110,7 +108,7 @@ export function Footer() {
           {/* Brands */}
           <div>
             <h3 className="text-white font-semibold mb-4">
-              {locale === 'vi' ? 'Thương hiệu' : locale === 'km' ? 'ម៉ាក' : 'Brands'}
+              {locale === 'vi' ? 'Thương hiệu' : 'Brands'}
             </h3>
             <ul className="space-y-2">
               {brandLinks.map((link) => (
@@ -126,7 +124,7 @@ export function Footer() {
           {/* Support */}
           <div>
             <h3 className="text-white font-semibold mb-4">
-              {locale === 'vi' ? 'Hỗ trợ' : locale === 'km' ? 'ជំនួយ' : 'Support'}
+              {locale === 'vi' ? 'Hỗ trợ' : 'Support'}
             </h3>
             <ul className="space-y-2">
               {supportLinks.map((link) => (
@@ -142,7 +140,7 @@ export function Footer() {
           {/* Newsletter */}
           <div>
             <h3 className="text-white font-semibold mb-4">
-              {locale === 'vi' ? 'Đăng ký nhận tin' : locale === 'km' ? 'ចុះឈ្មោះទទួលព័ត៌មាន' : 'Newsletter'}
+              {locale === 'vi' ? 'Đăng ký nhận tin' : 'Newsletter'}
             </h3>
             <p className="text-sm text-gray-400 mb-3">
               {locale === 'vi' ? 'Nhận thông tin sản phẩm mới' : 'Get new product updates'}
