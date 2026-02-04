@@ -47,7 +47,7 @@ export default async function NewsDetailPage({ params }: Props) {
     collection: 'news',
     where: {
       id: { not_equals: article.id },
-      status: { equals: 'published' },
+      _status: { equals: 'published' },
     },
     sort: '-publishedAt',
     limit: 3,
@@ -77,7 +77,7 @@ export default async function NewsDetailPage({ params }: Props) {
         }
         if (node.type === 'heading') {
           const text = node.children?.map((child: any) => child.text).join('') || ''
-          const Tag = `h${node.tag || 2}` as keyof JSX.IntrinsicElements
+          const Tag = `h${node.tag || 2}` as keyof React.JSX.IntrinsicElements
           return <Tag key={idx} className="font-bold text-gray-900 mt-6 mb-3">{text}</Tag>
         }
         if (node.type === 'list') {

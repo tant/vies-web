@@ -48,8 +48,8 @@ export default async function ProductDetailPage({ params }: Props) {
     collection: 'products',
     where: {
       id: { not_equals: product.id },
-      status: { equals: 'published' },
-      brand: typeof product.brand === 'object' ? { equals: product.brand.id } : undefined,
+      _status: { equals: 'published' },
+      ...(typeof product.brand === 'object' && product.brand?.id ? { brand: { equals: product.brand.id } } : {}),
     },
     limit: 4,
   })

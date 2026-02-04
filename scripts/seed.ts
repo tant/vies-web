@@ -31,6 +31,30 @@ const downloadImage = (url: string, filepath: string): Promise<void> => {
   })
 }
 
+const makeRichText = (text: string) => ({
+  root: {
+    type: 'root',
+    children: [
+      {
+        type: 'paragraph',
+        version: 1,
+        children: [
+          { type: 'text', text, version: 1, format: 0, style: '', detail: 0, mode: 'normal' },
+        ],
+        direction: 'ltr' as const,
+        format: '' as const,
+        indent: 0,
+        textFormat: 0,
+        textStyle: '',
+      },
+    ],
+    direction: 'ltr' as const,
+    format: '' as const,
+    indent: 0,
+    version: 1,
+  },
+})
+
 const seedData = async () => {
   const payload = await getPayload({ config: await config })
 
@@ -151,7 +175,7 @@ const seedData = async () => {
 
   // Create brands
   console.log('📦 Creating brands...')
-  const brandMap: Record<string, string> = {}
+  const brandMap: Record<string, number> = {}
   for (const brand of brandsData) {
     try {
       const existing = await payload.find({
@@ -166,13 +190,13 @@ const seedData = async () => {
             name: brand.name,
             slug: brand.slug,
             website: brand.website,
-            description: brand.description.vi,
+            description: makeRichText(brand.description.vi),
           },
         })
-        brandMap[brand.slug] = created.id
+        brandMap[brand.slug] = created.id as number
         console.log(`  ✓ Created brand: ${brand.name}`)
       } else {
-        brandMap[brand.slug] = existing.docs[0].id
+        brandMap[brand.slug] = existing.docs[0].id as number
         console.log(`  - Brand exists: ${brand.name}`)
       }
     } catch (error) {
@@ -182,7 +206,7 @@ const seedData = async () => {
 
   // Create categories
   console.log('📁 Creating categories...')
-  const categoryMap: Record<string, string> = {}
+  const categoryMap: Record<string, number> = {}
   for (const category of categoriesData) {
     try {
       const existing = await payload.find({
@@ -196,13 +220,13 @@ const seedData = async () => {
           data: {
             name: category.name.vi,
             slug: category.slug,
-            description: category.description.vi,
+            description: makeRichText(category.description.vi),
           },
         })
-        categoryMap[category.slug] = created.id
+        categoryMap[category.slug] = created.id as number
         console.log(`  ✓ Created category: ${category.name.vi}`)
       } else {
-        categoryMap[category.slug] = existing.docs[0].id
+        categoryMap[category.slug] = existing.docs[0].id as number
         console.log(`  - Category exists: ${category.name.vi}`)
       }
     } catch (error) {
@@ -226,7 +250,7 @@ const seedData = async () => {
             name: product.name.vi,
             slug: product.slug,
             sku: product.sku,
-            description: product.description.vi,
+            description: makeRichText(product.description.vi),
             brand: brandMap[product.brand],
             categories: [categoryMap[product.category]],
             specifications: product.specifications.map(spec => ({
@@ -234,7 +258,7 @@ const seedData = async () => {
               value: spec.value.vi,
             })),
             featured: product.featured,
-            status: 'published',
+            _status: 'published',
           },
         })
         console.log(`  ✓ Created product: ${product.name.vi}`)
@@ -243,6 +267,113 @@ const seedData = async () => {
       }
     } catch (error) {
       console.error(`  ✗ Error creating product ${product.name.vi}:`, error)
+    }
+  }
+
+  // Create services
+  console.log('🔧 Creating services...')
+  const servicesData = [
+    {
+      title: 'Tư vấn kỹ thuật',
+      slug: 'tu-van-ky-thuat',
+      excerpt: 'Đội ngũ chuyên gia giàu kinh nghiệm sẵn sàng tư vấn loại vòng bi phù hợp nhất với điều kiện làm việc và yêu cầu kỹ thuật của từng máy móc. Chúng tôi giúp bạn chọn đúng loại chất bôi trơn để tăng tuổi thọ và hiệu suất của thiết bị.',
+      benefits: [
+        { text: 'Tư vấn lựa chọn vòng bi phù hợp với điều kiện làm việc' },
+        { text: 'Lựa chọn chất bôi trơn tối ưu cho thiết bị' },
+        { text: 'Hỗ trợ kỹ thuật toàn diện trong quá trình lắp đặt và bảo trì' },
+        { text: 'Tiết kiệm chi phí và tăng năng suất máy móc' },
+      ],
+      order: 1,
+    },
+    {
+      title: 'Đo và phân tích rung động',
+      slug: 'do-va-phan-tich-rung-dong',
+      excerpt: 'Dịch vụ đo và phân tích rung động giúp phát hiện sớm các vấn đề tiềm ẩn của vòng bi và thiết bị quay. Bằng việc giám sát tình trạng rung động, chúng tôi giúp bạn lên kế hoạch bảo trì chủ động, tránh hỏng hóc bất ngờ và giảm thiểu thời gian dừng máy.',
+      benefits: [
+        { text: 'Phát hiện sớm hư hỏng vòng bi và thiết bị' },
+        { text: 'Lập kế hoạch bảo trì chủ động' },
+        { text: 'Giảm thiểu thời gian dừng máy ngoài kế hoạch' },
+        { text: 'Kéo dài tuổi thọ thiết bị' },
+      ],
+      order: 2,
+    },
+    {
+      title: 'Tư vấn lắp đặt và bôi trơn vòng bi',
+      slug: 'tu-van-lap-dat-va-boi-tron',
+      excerpt: 'Lắp đặt đúng cách và bôi trơn phù hợp là yếu tố quan trọng quyết định tuổi thọ của vòng bi. Chúng tôi cung cấp dịch vụ hướng dẫn lắp đặt tại chỗ, tư vấn quy trình bôi trơn và lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng cụ thể.',
+      benefits: [
+        { text: 'Hướng dẫn lắp đặt vòng bi đúng kỹ thuật' },
+        { text: 'Tư vấn quy trình bôi trơn đúng cách' },
+        { text: 'Lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng' },
+        { text: 'Tăng tuổi thọ vòng bi và giảm chi phí thay thế' },
+      ],
+      order: 3,
+    },
+  ]
+
+  for (const service of servicesData) {
+    try {
+      const existing = await payload.find({
+        collection: 'services',
+        where: { slug: { equals: service.slug } },
+      })
+
+      if (existing.docs.length === 0) {
+        await payload.create({
+          collection: 'services',
+          data: {
+            title: service.title,
+            slug: service.slug,
+            excerpt: service.excerpt,
+            benefits: service.benefits,
+            order: service.order,
+            _status: 'published',
+          },
+        })
+        console.log(`  ✓ Created service: ${service.title}`)
+      } else {
+        console.log(`  - Service exists: ${service.title}`)
+      }
+    } catch (error) {
+      console.error(`  ✗ Error creating service ${service.title}:`, error)
+    }
+  }
+
+  // Create pages
+  console.log('📄 Creating pages...')
+  const pagesData = [
+    {
+      title: 'Giao hàng và đổi trả hàng',
+      slug: 'shipping',
+    },
+    {
+      title: 'Hình thức thanh toán',
+      slug: 'payment',
+    },
+  ]
+
+  for (const page of pagesData) {
+    try {
+      const existing = await payload.find({
+        collection: 'pages',
+        where: { slug: { equals: page.slug } },
+      })
+
+      if (existing.docs.length === 0) {
+        await payload.create({
+          collection: 'pages',
+          data: {
+            title: page.title,
+            slug: page.slug,
+            _status: 'published',
+          },
+        })
+        console.log(`  ✓ Created page: ${page.title}`)
+      } else {
+        console.log(`  - Page exists: ${page.title}`)
+      }
+    } catch (error) {
+      console.error(`  ✗ Error creating page ${page.title}:`, error)
     }
   }
 
@@ -291,8 +422,9 @@ const seedData = async () => {
             { label: 'Dụng cụ bảo trì', link: '/products?category=dung-cu-bao-tri' },
             { label: 'Truyền động', link: '/products?category=truyen-dong' },
           ]},
-          { label: 'Thương hiệu', link: '/brands' },
+          { label: 'Dịch vụ', link: '/services' },
           { label: 'Tin tức', link: '/news' },
+          { label: 'Giới thiệu', link: '/about' },
           { label: 'Liên hệ', link: '/contact' },
         ],
       },
@@ -321,16 +453,18 @@ const seedData = async () => {
           {
             title: 'Dịch vụ',
             links: [
-              { label: 'Tư vấn kỹ thuật', url: '/contact' },
-              { label: 'Kiểm tra hàng chính hãng', url: '/contact' },
-              { label: 'Bảo hành', url: '/contact' },
+              { label: 'Tư vấn kỹ thuật', url: '/services' },
+              { label: 'Đo và phân tích rung động', url: '/services' },
+              { label: 'Tư vấn lắp đặt và bôi trơn', url: '/services' },
             ],
           },
           {
-            title: 'Liên hệ',
+            title: 'Thông tin',
             links: [
-              { label: 'Hotline: (+84) 963 048 317', url: 'tel:+84963048317' },
-              { label: 'Email: info@v-ies.com', url: 'mailto:info@v-ies.com' },
+              { label: 'Giao hàng và đổi trả', url: '/shipping' },
+              { label: 'Hình thức thanh toán', url: '/payment' },
+              { label: 'Chính sách bảo hành', url: '/warranty' },
+              { label: 'Liên hệ', url: '/contact' },
             ],
           },
         ],

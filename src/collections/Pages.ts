@@ -1,12 +1,13 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
+import { HeroBlock, ContentBlock, CTABlock, FAQBlock, GalleryBlock } from '@/lib/payload/blocks'
 
-export const Categories: CollectionConfig = {
-  slug: 'categories',
+export const Pages: CollectionConfig = {
+  slug: 'pages',
   admin: {
-    useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'parent'],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', '_status'],
     group: 'Content',
   },
   access: {
@@ -15,9 +16,13 @@ export const Categories: CollectionConfig = {
     update: isAdmin,
     delete: isAdmin,
   },
+  versions: {
+    drafts: true,
+    maxPerDoc: 10,
+  },
   fields: [
     {
-      name: 'name',
+      name: 'title',
       type: 'text',
       required: true,
       localized: true,
@@ -32,34 +37,24 @@ export const Categories: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [formatSlug('name')],
+        beforeValidate: [formatSlug('title')],
       },
     },
     {
-      name: 'description',
+      name: 'content',
       type: 'richText',
       localized: true,
     },
     {
-      name: 'image',
+      name: 'layout',
+      type: 'blocks',
+      blocks: [HeroBlock, ContentBlock, CTABlock, FAQBlock, GalleryBlock],
+      localized: true,
+    },
+    {
+      name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
-    },
-    {
-      name: 'parent',
-      type: 'relationship',
-      relationTo: 'categories',
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'order',
-      type: 'number',
-      defaultValue: 0,
-      admin: {
-        position: 'sidebar',
-      },
     },
   ],
 }

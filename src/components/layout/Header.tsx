@@ -23,6 +23,7 @@ export function Header() {
   const navigation = [
     { name: t('home'), href: `/${locale}` },
     { name: t('products'), href: `/${locale}/products` },
+    { name: locale === 'vi' ? 'Dịch vụ' : locale === 'km' ? 'សេវាកម្ម' : 'Services', href: `/${locale}/services` },
     { name: t('news'), href: `/${locale}/news` },
     { name: t('about'), href: `/${locale}/about` },
     { name: t('contact'), href: `/${locale}/contact` },
@@ -42,13 +43,17 @@ export function Header() {
       <div className="bg-primary text-white text-sm">
         <div className="container mx-auto px-4 py-2 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <a href="tel:+84963048317" className="flex items-center gap-1 hover:text-primary-light transition-colors">
+            <a href="tel:+84903326309" className="flex items-center gap-1 hover:text-primary-light transition-colors">
               <PhoneIcon className="w-4 h-4" />
-              <span className="hidden sm:inline">(+84) 963 048 317</span>
+              <span className="hidden sm:inline">{locale === 'vi' ? 'Báo giá' : 'Quote'}: 0903 326 309</span>
             </a>
-            <a href="mailto:info@v-ies.com" className="flex items-center gap-1 hover:text-primary-light transition-colors">
+            <a href="tel:+84908748304" className="flex items-center gap-1 hover:text-primary-light transition-colors">
+              <PhoneIcon className="w-4 h-4" />
+              <span className="hidden sm:inline">{locale === 'vi' ? 'Tư vấn' : 'Support'}: 0908 748 304</span>
+            </a>
+            <a href="mailto:info@v-ies.com" className="hidden md:flex items-center gap-1 hover:text-primary-light transition-colors">
               <MailIcon className="w-4 h-4" />
-              <span className="hidden sm:inline">info@v-ies.com</span>
+              <span>info@v-ies.com</span>
             </a>
           </div>
 

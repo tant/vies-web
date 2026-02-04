@@ -35,7 +35,7 @@ export default async function SearchPage({ params, searchParams }: Props) {
           { name: { contains: q } },
           { sku: { contains: q } },
         ],
-        status: { equals: 'published' },
+        _status: { equals: 'published' },
       },
       limit,
       page: currentPage,

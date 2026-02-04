@@ -79,9 +79,17 @@ export default async function ContactPage({ params, searchParams }: Props) {
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1">{t('phone')}</h3>
-                    <a href="tel:+84963048317" className="text-primary hover:underline">
-                      (+84) 963 048 317
-                    </a>
+                    <div className="space-y-1">
+                      <a href="tel:+84963048317" className="text-primary hover:underline block">
+                        (+84) 963 048 317 - Hotline
+                      </a>
+                      <a href="tel:+84903326309" className="text-gray-600 hover:text-primary hover:underline block text-sm">
+                        0903 326 309 - {locale === 'vi' ? 'Báo giá' : 'Quote'} (Mr. Lâm)
+                      </a>
+                      <a href="tel:+84908748304" className="text-gray-600 hover:text-primary hover:underline block text-sm">
+                        0908 748 304 - {locale === 'vi' ? 'Tư vấn' : 'Support'} (Mr. Hiển)
+                      </a>
+                    </div>
                   </div>
                 </div>
 
@@ -130,7 +138,7 @@ export default async function ContactPage({ params, searchParams }: Props) {
                   <FacebookIcon className="w-6 h-6" />
                 </a>
                 <a
-                  href="https://zalo.me/0963048317"
+                  href="https://zalo.me/0908748304"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-blue-500 text-white rounded-lg flex items-center justify-center hover:bg-blue-600 transition-colors"

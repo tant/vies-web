@@ -28,7 +28,7 @@ export default async function ProductsPage({ params, searchParams }: Props) {
   const limit = 12
 
   // Build where clause
-  const where: any = { status: { equals: 'published' } }
+  const where: any = { _status: { equals: 'published' } }
   if (brand) {
     const brandDoc = await payload.find({ collection: 'brands', where: { slug: { equals: brand } }, limit: 1 })
     if (brandDoc.docs[0]) {

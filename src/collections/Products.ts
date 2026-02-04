@@ -1,13 +1,23 @@
 import type { CollectionConfig } from 'payload'
+import { anyone, isAdmin } from '@/lib/payload/access'
+import { formatSlug } from '@/lib/payload/slugHook'
 
 export const Products: CollectionConfig = {
   slug: 'products',
   admin: {
     useAsTitle: 'name',
-    defaultColumns: ['name', 'sku', 'brand', 'status', 'featured'],
+    defaultColumns: ['name', 'sku', 'brand', '_status', 'featured'],
+    group: 'Content',
   },
   access: {
-    read: () => true,
+    read: anyone,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
+  versions: {
+    drafts: true,
+    maxPerDoc: 10,
   },
   fields: [
     {
@@ -21,13 +31,18 @@ export const Products: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      index: true,
       admin: {
         position: 'sidebar',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('name')],
       },
     },
     {
       name: 'sku',
       type: 'text',
+      index: true,
       admin: {
         position: 'sidebar',
       },
@@ -41,6 +56,7 @@ export const Products: CollectionConfig = {
       name: 'brand',
       type: 'relationship',
       relationTo: 'brands',
+      index: true,
       admin: {
         position: 'sidebar',
       },
@@ -85,18 +101,7 @@ export const Products: CollectionConfig = {
       name: 'featured',
       type: 'checkbox',
       defaultValue: false,
-      admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'status',
-      type: 'select',
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
+      index: true,
       admin: {
         position: 'sidebar',
       },

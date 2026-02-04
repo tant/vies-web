@@ -2,11 +2,11 @@ import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
 
-export const Categories: CollectionConfig = {
-  slug: 'categories',
+export const Services: CollectionConfig = {
+  slug: 'services',
   admin: {
-    useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'parent'],
+    useAsTitle: 'title',
+    defaultColumns: ['title', 'slug', '_status', 'order'],
     group: 'Content',
   },
   access: {
@@ -15,9 +15,13 @@ export const Categories: CollectionConfig = {
     update: isAdmin,
     delete: isAdmin,
   },
+  versions: {
+    drafts: true,
+    maxPerDoc: 10,
+  },
   fields: [
     {
-      name: 'name',
+      name: 'title',
       type: 'text',
       required: true,
       localized: true,
@@ -32,26 +36,35 @@ export const Categories: CollectionConfig = {
         position: 'sidebar',
       },
       hooks: {
-        beforeValidate: [formatSlug('name')],
+        beforeValidate: [formatSlug('title')],
       },
     },
     {
-      name: 'description',
+      name: 'excerpt',
+      type: 'textarea',
+      localized: true,
+    },
+    {
+      name: 'content',
       type: 'richText',
       localized: true,
     },
     {
-      name: 'image',
+      name: 'featuredImage',
       type: 'upload',
       relationTo: 'media',
     },
     {
-      name: 'parent',
-      type: 'relationship',
-      relationTo: 'categories',
-      admin: {
-        position: 'sidebar',
-      },
+      name: 'benefits',
+      type: 'array',
+      fields: [
+        {
+          name: 'text',
+          type: 'text',
+          required: true,
+          localized: true,
+        },
+      ],
     },
     {
       name: 'order',

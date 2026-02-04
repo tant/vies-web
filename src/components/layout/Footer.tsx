@@ -21,17 +21,18 @@ export function Footer() {
   const quickLinks = [
     { name: tCommon('home'), href: `/${locale}` },
     { name: tCommon('products'), href: `/${locale}/products` },
+    { name: locale === 'vi' ? 'Dịch vụ' : locale === 'km' ? 'សេវាកម្ម' : 'Services', href: `/${locale}/services` },
     { name: tCommon('news'), href: `/${locale}/news` },
     { name: tCommon('about'), href: `/${locale}/about` },
     { name: tCommon('contact'), href: `/${locale}/contact` },
-    { name: locale === 'vi' ? 'Tìm kiếm' : locale === 'km' ? 'ស្វែងរក' : 'Search', href: `/${locale}/search` },
   ]
 
   const supportLinks = [
-    { name: locale === 'vi' ? 'Câu hỏi thường gặp' : locale === 'km' ? 'សំណួរញឹកញាប់' : 'FAQ', href: `/${locale}/faq` },
+    { name: locale === 'vi' ? 'Giao hàng và đổi trả' : locale === 'km' ? 'ការដឹកជញ្ជូន និងការប្ដូរ' : 'Shipping & Returns', href: `/${locale}/shipping` },
+    { name: locale === 'vi' ? 'Hình thức thanh toán' : locale === 'km' ? 'វិធីបង់ប្រាក់' : 'Payment', href: `/${locale}/payment` },
     { name: locale === 'vi' ? 'Chính sách bảo hành' : locale === 'km' ? 'គោលនយោបាយធានា' : 'Warranty', href: `/${locale}/warranty` },
+    { name: locale === 'vi' ? 'Câu hỏi thường gặp' : locale === 'km' ? 'សំណួរញឹកញាប់' : 'FAQ', href: `/${locale}/faq` },
     { name: locale === 'vi' ? 'Chính sách bảo mật' : locale === 'km' ? 'គោលនយោបាយភាពឯកជន' : 'Privacy', href: `/${locale}/privacy` },
-    { name: locale === 'vi' ? 'Điều khoản sử dụng' : locale === 'km' ? 'លក្ខខណ្ឌប្រើប្រាស់' : 'Terms', href: `/${locale}/terms` },
   ]
 
   return (
@@ -61,7 +62,7 @@ export function Footer() {
               <a href="https://facebook.com/vies.vietnam" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors">
                 <FacebookIcon className="w-5 h-5" />
               </a>
-              <a href="https://zalo.me/0963048317" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors">
+              <a href="https://zalo.me/0908748304" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors">
                 <span className="text-sm font-bold">Zalo</span>
               </a>
             </div>

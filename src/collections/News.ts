@@ -1,13 +1,23 @@
 import type { CollectionConfig } from 'payload'
+import { anyone, isAdmin } from '@/lib/payload/access'
+import { formatSlug } from '@/lib/payload/slugHook'
 
 export const News: CollectionConfig = {
   slug: 'news',
   admin: {
     useAsTitle: 'title',
-    defaultColumns: ['title', 'publishedAt', 'status'],
+    defaultColumns: ['title', 'publishedAt', '_status'],
+    group: 'Content',
   },
   access: {
-    read: () => true,
+    read: anyone,
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
+  },
+  versions: {
+    drafts: true,
+    maxPerDoc: 10,
   },
   fields: [
     {
@@ -21,8 +31,12 @@ export const News: CollectionConfig = {
       type: 'text',
       required: true,
       unique: true,
+      index: true,
       admin: {
         position: 'sidebar',
+      },
+      hooks: {
+        beforeValidate: [formatSlug('title')],
       },
     },
     {
@@ -43,23 +57,12 @@ export const News: CollectionConfig = {
     {
       name: 'publishedAt',
       type: 'date',
+      index: true,
       admin: {
         position: 'sidebar',
         date: {
           pickerAppearance: 'dayAndTime',
         },
-      },
-    },
-    {
-      name: 'status',
-      type: 'select',
-      defaultValue: 'draft',
-      options: [
-        { label: 'Draft', value: 'draft' },
-        { label: 'Published', value: 'published' },
-      ],
-      admin: {
-        position: 'sidebar',
       },
     },
   ],

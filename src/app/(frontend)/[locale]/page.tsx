@@ -30,7 +30,7 @@ export default async function HomePage({ params }: Props) {
     payload.find({ collection: 'categories', limit: 6 }),
     payload.find({
       collection: 'products',
-      where: { featured: { equals: true }, status: { equals: 'published' } },
+      where: { featured: { equals: true }, _status: { equals: 'published' } },
       limit: 6,
     }),
   ])
@@ -242,6 +242,113 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
+      {/* SKF Introduction Section */}
+      <section className="py-16 lg:py-20">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="relative">
+              <div className="aspect-[4/3] bg-gray-100 rounded-xl overflow-hidden flex items-center justify-center">
+                <div className="text-center p-8">
+                  <BearingIcon className="w-24 h-24 text-primary/40 mx-auto mb-4" />
+                  <span className="text-gray-400 font-medium">SKF Bearings</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
+                {locale === 'vi'
+                  ? 'Giới thiệu về vòng bi SKF'
+                  : locale === 'km'
+                  ? 'ការណែនាំអំពីគ្រាប់បេរីង SKF'
+                  : 'About SKF Bearings'}
+              </h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed">
+                <p>
+                  {locale === 'vi'
+                    ? 'Vòng bi SKF được sản xuất đầu tiên vào năm 1907 tại Thụy Điển, được phát minh bởi Kỹ sư Sven Gustaf Wingqvist. Trải qua hơn 1 thế kỷ, hiện nay việc sản xuất vòng bi SKF ngày càng phát triển mạnh mẽ. SKF trở thành một trong những nhà sản xuất vòng bi uy tín, lớn mạnh nhất thế giới.'
+                    : 'SKF bearings were first manufactured in 1907 in Sweden, invented by engineer Sven Gustaf Wingqvist. Over a century later, SKF has become one of the most reputable and largest bearing manufacturers in the world.'}
+                </p>
+                <p>
+                  {locale === 'vi'
+                    ? 'SKF có mặt tại 130 quốc gia, sở hữu hơn 100 nhà máy và 15 trung tâm kỹ thuật trên toàn thế giới. Với lịch sử hoạt động trên 100 năm, SKF được khách hàng ở mọi quốc gia tin tưởng và lựa chọn.'
+                    : 'SKF operates in 130 countries, owns over 100 factories and 15 technical centers worldwide. With over 100 years of history, SKF is trusted and chosen by customers in every country.'}
+                </p>
+                <p>
+                  {locale === 'vi'
+                    ? 'Công ty VIES chuyên cung cấp, phân phối các sản phẩm và giải pháp chính hãng SKF bao gồm: Vòng bi SKF, Gối đỡ SKF, Thiết bị truyền động, Gioăng phớt, Dụng cụ bảo trì, Mỡ và hệ thống bôi trơn SKF.'
+                    : 'VIES specializes in distributing genuine SKF products and solutions including: SKF Bearings, SKF Housings, Power Transmission, Seals, Maintenance Tools, and SKF Lubrication Systems.'}
+                </p>
+              </div>
+              <div className="mt-6">
+                <Link
+                  href={`/${locale}/products?brand=skf`}
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary-dark font-semibold transition-colors"
+                >
+                  {locale === 'vi' ? 'Xem sản phẩm SKF' : locale === 'km' ? 'មើលផលិតផល SKF' : 'View SKF Products'}
+                  <ArrowRightIcon className="w-5 h-5" />
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="py-16 lg:py-20 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              {locale === 'vi' ? 'Dịch vụ của chúng tôi' : locale === 'km' ? 'សេវាកម្មរបស់យើង' : 'Our Services'}
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              {locale === 'vi'
+                ? 'Chúng tôi cung cấp các dịch vụ tư vấn kỹ thuật chuyên sâu, hỗ trợ khách hàng giải quyết mọi vấn đề về vòng bi và bôi trơn'
+                : 'We provide in-depth technical consulting services, helping customers solve all bearing and lubrication issues'}
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: locale === 'vi' ? 'Tư vấn kỹ thuật' : 'Technical Consultation',
+                desc: locale === 'vi'
+                  ? 'Đội ngũ chuyên gia sẵn sàng tư vấn loại vòng bi và chất bôi trơn phù hợp nhất.'
+                  : 'Expert team ready to advise on the most suitable bearings and lubricants.',
+                icon: WrenchIcon,
+              },
+              {
+                title: locale === 'vi' ? 'Đo và phân tích rung động' : 'Vibration Analysis',
+                desc: locale === 'vi'
+                  ? 'Phát hiện sớm các vấn đề tiềm ẩn, lên kế hoạch bảo trì chủ động.'
+                  : 'Early detection of potential issues, proactive maintenance planning.',
+                icon: ChartBarIcon,
+              },
+              {
+                title: locale === 'vi' ? 'Lắp đặt và bôi trơn' : 'Installation & Lubrication',
+                desc: locale === 'vi'
+                  ? 'Hướng dẫn lắp đặt đúng kỹ thuật và tư vấn quy trình bôi trơn phù hợp.'
+                  : 'Proper installation guidance and appropriate lubrication process consulting.',
+                icon: CogIcon,
+              },
+            ].map((service, idx) => (
+              <Link
+                key={idx}
+                href={`/${locale}/services`}
+                className="card p-6 group text-center"
+              >
+                <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                  <service.icon className="w-8 h-8 text-primary" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">
+                  {service.title}
+                </h3>
+                <p className="text-gray-600 text-sm">{service.desc}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 lg:py-20 gradient-primary text-white">
         <div className="container mx-auto px-4 text-center">
@@ -310,6 +417,31 @@ function PhoneIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>
+  )
+}
+
+function WrenchIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.42 15.17l-5.08 5.08a2.36 2.36 0 01-3.33-3.33l5.08-5.09m3.33 3.34l4.24-4.24a2.82 2.82 0 003.33-.47l1.4-1.4a2.82 2.82 0 00-3.98-3.98l-1.4 1.4a2.82 2.82 0 00-.47 3.33l-4.24 4.24m3.33 3.34l-3.33-3.34" />
+    </svg>
+  )
+}
+
+function ChartBarIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  )
+}
+
+function CogIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
     </svg>
   )
 }
