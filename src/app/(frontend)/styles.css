@@ -2,30 +2,40 @@
 
 /* VIES Design System */
 @theme {
-  /* Primary - Industrial Blue */
-  --color-primary: #0f4c81;
-  --color-primary-light: #1a6bb3;
-  --color-primary-dark: #0a3459;
+  /* Colors - Nordic Industrial */
+  --color-primary: #0F4C75;
+  --color-primary-light: #E8F0F7;
+  --color-primary-dark: #0A3451;
+  --color-accent: #D4A843;
+  --color-bg: #FAFAFA;
+  --color-bg-alt: #F0F0F0;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #6B7280;
+  --color-border: #E5E7EB;
+  --color-success: #059669;
+  --color-error: #DC2626;
 
-  /* Secondary - Teal accent */
-  --color-secondary: #0d9488;
-  --color-secondary-light: #14b8a6;
-  --color-secondary-dark: #0a7269;
+  /* Typography */
+  --font-sans: 'Inter', sans-serif;
 
-  /* Neutral colors */
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
+  /* Spacing (8px base) */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
 
-  /* Font family */
-  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Container */
+  --container-max: 1280px;
 }
 
 /* Base styles */
@@ -40,8 +50,8 @@ html {
 
 body {
   font-family: var(--font-sans);
-  background-color: white;
-  color: var(--color-gray-900);
+  background-color: var(--color-bg);
+  color: var(--color-text);
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -73,7 +83,7 @@ img {
 /* Container */
 .container {
   width: 100%;
-  max-width: 1280px;
+  max-width: var(--container-max);
   margin: 0 auto;
 }
 
@@ -99,8 +109,8 @@ img {
 
 /* Card styles */
 .card {
-  background: white;
-  border-radius: 0.75rem;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -116,7 +126,7 @@ img {
   align-items: center;
   justify-content: center;
   font-weight: 600;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   transition: all 0.2s ease;
   cursor: pointer;
   border: none;
@@ -124,7 +134,7 @@ img {
 
 .btn:focus {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(15, 76, 129, 0.3);
+  box-shadow: 0 0 0 3px rgba(15, 76, 117, 0.3);
 }
 
 /* Animation */
