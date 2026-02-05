@@ -35,9 +35,10 @@ export default async function RootLayout({
 
   const payload = await getPayload({ config: configPromise })
 
-  const [siteSettings, headerData] = await Promise.all([
-    payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true, logo: true, siteName: true } }),
+  const [siteSettings, headerData, footerData] = await Promise.all([
+    payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true, logo: true, siteName: true, social: true } }),
     payload.findGlobal({ slug: 'header', locale, select: { topBar: true, navigation: true } }),
+    payload.findGlobal({ slug: 'footer', locale }),
   ])
 
   return (
@@ -53,7 +54,7 @@ export default async function RootLayout({
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
+          <Footer footerData={footerData} siteSettings={siteSettings} />
         </NextIntlClientProvider>
       </body>
     </html>
