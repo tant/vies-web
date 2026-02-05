@@ -48,6 +48,14 @@ export const Products: CollectionConfig = {
       },
     },
     {
+      name: 'shortDescription',
+      type: 'textarea',
+      localized: true,
+      admin: {
+        description: 'Mô tả ngắn hiển thị trên thẻ sản phẩm',
+      },
+    },
+    {
       name: 'description',
       type: 'richText',
       localized: true,

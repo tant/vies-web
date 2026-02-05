@@ -67,16 +67,16 @@ export function ProductCard({ product, locale }: ProductCardProps) {
         </div>
 
         {/* Content */}
-        <div className="p-4">
+        <div className="p-4 space-y-1.5">
           {product.sku && (
-            <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">
+            <span className="inline-block text-xs font-medium text-primary bg-primary/10 px-2 py-0.5 rounded">
               {product.sku}
             </span>
           )}
-          <h3 className="font-semibold text-gray-900 mt-2 group-hover:text-primary transition-colors line-clamp-2">
+          <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors line-clamp-2">
             {product.name}
           </h3>
-          {brandName && <p className="text-sm text-gray-500 mt-1">{brandName}</p>}
+          {brandName && <p className="text-sm text-gray-500">{brandName}</p>}
         </div>
       </Link>
     </article>

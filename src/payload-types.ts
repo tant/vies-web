@@ -278,6 +278,10 @@ export interface Product {
   name: string;
   slug: string;
   sku?: string | null;
+  /**
+   * Mô tả ngắn hiển thị trên thẻ sản phẩm
+   */
+  shortDescription?: string | null;
   description?: {
     root: {
       type: string;
@@ -919,6 +923,7 @@ export interface ProductsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   sku?: T;
+  shortDescription?: T;
   description?: T;
   brand?: T;
   categories?: T;
