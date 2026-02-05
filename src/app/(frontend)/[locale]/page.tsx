@@ -5,11 +5,11 @@ import config from '@/payload.config'
 import { BrandLogoBar } from '@/components/ui/BrandLogoBar'
 import { SearchBar } from '@/components/ui/SearchBar'
 import {
-  PhoneIcon,
   CheckCircleIcon,
   ArrowRightIcon,
   GearIcon,
 } from '@/components/layout/icons'
+import { CTASection } from '@/components/ui/CTASection'
 import type { Locale } from '@/i18n/config'
 
 type Props = {
@@ -181,33 +181,14 @@ export default async function HomePage({ params }: Props) {
       <BrandLogoBar brands={brands.docs} locale={locale} />
 
       {/* CTA Section */}
-      <section className="py-16 lg:py-20 bg-primary text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">
-            {t('ctaTitle')}
-          </h2>
-          <p className="text-white/80 mb-8 max-w-2xl mx-auto">
-            {t('ctaSubtitle')}
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href={`tel:${primaryPhone.startsWith('+') ? primaryPhone : `+84${primaryPhone.replace(/^0/, '')}`}`}
-              className="bg-accent hover:bg-accent/90 text-text px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-            >
-              <PhoneIcon className="w-5 h-5" aria-hidden="true" />
-              {tCommon('callNow')}
-            </a>
-            <a
-              href={zaloLink.startsWith('http') ? zaloLink : `https://zalo.me/${zaloLink}`}
-              className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-lg font-semibold transition-colors inline-flex items-center gap-2 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {tCommon('zaloChat')}
-            </a>
-          </div>
-        </div>
-      </section>
+      <CTASection
+        title={t('ctaTitle')}
+        subtitle={t('ctaSubtitle')}
+        phone={primaryPhone}
+        zaloLink={zaloLink}
+        callLabel={tCommon('callNow')}
+        zaloLabel={tCommon('zaloChat')}
+      />
     </>
   )
 }
