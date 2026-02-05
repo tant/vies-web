@@ -1,3 +1,4 @@
+import { formatTelHref } from '@/lib/utils'
 import { LanguageSwitcher } from './LanguageSwitcher'
 
 interface ContactBarProps {
@@ -30,11 +31,6 @@ function MailIcon({ className }: { className?: string }) {
       />
     </svg>
   )
-}
-
-function formatTelHref(number: string): string {
-  const digits = number.replace(/\s/g, '')
-  return `tel:+84${digits.replace(/^0/, '')}`
 }
 
 export function ContactBar({ phones, email, topBarEnabled }: ContactBarProps) {

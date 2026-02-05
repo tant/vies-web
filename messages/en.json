@@ -32,6 +32,7 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "expandSubmenu": "Expand {label}",
+    "navigationMenu": "Navigation menu",
     "breadcrumb": {
       "home": "Home",
       "products": "Products",

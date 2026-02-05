@@ -1,16 +1,71 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import { cn, formatTelHref } from '@/lib/utils'
 import type { Header as HeaderType, SiteSetting, Media } from '@/payload-types'
 
 interface NavigationHeaderProps {
   headerData: HeaderType
   siteSettings: SiteSetting
+}
+
+function useFocusTrap(isActive: boolean, onEscape?: () => void) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    if (!isActive || !containerRef.current) return
+
+    previousFocusRef.current = document.activeElement as HTMLElement
+
+    const focusableSelector =
+      'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
+    const focusableElements =
+      containerRef.current.querySelectorAll<HTMLElement>(focusableSelector)
+    const firstElement = focusableElements[0]
+
+    firstElement?.focus()
+
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        onEscape?.()
+        return
+      }
+
+      if (e.key !== 'Tab') return
+
+      const currentFocusable =
+        containerRef.current?.querySelectorAll<HTMLElement>(focusableSelector)
+      if (!currentFocusable || currentFocusable.length === 0) return
+
+      const first = currentFocusable[0]
+      const last = currentFocusable[currentFocusable.length - 1]
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last?.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first?.focus()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      previousFocusRef.current?.focus()
+    }
+  }, [isActive, onEscape])
+
+  return containerRef
 }
 
 export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
@@ -19,20 +74,28 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null)
+  const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   const navItems = headerData.navigation ?? []
   const logo = siteSettings.logo as Media | null
   const phones = siteSettings.contact?.phone ?? []
 
+  const closeMobileMenu = useCallback(() => {
+    setMobileMenuOpen(false)
+    setExpandedMobileItem(null)
+  }, [])
+
+  const menuPanelRef = useFocusTrap(mobileMenuOpen, closeMobileMenu)
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden'
+      document.body.classList.add('overflow-hidden')
     } else {
-      document.body.style.overflow = ''
+      document.body.classList.remove('overflow-hidden')
     }
     return () => {
-      document.body.style.overflow = ''
+      document.body.classList.remove('overflow-hidden')
     }
   }, [mobileMenuOpen])
 
@@ -130,98 +193,135 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
 
           {/* Mobile menu button */}
           <button
+            ref={hamburgerRef}
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
             aria-label={mobileMenuOpen ? t('closeMenu') : t('openMenu')}
             aria-expanded={mobileMenuOpen}
           >
-            {mobileMenuOpen ? (
-              <XIcon className="w-6 h-6" />
-            ) : (
-              <MenuIcon className="w-6 h-6" />
-            )}
+            <MenuIcon className="w-6 h-6" />
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu overlay */}
+      {mobileMenuOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-50 lg:hidden"
+          onClick={closeMobileMenu}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* Mobile slide-in panel */}
+      <div
+        ref={menuPanelRef}
+        className={cn(
+          'fixed top-0 right-0 h-full w-[280px] max-w-[80vw] bg-white shadow-xl z-[60]',
+          'flex flex-col',
+          'transform transition-transform duration-300 ease-in-out lg:hidden',
+          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full',
+        )}
+        role="dialog"
+        aria-modal="true"
+        aria-label={t('navigationMenu')}
+      >
+        {/* Close button */}
+        <div className="flex justify-end p-md">
+          <button
+            onClick={closeMobileMenu}
+            className="p-2 rounded-lg hover:bg-gray-100"
+            aria-label={t('closeMenu')}
+          >
+            <XIcon className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Mobile Navigation */}
-        {mobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t">
-            <nav className="flex flex-col gap-1">
-              {navItems.map((item) => {
-                const href = `/${locale}${item.link}`
-                const isActive = pathname === href || pathname.startsWith(`${href}/`)
-                const hasChildren = item.children && item.children.length > 0
-                const isExpanded = expandedMobileItem === (item.id ?? item.link)
+        {/* Navigation items */}
+        <nav className="flex-1 overflow-y-auto px-md">
+          <div className="flex flex-col">
+            {navItems.map((item) => {
+              const href = `/${locale}${item.link}`
+              const isActive = pathname === href || pathname.startsWith(`${href}/`)
+              const hasChildren = item.children && item.children.length > 0
+              const isExpanded = expandedMobileItem === (item.id ?? item.link)
 
-                return (
-                  <div key={item.id ?? item.link}>
-                    <div className="flex items-center">
-                      <Link
-                        href={href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className={cn(
-                          'flex-1 px-4 py-3 rounded-lg font-medium transition-colors',
-                          isActive
-                            ? 'bg-primary/10 text-primary'
-                            : 'text-gray-700 hover:bg-gray-100',
-                        )}
-                      >
-                        {item.label}
-                      </Link>
-                      {hasChildren && (
-                        <button
-                          onClick={() => setExpandedMobileItem(isExpanded ? null : (item.id ?? item.link))}
-                          className="p-3 text-gray-500 hover:text-gray-700"
-                          aria-label={t('expandSubmenu', { label: item.label })}
-                          aria-expanded={isExpanded}
-                        >
-                          <ChevronDownIcon className={cn('w-4 h-4 transition-transform', isExpanded && 'rotate-180')} />
-                        </button>
+              return (
+                <div key={item.id ?? item.link}>
+                  <div className="flex items-center">
+                    <Link
+                      href={href}
+                      onClick={closeMobileMenu}
+                      className={cn(
+                        'flex-1 px-4 py-3 font-medium transition-colors',
+                        isActive ? 'text-primary' : 'text-text hover:text-primary',
                       )}
-                    </div>
-
-                    {/* Expandable children */}
-                    {hasChildren && isExpanded && (
-                      <div className="ml-4">
-                        {item.children!.map((child) => (
-                          <Link
-                            key={child.id ?? child.link}
-                            href={`/${locale}${child.link}`}
-                            onClick={() => setMobileMenuOpen(false)}
-                            className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
-                          >
-                            {child.label}
-                          </Link>
-                        ))}
-                      </div>
+                    >
+                      {item.label}
+                    </Link>
+                    {hasChildren && (
+                      <button
+                        onClick={() =>
+                          setExpandedMobileItem(isExpanded ? null : (item.id ?? item.link))
+                        }
+                        className="p-3 hover:bg-gray-100 rounded-lg"
+                        aria-expanded={isExpanded}
+                        aria-label={t('expandSubmenu', { label: item.label })}
+                      >
+                        <ChevronDownIcon
+                          className={cn(
+                            'w-4 h-4 transition-transform duration-200',
+                            isExpanded && 'rotate-180',
+                          )}
+                        />
+                      </button>
                     )}
                   </div>
-                )
-              })}
-            </nav>
 
-            {/* Phone + CTA in mobile menu */}
-            <div className="mt-4 pt-4 border-t flex flex-col gap-2">
-              {phones.map((phone) => (
-                <a
-                  key={phone.id}
-                  href={`tel:${phone.number.replace(/\s/g, '')}`}
-                  className="flex items-center gap-2 px-4 py-2 text-sm text-gray-600 hover:text-primary transition-colors"
-                >
-                  <PhoneIcon className="w-4 h-4" />
-                  {phone.label ? <span>{phone.label}:</span> : null} {phone.number}
-                </a>
-              ))}
-              <Link
-                href={`/${locale}/contact`}
-                onClick={() => setMobileMenuOpen(false)}
-                className="bg-accent text-text text-center py-3 rounded-md font-semibold mx-4"
-              >
-                {t('contact')}
-              </Link>
-            </div>
+                  {/* Expandable children */}
+                  {hasChildren && isExpanded && (
+                    <div className="pl-6 pb-2">
+                      {item.children!.map((child) => (
+                        <Link
+                          key={child.id ?? child.link}
+                          href={`/${locale}${child.link}`}
+                          onClick={closeMobileMenu}
+                          className="block px-4 py-2 text-sm text-text-muted hover:text-primary transition-colors"
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
           </div>
-        )}
+        </nav>
+
+        {/* Phone + CTA section */}
+        <div className="mt-auto p-md border-t border-border">
+          {phones.map((phone, index) => (
+            <a
+              key={phone.id ?? index}
+              href={formatTelHref(phone.number)}
+              className="flex items-center gap-sm py-2 text-text hover:text-primary transition-colors"
+            >
+              <PhoneIcon className="w-5 h-5" />
+              <span>
+                {phone.label ? `${phone.label}: ` : ''}
+                {phone.number}
+              </span>
+            </a>
+          ))}
+          <Link
+            href={`/${locale}/contact`}
+            onClick={closeMobileMenu}
+            className="mt-md block text-center bg-accent hover:bg-accent/90 text-text font-semibold py-3 rounded-md"
+          >
+            {t('contact')}
+          </Link>
+        </div>
       </div>
     </header>
   )

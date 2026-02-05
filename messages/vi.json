@@ -32,6 +32,7 @@
     "openMenu": "Mở menu",
     "closeMenu": "Đóng menu",
     "expandSubmenu": "Mở rộng {label}",
+    "navigationMenu": "Menu điều hướng",
     "breadcrumb": {
       "home": "Trang chủ",
       "products": "Sản phẩm",
