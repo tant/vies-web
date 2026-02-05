@@ -126,9 +126,12 @@
 
   "news": {
     "title": "News",
+    "description": "Latest industry news and insights from VIES",
     "publishedAt": "Published on",
     "relatedNews": "Related articles",
-    "loadMore": "Load more news"
+    "loadMore": "Load more news",
+    "shareArticle": "Share this article",
+    "backToNews": "Back to news"
   },
 
   "forms": {

@@ -36,6 +36,14 @@
 
   /* Container */
   --container-max: 1280px;
+
+  /* Max-width overrides - prevent spacing scale from affecting max-w-*xl utilities */
+  --max-width-2xl: 672px;
+  --max-width-3xl: 768px;
+  --max-width-4xl: 896px;
+  --max-width-5xl: 1024px;
+  --max-width-6xl: 1152px;
+  --max-width-7xl: 1280px;
 }
 
 /* Base styles */

@@ -126,9 +126,12 @@
 
   "news": {
     "title": "Tin tức",
+    "description": "Cập nhật tin tức và kiến thức ngành công nghiệp từ VIES",
     "publishedAt": "Đăng ngày",
     "relatedNews": "Bài viết liên quan",
-    "loadMore": "Xem thêm tin tức"
+    "loadMore": "Xem thêm tin tức",
+    "shareArticle": "Chia sẻ bài viết",
+    "backToNews": "Quay lại tin tức"
   },
 
   "forms": {
