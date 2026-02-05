@@ -6,6 +6,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ContactForm } from '@/components/ui/ContactForm'
 import { ContactInfo } from '@/components/ui/ContactInfo'
 import { ContactMap } from '@/components/ui/ContactMap'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Locale } from '@/i18n/config'
 
 interface ContactPageProps {
@@ -15,10 +16,20 @@ interface ContactPageProps {
 export async function generateMetadata({ params }: ContactPageProps): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'contact' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
     title: `${t('title')} | VIES`,
     description: t('subtitle'),
+    alternates: {
+      canonical: `${siteUrl}/${locale}/contact`,
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('subtitle'),
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
+    },
   }
 }
 

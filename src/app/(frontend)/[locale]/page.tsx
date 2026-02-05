@@ -10,6 +10,7 @@ import {
   GearIcon,
 } from '@/components/layout/icons'
 import { CTASection } from '@/components/ui/CTASection'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Locale } from '@/i18n/config'
 
 type Props = {
@@ -19,10 +20,20 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'home' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
-    title: t('hero.title'),
+    title: `${t('hero.title')} | VIES`,
     description: t('hero.subtitle'),
+    alternates: {
+      canonical: `${siteUrl}/${locale}`,
+    },
+    openGraph: {
+      title: t('hero.title'),
+      description: t('hero.subtitle'),
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
+    },
   }
 }
 

@@ -5,6 +5,7 @@ import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ServiceCard } from '@/components/ui/ServiceCard'
 import { CTASection } from '@/components/ui/CTASection'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Locale } from '@/i18n/config'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -12,14 +13,23 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'services' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
+  const description = locale === 'vi'
+    ? 'Dịch vụ tư vấn kỹ thuật vòng bi, đo rung động, lắp đặt và bôi trơn từ VIES'
+    : 'Technical consulting services for bearings, vibration analysis, installation and lubrication from VIES'
 
   return {
     title: `${t('title')} | VIES`,
-    description: locale === 'vi'
-      ? 'Dịch vụ tư vấn kỹ thuật vòng bi, đo rung động, lắp đặt và bôi trơn từ VIES'
-      : 'Technical consulting services for bearings, vibration analysis, installation and lubrication from VIES',
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/services`,
+    },
     openGraph: {
       title: t('title'),
+      description,
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
     },
   }
 }

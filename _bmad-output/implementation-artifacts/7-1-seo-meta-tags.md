@@ -249,9 +249,12 @@ N/A - Implementation completed without issues
 - [HIGH] Added missing og:description to brand detail page (brands/[slug]/page.tsx:51-65)
 - [HIGH] Added missing og:description to category detail page (categories/[slug]/page.tsx:46-59)
 - [HIGH] Fixed product detail page og:description fallback for products without SKU (product/[slug]/page.tsx:51-65)
+- [MEDIUM] Added og:type: 'website' to all pages for consistency (10 pages updated)
+- [LOW] Removed explicit _status filter from search page (access control handles this)
 
 ## Change Log
 
+- 2026-02-05: Code review fixes (round 2) - Added og:type to all pages, removed redundant _status filter
 - 2026-02-05: Code review fixes - Added missing og:description to brand, category, and product detail pages
 - 2026-02-05: Implemented SEO meta tags story - Added canonical URLs, consistent title format, OG tags, and default OG image utility
 

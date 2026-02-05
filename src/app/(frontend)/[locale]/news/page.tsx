@@ -5,6 +5,7 @@ import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { NewsCard } from '@/components/ui/NewsCard'
 import { NewsLoadMore } from './NewsLoadMore'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Locale } from '@/i18n/config'
 import type { News } from '@/payload-types'
 
@@ -13,13 +14,19 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'news' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
     title: `${t('title')} | VIES`,
     description: t('description'),
+    alternates: {
+      canonical: `${siteUrl}/${locale}/news`,
+    },
     openGraph: {
       title: t('title'),
       description: t('description'),
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
     },
   }
 }

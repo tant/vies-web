@@ -5,6 +5,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductsPageClient } from './ProductsPageClient'
 import { SearchIcon, PhoneIcon } from '@/components/layout/icons'
 import { formatTelHref } from '@/lib/utils'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Media, Brand, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -16,6 +17,7 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'products' })
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   // SEO descriptions - static content for better SEO
   const descriptions: Record<string, string> = {
@@ -24,8 +26,17 @@ export async function generateMetadata({ params }: Props) {
   }
 
   return {
-    title: t('title'),
+    title: `${t('title')} | VIES`,
     description: descriptions[locale] ?? descriptions.en,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/products`,
+    },
+    openGraph: {
+      title: t('title'),
+      description: descriptions[locale] ?? descriptions.en,
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
+    },
   }
 }
 

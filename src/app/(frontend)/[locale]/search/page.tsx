@@ -6,6 +6,7 @@ import { SearchBar } from '@/components/ui/SearchBar'
 import { SearchResults } from '@/components/search/SearchResults'
 import { SearchIcon, PhoneIcon } from '@/components/layout/icons'
 import { formatTelHref } from '@/lib/utils'
+import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import type { Media, Brand } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -17,12 +18,26 @@ type Props = {
 export async function generateMetadata({ params, searchParams }: Props) {
   const { locale } = await params
   const { q } = await searchParams
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
+  const baseTitle = locale === 'vi' ? 'Tìm kiếm' : 'Search'
+  const title = q ? `${baseTitle}: ${q} | VIES` : `${baseTitle} | VIES`
+  const description = locale === 'vi'
+    ? 'Tìm kiếm sản phẩm vòng bi, dầu mỡ công nghiệp tại VIES'
+    : 'Search for bearings and industrial lubricants at VIES'
+
   return {
-    title: q
-      ? `${locale === 'vi' ? 'Tìm kiếm' : 'Search'}: ${q}`
-      : locale === 'vi'
-        ? 'Tìm kiếm'
-        : 'Search',
+    title,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/search`,
+    },
+    openGraph: {
+      title: baseTitle,
+      description,
+      type: 'website',
+      images: [{ url: getDefaultOgImage() }],
+    },
   }
 }
 
@@ -40,16 +55,12 @@ export default async function SearchPage({ params, searchParams }: Props) {
   let products = { docs: [] as any[], totalDocs: 0 }
 
   if (q.trim()) {
+    // Note: publishedOnly access control handles draft filtering
     products = await payload.find({
       collection: 'products',
       locale: locale as Locale,
       where: {
-        and: [
-          {
-            or: [{ name: { contains: q } }, { sku: { contains: q } }],
-          },
-          { _status: { equals: 'published' } },
-        ],
+        or: [{ name: { contains: q } }, { sku: { contains: q } }],
       },
       limit,
       page: 1,

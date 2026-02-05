@@ -62,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: brand.name,
       description,
+      type: 'website',
       images: logoUrl ? [{ url: logoUrl }] : undefined,
     },
   }

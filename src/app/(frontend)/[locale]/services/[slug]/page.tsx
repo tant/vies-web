@@ -35,12 +35,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? service.featuredImage.sizes?.large?.url ?? service.featuredImage.url
       : null
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
   return {
     title: `${service.title} | VIES`,
     description: service.excerpt ?? undefined,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/services/${slug}`,
+    },
     openGraph: {
       title: service.title,
       description: service.excerpt ?? undefined,
+      type: 'website',
       images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
   }
