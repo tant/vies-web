@@ -80,12 +80,9 @@ img {
   display: block;
 }
 
-/* Container */
-.container {
-  width: 100%;
-  max-width: var(--container-max);
-  margin: 0 auto;
-}
+/* Container - using Tailwind's container with custom max-width via @theme */
+/* Note: Avoid redefining .container as it conflicts with Tailwind's container utility */
+/* Use max-w-[1280px] or container class with @theme customization instead */
 
 /* Custom utilities */
 @utility section-padding {

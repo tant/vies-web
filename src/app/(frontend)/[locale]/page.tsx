@@ -76,33 +76,35 @@ export default async function HomePage({ params }: Props) {
 
   return (
     <>
-      {/* Hero Section - Search First */}
-      <section className="bg-gradient-to-br from-primary to-primary/90 text-white">
-        <div className="container mx-auto px-4 py-16 lg:py-24 text-center">
+      {/* Hero Section - Search First (Direction A) */}
+      <section className="bg-bg py-16 lg:py-20">
+        <div className="container mx-auto px-4 text-center">
+          {/* Title */}
+          <h1 className="text-2xl md:text-3xl font-bold text-text mb-3">
+            {t('hero.title')}
+          </h1>
+
           {/* Subtitle */}
-          <p className="text-lg md:text-xl text-white/80 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-text-muted mb-8">
             {t('hero.subtitle')}
           </p>
 
-          {/* SearchBar - Hero variant */}
-          <div className="max-w-2xl mx-auto">
+          {/* SearchBar - Hero variant (640px như design) */}
+          <div className="max-w-[640px] ml-auto mr-auto">
             <SearchBar variant="hero" consultPhone={primaryPhone} />
           </div>
 
           {/* Quick search hints */}
-          <div className="mt-6">
-            <span className="text-sm text-white/60 mr-2">{t('quickSearch.title')}</span>
-            <div className="inline-flex flex-wrap justify-center gap-2 mt-2 md:mt-0">
-              {searchHints.map((hint) => (
-                <Link
-                  key={hint.query}
-                  href={`/${locale}/search?q=${encodeURIComponent(hint.query)}`}
-                  className="px-3 py-1.5 text-sm bg-white/15 hover:bg-white/25 rounded-full transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
-                >
-                  {hint.label}
-                </Link>
-              ))}
-            </div>
+          <div className="mt-4 flex flex-wrap justify-center gap-2">
+            {searchHints.map((hint) => (
+              <Link
+                key={hint.query}
+                href={`/${locale}/search?q=${encodeURIComponent(hint.query)}`}
+                className="px-3 py-1 text-sm bg-primary/10 text-primary hover:bg-primary/20 rounded transition-colors"
+              >
+                {hint.label}
+              </Link>
+            ))}
           </div>
         </div>
       </section>
