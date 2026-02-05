@@ -10,8 +10,49 @@
     "viewAll": "View all",
     "loading": "Loading...",
     "noResults": "No results found",
-    "services": "Services"
+    "services": "Services",
+    "brands": "Brands",
+    "categories": "Categories",
+    "loadMore": "Load more",
+    "backToHome": "Back to home",
+    "email": "Email",
+    "phone": "Phone",
+    "callNow": "Call now",
+    "zaloChat": "Zalo Chat"
   },
+
+  "nav": {
+    "services": "Services",
+    "products": "Products",
+    "productsByBrand": "By brand",
+    "productsByCategory": "By category",
+    "news": "News",
+    "aboutUs": "About us",
+    "contact": "Contact",
+    "breadcrumb": {
+      "home": "Home",
+      "products": "Products",
+      "services": "Services",
+      "news": "News",
+      "brands": "Brands",
+      "categories": "Categories",
+      "contact": "Contact",
+      "about": "About",
+      "search": "Search"
+    }
+  },
+
+  "search": {
+    "placeholder": "Search by product code, name or brand...",
+    "placeholderHero": "Enter bearing code or product name...",
+    "hints": "E.g.: 6205, SKF, bearing",
+    "resultsCount": "Found {count} products for '{query}'",
+    "viewAllResults": "View all results",
+    "noResults": "No products found",
+    "noResultsHint": "Contact our engineer: {phone}",
+    "searching": "Searching..."
+  },
+
   "home": {
     "hero": {
       "title": "VIES - Industrial Bearings & Components Supplier",
@@ -19,16 +60,80 @@
     },
     "featuredProducts": "Featured Products",
     "latestNews": "Latest News",
-    "ourBrands": "Our Partner Brands"
+    "ourBrands": "Our Partner Brands",
+    "servicesSection": "Technical Services",
+    "servicesDesc": "Professional consulting and technical solutions",
+    "productsSection": "Industrial Products",
+    "ctaTitle": "Need a consultation or quote?",
+    "ctaSubtitle": "VIES engineering team is ready to help you"
   },
+
   "products": {
     "title": "Product Catalog",
     "filter": "Filter",
     "brand": "Brand",
     "category": "Category",
     "sort": "Sort",
-    "requestQuote": "Request Quote"
+    "requestQuote": "Request Quote",
+    "specifications": "Specifications",
+    "description": "Product Description",
+    "relatedProducts": "Related Products",
+    "sku": "Product Code",
+    "imageGallery": "Product Images",
+    "loadMore": "Load more products",
+    "clearFilters": "Clear filters",
+    "allBrands": "All brands",
+    "allCategories": "All categories",
+    "productCount": "{count} products"
   },
+
+  "services": {
+    "title": "Technical Services",
+    "viewDetails": "View details",
+    "benefits": "Benefits",
+    "contactConsult": "Contact for consultation",
+    "relatedServices": "Other services"
+  },
+
+  "news": {
+    "title": "News",
+    "publishedAt": "Published on",
+    "relatedNews": "Related articles",
+    "loadMore": "Load more news"
+  },
+
+  "forms": {
+    "quoteRequest": {
+      "title": "Request a Quote",
+      "name": "Full Name",
+      "namePlaceholder": "Enter your full name",
+      "phone": "Phone Number",
+      "phonePlaceholder": "Enter your phone number",
+      "email": "Email",
+      "emailPlaceholder": "example@email.com",
+      "product": "Product",
+      "quantity": "Quantity",
+      "quantityPlaceholder": "Enter quantity",
+      "notes": "Notes",
+      "notesPlaceholder": "Additional information...",
+      "submit": "Submit quote request",
+      "submitting": "Submitting..."
+    },
+    "validation": {
+      "required": "This field is required",
+      "invalidEmail": "Invalid email address",
+      "invalidPhone": "Invalid phone number",
+      "minLength": "Minimum {min} characters"
+    },
+    "toast": {
+      "success": "Request submitted successfully",
+      "successDetail": "VIES will contact you within 30 minutes",
+      "error": "Failed to submit request",
+      "errorDetail": "Please try again or contact us directly",
+      "retry": "Retry"
+    }
+  },
+
   "contact": {
     "title": "Contact",
     "subtitle": "We are always ready to help you",
@@ -55,15 +160,35 @@
     "productInterest": "Product of Interest",
     "message": "Message",
     "messagePlaceholder": "Enter your message...",
-    "submit": "Send Message"
+    "submit": "Send Message",
+    "map": "Map"
   },
+
   "about": {
     "title": "About Us"
   },
-  "news": {
-    "title": "News"
-  },
+
   "footer": {
-    "copyright": "© {year} VIES. All rights reserved."
+    "copyright": "© {year} VIES. All rights reserved.",
+    "company": "Company",
+    "quickLinks": "Quick Links",
+    "support": "Support",
+    "followUs": "Follow Us"
+  },
+
+  "errors": {
+    "notFound": "Page not found",
+    "notFoundMessage": "The page you are looking for does not exist or has been removed.",
+    "genericError": "An error occurred",
+    "genericErrorMessage": "Please try again later.",
+    "retry": "Retry"
+  },
+
+  "empty": {
+    "noProducts": "No products available",
+    "noProductsHint": "Try changing filters or search terms.",
+    "noResults": "No results found",
+    "contactEngineer": "Contact our engineer",
+    "contactEngineerPhone": "Call: {phone}"
   }
 }

@@ -10,8 +10,49 @@
     "viewAll": "Xem tất cả",
     "loading": "Đang tải...",
     "noResults": "Không có kết quả",
-    "services": "Dịch vụ"
+    "services": "Dịch vụ",
+    "brands": "Thương hiệu",
+    "categories": "Danh mục",
+    "loadMore": "Tải thêm",
+    "backToHome": "Về trang chủ",
+    "email": "Email",
+    "phone": "Điện thoại",
+    "callNow": "Gọi ngay",
+    "zaloChat": "Chat Zalo"
   },
+
+  "nav": {
+    "services": "Dịch vụ",
+    "products": "Sản phẩm",
+    "productsByBrand": "Theo hãng",
+    "productsByCategory": "Theo loại",
+    "news": "Tin tức",
+    "aboutUs": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "breadcrumb": {
+      "home": "Trang chủ",
+      "products": "Sản phẩm",
+      "services": "Dịch vụ",
+      "news": "Tin tức",
+      "brands": "Thương hiệu",
+      "categories": "Danh mục",
+      "contact": "Liên hệ",
+      "about": "Giới thiệu",
+      "search": "Tìm kiếm"
+    }
+  },
+
+  "search": {
+    "placeholder": "Tìm theo mã sản phẩm, tên hoặc hãng...",
+    "placeholderHero": "Nhập mã vòng bi hoặc tên sản phẩm...",
+    "hints": "VD: 6205, SKF, vòng bi",
+    "resultsCount": "Tìm thấy {count} sản phẩm cho '{query}'",
+    "viewAllResults": "Xem tất cả kết quả",
+    "noResults": "Không tìm thấy sản phẩm",
+    "noResultsHint": "Liên hệ kỹ sư tư vấn: {phone}",
+    "searching": "Đang tìm kiếm..."
+  },
+
   "home": {
     "hero": {
       "title": "VIES - Chuyên cung cấp vòng bi và linh kiện công nghiệp",
@@ -19,16 +60,80 @@
     },
     "featuredProducts": "Sản phẩm nổi bật",
     "latestNews": "Tin tức mới nhất",
-    "ourBrands": "Thương hiệu đối tác"
+    "ourBrands": "Thương hiệu đối tác",
+    "servicesSection": "Dịch vụ kỹ thuật",
+    "servicesDesc": "Tư vấn và giải pháp kỹ thuật chuyên nghiệp",
+    "productsSection": "Sản phẩm công nghiệp",
+    "ctaTitle": "Cần tư vấn hoặc báo giá?",
+    "ctaSubtitle": "Đội ngũ kỹ sư VIES sẵn sàng hỗ trợ bạn"
   },
+
   "products": {
     "title": "Danh mục sản phẩm",
     "filter": "Bộ lọc",
     "brand": "Thương hiệu",
     "category": "Danh mục",
     "sort": "Sắp xếp",
-    "requestQuote": "Yêu cầu báo giá"
+    "requestQuote": "Yêu cầu báo giá",
+    "specifications": "Thông số kỹ thuật",
+    "description": "Mô tả sản phẩm",
+    "relatedProducts": "Sản phẩm liên quan",
+    "sku": "Mã sản phẩm",
+    "imageGallery": "Hình ảnh sản phẩm",
+    "loadMore": "Xem thêm sản phẩm",
+    "clearFilters": "Xóa bộ lọc",
+    "allBrands": "Tất cả hãng",
+    "allCategories": "Tất cả danh mục",
+    "productCount": "{count} sản phẩm"
   },
+
+  "services": {
+    "title": "Dịch vụ kỹ thuật",
+    "viewDetails": "Xem chi tiết",
+    "benefits": "Lợi ích",
+    "contactConsult": "Liên hệ tư vấn",
+    "relatedServices": "Dịch vụ khác"
+  },
+
+  "news": {
+    "title": "Tin tức",
+    "publishedAt": "Đăng ngày",
+    "relatedNews": "Bài viết liên quan",
+    "loadMore": "Xem thêm tin tức"
+  },
+
+  "forms": {
+    "quoteRequest": {
+      "title": "Yêu cầu báo giá",
+      "name": "Họ và tên",
+      "namePlaceholder": "Nhập họ và tên",
+      "phone": "Số điện thoại",
+      "phonePlaceholder": "Nhập số điện thoại",
+      "email": "Email",
+      "emailPlaceholder": "example@email.com",
+      "product": "Sản phẩm",
+      "quantity": "Số lượng",
+      "quantityPlaceholder": "Nhập số lượng",
+      "notes": "Ghi chú",
+      "notesPlaceholder": "Thông tin thêm...",
+      "submit": "Gửi yêu cầu báo giá",
+      "submitting": "Đang gửi..."
+    },
+    "validation": {
+      "required": "Trường này bắt buộc",
+      "invalidEmail": "Email không hợp lệ",
+      "invalidPhone": "Số điện thoại không hợp lệ",
+      "minLength": "Tối thiểu {min} ký tự"
+    },
+    "toast": {
+      "success": "Đã gửi yêu cầu thành công",
+      "successDetail": "VIES sẽ liên hệ trong 30 phút",
+      "error": "Gửi yêu cầu thất bại",
+      "errorDetail": "Vui lòng thử lại hoặc liên hệ trực tiếp",
+      "retry": "Thử lại"
+    }
+  },
+
   "contact": {
     "title": "Liên hệ",
     "subtitle": "Chúng tôi luôn sẵn sàng hỗ trợ bạn",
@@ -55,15 +160,35 @@
     "productInterest": "Sản phẩm quan tâm",
     "message": "Nội dung",
     "messagePlaceholder": "Nhập nội dung tin nhắn...",
-    "submit": "Gửi tin nhắn"
+    "submit": "Gửi tin nhắn",
+    "map": "Bản đồ"
   },
+
   "about": {
     "title": "Giới thiệu"
   },
-  "news": {
-    "title": "Tin tức"
-  },
+
   "footer": {
-    "copyright": "© {year} VIES. Tất cả quyền được bảo lưu."
+    "copyright": "© {year} VIES. Tất cả quyền được bảo lưu.",
+    "company": "Công ty",
+    "quickLinks": "Liên kết nhanh",
+    "support": "Hỗ trợ",
+    "followUs": "Theo dõi"
+  },
+
+  "errors": {
+    "notFound": "Trang không tồn tại",
+    "notFoundMessage": "Trang bạn tìm không tồn tại hoặc đã bị xóa.",
+    "genericError": "Đã xảy ra lỗi",
+    "genericErrorMessage": "Vui lòng thử lại sau.",
+    "retry": "Thử lại"
+  },
+
+  "empty": {
+    "noProducts": "Không có sản phẩm nào",
+    "noProductsHint": "Thử thay đổi bộ lọc hoặc tìm kiếm.",
+    "noResults": "Không tìm thấy kết quả",
+    "contactEngineer": "Liên hệ kỹ sư tư vấn",
+    "contactEngineerPhone": "Gọi: {phone}"
   }
 }
