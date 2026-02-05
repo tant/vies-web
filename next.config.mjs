@@ -15,6 +15,26 @@ const nextConfig = {
 
     return webpackConfig
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/api/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'v-ies.com',
+        pathname: '/api/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.v-ies.com',
+        pathname: '/api/media/**',
+      },
+    ],
+  },
 }
 
 export default withPayload(withNextIntl(nextConfig), { devBundleServerPackages: false })

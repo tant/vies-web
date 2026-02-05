@@ -8,6 +8,8 @@ import { getTranslations } from 'next-intl/server'
 import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductCard } from '@/components/ui/ProductCard'
+import { Media } from '@/components/ui/Media'
+import type { Media as MediaType } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
 type Props = {
@@ -103,15 +105,11 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
   })
   const subcategories = subcategoriesResult.docs
 
-  // Extract category image
-  const categoryImageUrl =
+  // Extract category image as Media object
+  const categoryImage =
     typeof category.image === 'object' && category.image
-      ? category.image.sizes?.medium?.url ?? category.image.url
+      ? (category.image as MediaType)
       : null
-  const categoryImageAlt =
-    typeof category.image === 'object' && category.image
-      ? category.image.alt || category.name
-      : category.name
 
   return (
     <div className="min-h-screen bg-background">
@@ -128,12 +126,17 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
         <div className="mx-auto max-w-[var(--container-max)] px-md">
           <div className="flex flex-col md:flex-row gap-8 items-start">
             {/* Category Image */}
-            {categoryImageUrl && (
-              <div className="w-full md:w-48 flex-shrink-0">
-                <img
-                  src={categoryImageUrl}
-                  alt={categoryImageAlt}
-                  className="w-full h-48 object-cover rounded-lg"
+            {categoryImage && (
+              <div className="w-full md:w-48 h-48 flex-shrink-0 relative rounded-lg overflow-hidden">
+                <Media
+                  resource={categoryImage}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 192px"
+                  preferredSize="medium"
+                  className="absolute inset-0"
+                  imgClassName="object-cover"
+                  alt={category.name}
+                  priority
                 />
               </div>
             )}
@@ -167,12 +170,10 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {subcategories.map((sub) => {
-                const subImageUrl =
+                const subImage =
                   typeof sub.image === 'object' && sub.image
-                    ? sub.image.sizes?.thumbnail?.url ?? sub.image.url
+                    ? (sub.image as MediaType)
                     : null
-                const subImageAlt =
-                  typeof sub.image === 'object' && sub.image ? sub.image.alt || sub.name : sub.name
 
                 return (
                   <Link
@@ -180,12 +181,18 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
                     href={`/${locale}/categories/${sub.slug}`}
                     className="bg-white rounded-xl shadow-sm p-4 hover:shadow-md transition-shadow text-center group"
                   >
-                    {subImageUrl ? (
-                      <img
-                        src={subImageUrl}
-                        alt={subImageAlt}
-                        className="w-full h-24 object-cover rounded-lg mb-3"
-                      />
+                    {subImage ? (
+                      <div className="w-full h-24 relative rounded-lg overflow-hidden mb-3">
+                        <Media
+                          resource={subImage}
+                          fill
+                          sizes="(max-width: 640px) 50vw, 25vw"
+                          preferredSize="thumbnail"
+                          className="absolute inset-0"
+                          imgClassName="object-cover"
+                          alt={sub.name}
+                        />
+                      </div>
                     ) : (
                       <div className="w-full h-24 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
                         <CategoryIcon className="w-10 h-10 text-gray-400" />

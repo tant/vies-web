@@ -1,20 +1,23 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import type { Media } from '@/payload-types'
+import { useTranslations } from 'next-intl'
+import type { Media as MediaType } from '@/payload-types'
+import { Media } from '@/components/ui/Media'
 
 interface ProductGalleryProps {
-  images: Array<{ image: number | Media | null; id?: string | null }>
+  images: Array<{ image: number | MediaType | null; id?: string | null }>
   productName: string
 }
 
 export function ProductGallery({ images, productName }: ProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0)
+  const tAria = useTranslations('aria')
 
   // Extract valid Media objects from the images array
   const validImages = images
     .map((item) => (typeof item.image === 'object' ? item.image : null))
-    .filter((img): img is Media => img !== null)
+    .filter((img): img is MediaType => img !== null)
 
   // Keyboard navigation handler
   const handleKeyDown = useCallback(
@@ -38,17 +41,21 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   }
 
   const selectedImage = validImages[selectedIndex]
-  const mainImageUrl = selectedImage?.sizes?.large?.url ?? selectedImage?.url
 
   return (
-    <div className="space-y-md" onKeyDown={handleKeyDown} tabIndex={0} role="region" aria-label="Product image gallery">
+    <div className="space-y-md" onKeyDown={handleKeyDown} tabIndex={0} role="region" aria-label={tAria('galleryRegion')}>
       {/* Main Image Display */}
-      <div id="main-product-image" className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-        {mainImageUrl ? (
-          <img
-            src={mainImageUrl}
-            alt={selectedImage?.alt || productName}
-            className="w-full h-full object-contain"
+      <div id="main-product-image" className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+        {selectedImage ? (
+          <Media
+            resource={selectedImage}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            preferredSize="large"
+            className="absolute inset-0"
+            imgClassName="object-contain"
+            alt={selectedImage.alt || productName}
+            priority
           />
         ) : (
           <GalleryPlaceholder productName={productName} />
@@ -57,9 +64,8 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
       {/* Thumbnail Navigation - only show if multiple images */}
       {validImages.length > 1 && (
-        <div className="flex gap-sm overflow-x-auto pb-2 scrollbar-thin" role="tablist" aria-label="Image thumbnails">
+        <div className="flex gap-sm overflow-x-auto pb-2 scrollbar-thin" role="tablist" aria-label={tAria('thumbnails')}>
           {validImages.map((image, index) => {
-            const thumbnailUrl = image?.sizes?.thumbnail?.url ?? image?.url
             const isSelected = index === selectedIndex
             // Use image id for stable key, or generate from url hash as fallback
             const stableKey = image?.id ?? `img-${image?.url?.slice(-8) ?? index}`
@@ -77,13 +83,16 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
                     ? 'border-primary ring-2 ring-primary/20'
                     : 'border-border hover:border-gray-300'
                 }`}
-                aria-label={`View image ${index + 1} of ${validImages.length}`}
+                aria-label={tAria('viewImage', { index: index + 1, total: validImages.length })}
               >
-                {thumbnailUrl ? (
-                  <img
-                    src={thumbnailUrl}
-                    alt=""
+                {image ? (
+                  <Media
+                    resource={image}
+                    width={80}
+                    height={80}
+                    preferredSize="thumbnail"
                     className="w-full h-full object-cover"
+                    alt=""
                   />
                 ) : (
                   <div className="w-full h-full bg-gray-200 flex items-center justify-center">
@@ -98,7 +107,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
 
       {/* Keyboard hint for screen readers */}
       {validImages.length > 1 && (
-        <p className="sr-only">Use left and right arrow keys to navigate between images</p>
+        <p className="sr-only">{tAria('galleryKeyboardHint')}</p>
       )}
     </div>
   )

@@ -1,5 +1,7 @@
 import Link from 'next/link'
-import type { Product, Media } from '@/payload-types'
+import Image from 'next/image'
+import type { Product, Media as MediaType } from '@/payload-types'
+import { Media } from './Media'
 
 // Simplified interface for pre-processed product data (used by client components)
 export interface ProductCardData {
@@ -22,7 +24,8 @@ function isFullProduct(product: Product | ProductCardData): product is Product {
 
 export function ProductCard({ product, locale }: ProductCardProps) {
   let brandName: string | null = null
-  let thumbnailUrl: string | null = null
+  let firstMediaImage: MediaType | null = null
+  let preProcessedImageUrl: string | null = null
   let imageAlt: string = product.name
 
   if (isFullProduct(product)) {
@@ -31,29 +34,37 @@ export function ProductCard({ product, locale }: ProductCardProps) {
       typeof product.brand === 'object' && product.brand ? product.brand.name : null
 
     const firstImage = product.images?.[0]?.image
-    thumbnailUrl =
-      typeof firstImage === 'object' && firstImage
-        ? firstImage.sizes?.thumbnail?.url ?? firstImage.url ?? null
-        : null
-    imageAlt =
-      typeof firstImage === 'object' && firstImage
-        ? firstImage.alt || product.name
-        : product.name
+    if (typeof firstImage === 'object' && firstImage) {
+      firstMediaImage = firstImage
+      imageAlt = firstImage.alt || product.name
+    }
   } else {
     // Pre-processed ProductCardData - use directly
     brandName = product.brand?.name ?? null
-    thumbnailUrl = product.image?.url ?? null
+    preProcessedImageUrl = product.image?.url ?? null
     imageAlt = product.image?.alt || product.name
   }
+
+  // Determine if we have any image to show
+  const hasImage = firstMediaImage || preProcessedImageUrl
 
   return (
     <article className="bg-white rounded border border-border overflow-hidden group hover:border-primary transition-colors duration-200">
       <Link href={`/${locale}/product/${product.slug}`} className="block">
         {/* Image */}
         <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center relative overflow-hidden">
-          {thumbnailUrl ? (
-            <img
-              src={thumbnailUrl}
+          {firstMediaImage ? (
+            <Media
+              resource={firstMediaImage}
+              width={400}
+              height={300}
+              preferredSize="thumbnail"
+              className="w-full h-full object-cover"
+              alt={imageAlt}
+            />
+          ) : preProcessedImageUrl ? (
+            <Image
+              src={preProcessedImageUrl}
               alt={imageAlt}
               width={400}
               height={300}

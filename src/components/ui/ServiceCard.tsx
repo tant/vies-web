@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import type { Service } from '@/payload-types'
+import type { Service, Media as MediaType } from '@/payload-types'
 import { ArrowRightIcon, GearIcon } from '@/components/layout/icons'
+import { Media } from './Media'
 
 export interface ServiceCardProps {
   service: Service
@@ -9,28 +10,26 @@ export interface ServiceCardProps {
 }
 
 export function ServiceCard({ service, locale, viewDetailsText }: ServiceCardProps) {
-  // Extract image URL from Media relationship (same pattern as ProductCard/BrandPage)
-  const imageUrl =
+  // Extract Media object from relationship
+  const featuredImage =
     typeof service.featuredImage === 'object' && service.featuredImage
-      ? service.featuredImage.sizes?.medium?.url ?? service.featuredImage.url
+      ? (service.featuredImage as MediaType)
       : null
-  const imageAlt =
-    typeof service.featuredImage === 'object' && service.featuredImage
-      ? service.featuredImage.alt || service.title
-      : service.title
 
   return (
     <article className="bg-white rounded-lg border border-border overflow-hidden group hover:border-primary transition-colors duration-200">
       <Link href={`/${locale}/services/${service.slug}`} className="block">
         {/* Image */}
         <div className="aspect-[16/9] bg-gray-100 relative overflow-hidden">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              width={640}
-              height={360}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          {featuredImage ? (
+            <Media
+              resource={featuredImage}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              preferredSize="medium"
+              className="absolute inset-0"
+              imgClassName="object-cover group-hover:scale-105 transition-transform duration-300"
+              alt={service.title}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">

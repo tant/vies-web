@@ -1,6 +1,7 @@
 import Link from 'next/link'
-import type { News } from '@/payload-types'
+import type { News, Media as MediaType } from '@/payload-types'
 import { CalendarIcon } from '@/components/layout/icons'
+import { Media } from './Media'
 
 export interface NewsCardProps {
   news: News
@@ -8,15 +9,11 @@ export interface NewsCardProps {
 }
 
 export function NewsCard({ news, locale }: NewsCardProps) {
-  // Extract image URL from Media relationship (same pattern as ServiceCard)
-  const imageUrl =
+  // Extract Media object from relationship
+  const featuredImage =
     typeof news.featuredImage === 'object' && news.featuredImage
-      ? news.featuredImage.sizes?.medium?.url ?? news.featuredImage.url
+      ? (news.featuredImage as MediaType)
       : null
-  const imageAlt =
-    typeof news.featuredImage === 'object' && news.featuredImage
-      ? news.featuredImage.alt || news.title
-      : news.title
 
   // Date formatting using locale-appropriate format
   const formattedDate = news.publishedAt
@@ -31,13 +28,15 @@ export function NewsCard({ news, locale }: NewsCardProps) {
       <Link href={`/${locale}/news/${news.slug}`} className="block">
         {/* Image 16:9 aspect */}
         <div className="aspect-[16/9] bg-gray-100 relative overflow-hidden">
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              width={640}
-              height={360}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          {featuredImage ? (
+            <Media
+              resource={featuredImage}
+              fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              preferredSize="medium"
+              className="absolute inset-0"
+              imgClassName="object-cover group-hover:scale-105 transition-transform duration-300"
+              alt={news.title}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
