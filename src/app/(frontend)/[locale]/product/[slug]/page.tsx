@@ -9,6 +9,7 @@ import { ProductCard } from '@/components/ui/ProductCard'
 import { ProductGallery } from '@/components/product/ProductGallery'
 import { SpecificationsTable } from '@/components/product/SpecificationsTable'
 import { RichTextContent } from '@/components/product/RichTextContent'
+import { QuoteRequestButton } from '@/components/ui/QuoteRequestForm'
 import type { Product, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -176,14 +177,14 @@ export default async function ProductDetailPage({ params }: Props) {
                 </div>
               )}
 
-              {/* Quote Request Button (amber CTA) - Task 3.5 */}
+              {/* Quote Request Button - Opens modal form */}
               <div className="pt-md">
-                <Link
-                  href={`/${locale}/contact?product=${encodeURIComponent(product.name)}&sku=${product.sku || ''}`}
-                  className="inline-flex items-center justify-center px-6 py-3 bg-accent text-gray-900 font-semibold rounded-lg hover:bg-accent/90 transition-colors"
-                >
-                  {t('requestQuote')}
-                </Link>
+                <QuoteRequestButton
+                  productName={product.name}
+                  productSku={product.sku ?? undefined}
+                  locale={locale}
+                  label={t('requestQuote')}
+                />
               </div>
             </div>
           </div>
