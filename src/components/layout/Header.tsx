@@ -107,15 +107,17 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
       <div className="mx-auto max-w-[var(--container-max)] px-md">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <Link href={`/${locale}`} className="flex items-center gap-2">
-            <Image
-              src={logo?.url || '/images/logo/vies-logo.webp'}
-              alt={logo?.alt || siteSettings.siteName || 'VIES'}
-              width={120}
-              height={118}
-              className="h-10 w-auto"
-              priority
-            />
+          <Link href={`/${locale}`} className="flex items-center gap-2 flex-shrink-0">
+            <div className="relative h-10 lg:h-14 w-10 lg:w-14">
+              <Image
+                src={logo?.url || '/images/logo/vies-logo.webp'}
+                alt={logo?.alt || siteSettings.siteName || 'VIES'}
+                fill
+                sizes="(min-width: 1024px) 56px, 40px"
+                className="object-contain"
+                priority
+              />
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
