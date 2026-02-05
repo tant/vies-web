@@ -54,7 +54,8 @@
     "viewAllResults": "Xem tất cả kết quả",
     "noResults": "Không tìm thấy sản phẩm",
     "noResultsHint": "Liên hệ kỹ sư tư vấn: {phone}",
-    "searching": "Đang tìm kiếm..."
+    "searching": "Đang tìm kiếm...",
+    "enterKeywords": "Nhập từ khóa để tìm kiếm sản phẩm"
   },
 
   "home": {

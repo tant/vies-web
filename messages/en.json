@@ -54,7 +54,8 @@
     "viewAllResults": "View all results",
     "noResults": "No products found",
     "noResultsHint": "Contact our engineer: {phone}",
-    "searching": "Searching..."
+    "searching": "Searching...",
+    "enterKeywords": "Enter keywords to search for products"
   },
 
   "home": {
