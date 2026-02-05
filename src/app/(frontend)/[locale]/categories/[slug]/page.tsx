@@ -25,7 +25,7 @@ export default async function CategoryDetailPage({ params }: Props) {
 
   const products = await payload.find({
     collection: 'products',
-    where: { categories: { contains: category.id }, _status: { equals: 'published' } },
+    where: { categories: { contains: category.id } },
     limit: 12,
   })
 

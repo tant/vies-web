@@ -47,7 +47,6 @@ export default async function NewsDetailPage({ params }: Props) {
     collection: 'news',
     where: {
       id: { not_equals: article.id },
-      _status: { equals: 'published' },
     },
     sort: '-publishedAt',
     limit: 3,

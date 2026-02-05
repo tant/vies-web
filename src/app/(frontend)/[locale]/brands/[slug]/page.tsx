@@ -25,7 +25,7 @@ export default async function BrandDetailPage({ params }: Props) {
 
   const products = await payload.find({
     collection: 'products',
-    where: { brand: { equals: brand.id }, _status: { equals: 'published' } },
+    where: { brand: { equals: brand.id } },
     limit: 12,
   })
 

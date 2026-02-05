@@ -18,7 +18,6 @@ export default async function ServicesPage({ params }: Props) {
 
   const services = await payload.find({
     collection: 'services',
-    where: { _status: { equals: 'published' } },
     sort: 'order',
     locale: locale as 'vi' | 'en',
   })

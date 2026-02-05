@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdmin } from '@/lib/payload/access'
+import { publishedOnly, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
 
 export const News: CollectionConfig = {
@@ -10,7 +10,7 @@ export const News: CollectionConfig = {
     group: 'Content',
   },
   access: {
-    read: anyone,
+    read: publishedOnly,
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,

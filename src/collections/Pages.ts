@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { anyone, isAdmin } from '@/lib/payload/access'
+import { publishedOnly, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
 import { HeroBlock, ContentBlock, CTABlock, FAQBlock, GalleryBlock } from '@/lib/payload/blocks'
 
@@ -11,7 +11,7 @@ export const Pages: CollectionConfig = {
     group: 'Content',
   },
   access: {
-    read: anyone,
+    read: publishedOnly,
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,

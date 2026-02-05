@@ -30,7 +30,7 @@ export default async function HomePage({ params }: Props) {
     payload.find({ collection: 'categories', limit: 6 }),
     payload.find({
       collection: 'products',
-      where: { featured: { equals: true }, _status: { equals: 'published' } },
+      where: { featured: { equals: true } },
       limit: 6,
     }),
   ])

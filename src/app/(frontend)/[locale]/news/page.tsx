@@ -29,7 +29,6 @@ export default async function NewsPage({ params, searchParams }: Props) {
 
   const news = await payload.find({
     collection: 'news',
-    where: { _status: { equals: 'published' } },
     sort: '-publishedAt',
     limit,
     page: currentPage,
