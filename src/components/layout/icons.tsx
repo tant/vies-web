@@ -154,3 +154,37 @@ export function XCircleIcon({ className }: { className?: string }) {
   )
 }
 
+export function ClockIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+      />
+    </svg>
+  )
+}
+
+export function ZaloIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 48 48" fill="currentColor">
+      <path d="M12.5 45C9.5 45 3 43.5 3 37.5V12C3 5.5 8.5 3 12.5 3H36C42 3 45 8.5 45 12.5V36C45 43 38.5 45 36 45H12.5ZM37.5 14.5H10.5V17H28L10 33V35.5H37.5V33H19.5L37.5 17V14.5ZM22.5 25.5C22.5 23 24.5 21 27 21C29.5 21 31.5 23 31.5 25.5C31.5 28 29.5 30 27 30C24.5 30 22.5 28 22.5 25.5Z" />
+    </svg>
+  )
+}
+
+export function ExternalLinkIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+      />
+    </svg>
+  )
+}
+

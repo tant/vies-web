@@ -189,7 +189,9 @@
     "message": "Message",
     "messagePlaceholder": "Enter your message...",
     "submit": "Send Message",
-    "map": "Map"
+    "map": "Map",
+    "workingHoursDetail": "Mon - Fri: 8:00 AM - 5:30 PM\nSat: 8:00 AM - 12:00 PM",
+    "openInMaps": "Open in Google Maps"
   },
 
   "about": {
