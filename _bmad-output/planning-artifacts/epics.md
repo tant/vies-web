@@ -759,7 +759,35 @@ So that I can easily search on my phone.
 
 **FRs:** SR-07
 
-### Story 7.6: Seed data update
+### Story 7.6: Image optimization with next/image
+
+As a developer,
+I want all image components to use Next.js Image component,
+So that images are automatically optimized for better performance and Core Web Vitals.
+
+**Acceptance Criteria:**
+
+**Given** các components dùng `<img>` tag (ProductCard, ServiceCard, ServiceDetailPage, NewsCard, etc.)
+**When** migrate sang `next/image`
+**Then** tạo `Media` component wrapper tái sử dụng (theo PayloadCMS official template pattern)
+**And** tạo `getMediaUrl` utility để convert relative URL → full URL với cache busting
+**And** config `next.config.js` với `images.remotePatterns` cho localhost và production domain
+**And** hỗ trợ `fill` mode và explicit `width/height` mode
+**And** implement blur placeholder với `placeholder="blur"` và `blurDataURL`
+**And** responsive sizes tự generate từ breakpoints
+**And** migrate tất cả card components: ProductCard, ServiceCard, NewsCard
+**And** migrate detail pages: ProductDetailPage, ServiceDetailPage, NewsDetailPage
+**And** build passes, no TypeScript errors
+**And** Lighthouse Performance score không giảm (expected tăng)
+
+**Technical Notes:**
+- Follow PayloadCMS official template pattern: https://github.com/payloadcms/payload/tree/main/templates/website/src/components/Media
+- Cache busting: append `?{resource.updatedAt}` to URL
+- Quality: 100 for hero images, 80 for thumbnails
+
+**FRs:** PF-01, PF-02 (Performance)
+
+### Story 7.7: Seed data update
 
 As a developer,
 I want seed data updated with globals and Pages entries,
@@ -777,7 +805,7 @@ So that the website has content to display after deployment.
 
 **FRs:** AR-05
 
-### Story 7.7: Performance & accessibility audit
+### Story 7.8: Performance & accessibility audit
 
 As a developer,
 I want to verify the website meets performance and accessibility targets,
