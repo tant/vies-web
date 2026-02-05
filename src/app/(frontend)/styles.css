@@ -166,6 +166,45 @@ img {
   animation: slide-up 0.3s ease-out;
 }
 
+/* Toast animations */
+@keyframes fade-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fade-out-right {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+
+.animate-fade-in-right {
+  animation: fade-in-right 0.2s ease-out;
+}
+
+.animate-fade-out-right {
+  animation: fade-out-right 0.2s ease-in forwards;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-right,
+  .animate-fade-out-right {
+    animation: none;
+  }
+}
+
 /* Responsive text */
 @media (max-width: 768px) {
   html {

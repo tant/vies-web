@@ -206,6 +206,15 @@
     "followUs": "Theo dõi"
   },
 
+  "toast": {
+    "quoteSuccess": "Đã gửi yêu cầu báo giá thành công",
+    "contactSuccess": "Đã gửi tin nhắn thành công",
+    "genericSuccess": "Thao tác thành công",
+    "genericError": "Có lỗi xảy ra. Vui lòng thử lại.",
+    "retry": "Thử lại",
+    "dismiss": "Đóng"
+  },
+
   "errors": {
     "notFound": "Trang không tồn tại",
     "notFoundMessage": "Trang bạn tìm không tồn tại hoặc đã bị xóa.",

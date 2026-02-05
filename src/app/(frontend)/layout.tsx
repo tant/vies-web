@@ -8,6 +8,7 @@ import type { Locale } from '@/i18n/config'
 import { ContactBar } from '@/components/layout/ContactBar'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import { ToastProvider } from '@/components/ui/ToastProvider'
 import './styles.css'
 
 const inter = Inter({
@@ -45,16 +46,18 @@ export default async function RootLayout({
     <html lang={locale} className={inter.variable}>
       <body className="antialiased min-h-screen flex flex-col">
         <NextIntlClientProvider messages={messages}>
-          <ContactBar
-            phones={siteSettings.contact?.phone ?? []}
-            email={siteSettings.contact?.email}
-            topBarEnabled={headerData.topBar?.enabled}
-          />
-          <Header headerData={headerData} siteSettings={siteSettings} />
-          <main className="flex-1">
-            {children}
-          </main>
-          <Footer footerData={footerData} siteSettings={siteSettings} locale={locale} />
+          <ToastProvider>
+            <ContactBar
+              phones={siteSettings.contact?.phone ?? []}
+              email={siteSettings.contact?.email}
+              topBarEnabled={headerData.topBar?.enabled}
+            />
+            <Header headerData={headerData} siteSettings={siteSettings} />
+            <main className="flex-1">
+              {children}
+            </main>
+            <Footer footerData={footerData} siteSettings={siteSettings} locale={locale} />
+          </ToastProvider>
         </NextIntlClientProvider>
       </body>
     </html>
