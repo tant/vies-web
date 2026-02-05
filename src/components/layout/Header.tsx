@@ -4,10 +4,11 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useLocale, useTranslations } from 'next-intl'
-import { usePathname } from 'next/navigation'
+import { usePathname } from '@/i18n/navigation'
 import { cn, formatTelHref } from '@/lib/utils'
 import type { Header as HeaderType, SiteSetting, Media } from '@/payload-types'
-import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon } from './icons'
+import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon } from './icons'
+import { SearchBar } from '@/components/ui/SearchBar'
 
 interface NavigationHeaderProps {
   headerData: HeaderType
@@ -75,6 +76,7 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [expandedMobileItem, setExpandedMobileItem] = useState<string | null>(null)
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false)
   const hamburgerRef = useRef<HTMLButtonElement>(null)
 
   const navItems = headerData.navigation ?? []
@@ -182,28 +184,45 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
             })}
           </nav>
 
-          {/* CTA */}
+          {/* Desktop: SearchBar + CTA */}
           <div className="hidden lg:flex items-center gap-3">
+            <SearchBar variant="header" className="w-56 xl:w-64" consultPhone={phones[1]?.number ?? phones[0]?.number} />
             <Link
               href={`/${locale}/contact`}
-              className="bg-accent hover:bg-accent/90 text-text px-5 py-2.5 rounded-lg font-semibold transition-colors"
+              className="bg-accent hover:bg-accent/90 text-text px-5 py-2.5 rounded-lg font-semibold transition-colors whitespace-nowrap"
             >
               {t('contact')}
             </Link>
           </div>
 
-          {/* Mobile menu button */}
-          <button
-            ref={hamburgerRef}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            aria-label={mobileMenuOpen ? t('closeMenu') : t('openMenu')}
-            aria-expanded={mobileMenuOpen}
-          >
-            <MenuIcon className="w-6 h-6" />
-          </button>
+          {/* Mobile: search icon + menu button */}
+          <div className="flex items-center gap-1 lg:hidden">
+            <button
+              onClick={() => setMobileSearchOpen(!mobileSearchOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label={t('search' as any) ?? 'Search'}
+            >
+              <SearchIcon className="w-6 h-6" />
+            </button>
+            <button
+              ref={hamburgerRef}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              aria-label={mobileMenuOpen ? t('closeMenu') : t('openMenu')}
+              aria-expanded={mobileMenuOpen}
+            >
+              <MenuIcon className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </div>
+
+      {/* Mobile search bar */}
+      {mobileSearchOpen && (
+        <div className="lg:hidden border-t border-border px-md py-2 bg-white">
+          <SearchBar variant="header" className="w-full" consultPhone={phones[1]?.number ?? phones[0]?.number} />
+        </div>
+      )}
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (
