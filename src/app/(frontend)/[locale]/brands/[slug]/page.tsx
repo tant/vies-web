@@ -1,126 +1,217 @@
-import { getTranslations } from 'next-intl/server'
+import { cache } from 'react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
 import config from '@/payload.config'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { ProductCard } from '@/components/ui/ProductCard'
+import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { Locale } from '@/i18n/config'
 
-type Props = { params: Promise<{ locale: string; slug: string }> }
-
-export async function generateMetadata({ params }: Props) {
-  const { slug } = await params
-  const payload = await getPayload({ config: await config })
-  const brand = await payload.find({ collection: 'brands', where: { slug: { equals: slug } }, limit: 1 })
-  if (!brand.docs[0]) return { title: 'Brand Not Found' }
-  return { title: brand.docs[0].name }
+type Props = {
+  params: Promise<{ locale: string; slug: string }>
+  searchParams: Promise<{ page?: string }>
 }
 
-export default async function BrandDetailPage({ params }: Props) {
-  const { locale, slug } = await params
-  const tCommon = await getTranslations({ locale, namespace: 'common' })
+// Cached brand fetch to dedupe requests between generateMetadata and page component
+const getBrand = cache(async (slug: string, locale: Locale) => {
   const payload = await getPayload({ config: await config })
+  const { docs } = await payload.find({
+    collection: 'brands',
+    where: { slug: { equals: slug } },
+    limit: 1,
+    locale,
+    depth: 1,
+  })
+  return docs[0] ?? null
+})
 
-  const brandResult = await payload.find({ collection: 'brands', where: { slug: { equals: slug } }, limit: 1 })
-  const brand = brandResult.docs[0]
+// Task 4: SEO and metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale, slug } = await params
+  const brand = await getBrand(slug, locale as Locale)
+
+  if (!brand) {
+    return {
+      title: locale === 'vi' ? 'Không tìm thấy thương hiệu' : 'Brand Not Found',
+    }
+  }
+
+  // Task 4.2: Extract logo for og:image
+  const logoUrl =
+    typeof brand.logo === 'object' && brand.logo
+      ? brand.logo.sizes?.medium?.url ?? brand.logo.url
+      : null
+
+  // Task 4.1 & 4.3: Title format and description
+  return {
+    title: `${brand.name} | VIES`,
+    description:
+      locale === 'vi'
+        ? `Sản phẩm ${brand.name} - VIES cung cấp vòng bi và linh kiện công nghiệp chính hãng`
+        : `${brand.name} products - VIES supplies genuine bearings and industrial components`,
+    openGraph: {
+      title: brand.name,
+      images: logoUrl ? [{ url: logoUrl }] : undefined,
+    },
+  }
+}
+
+export default async function BrandDetailPage({ params, searchParams }: Props) {
+  const { locale, slug } = await params
+  const { page = '1' } = await searchParams
+  const currentPage = parseInt(page, 10)
+
+  const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
+  const tProducts = await getTranslations({ locale, namespace: 'products' })
+
+  // Use cached brand fetch (deduped with generateMetadata)
+  const brand = await getBrand(slug, locale as Locale)
   if (!brand) notFound()
 
-  const products = await payload.find({
+  const payload = await getPayload({ config: await config })
+
+  // Task 3: Fetch products with pagination
+  const limit = 12
+  const {
+    docs: products,
+    totalDocs,
+    hasNextPage,
+    nextPage,
+  } = await payload.find({
     collection: 'products',
     where: { brand: { equals: brand.id } },
-    limit: 12,
+    limit,
+    page: currentPage,
+    sort: 'name',
+    locale: locale as Locale,
+    depth: 1, // Task 2.3: Populate brand relationship for ProductCard
   })
 
+  // Task 1.3: Extract logo URL from Media relationship
+  const logoUrl =
+    typeof brand.logo === 'object' && brand.logo
+      ? brand.logo.sizes?.medium?.url ?? brand.logo.url
+      : null
+
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-primary text-white py-12">
-        <div className="container mx-auto px-4">
-          <nav className="flex items-center gap-2 text-sm mb-4 text-blue-200">
-            <Link href={`/${locale}`} className="hover:text-white">{tCommon('home')}</Link>
-            <span>/</span>
-            <Link href={`/${locale}/products`} className="hover:text-white">{tCommon('products')}</Link>
-            <span>/</span>
-            <span className="text-white">{brand.name}</span>
-          </nav>
-          <div className="flex items-center gap-6">
-            <div className="w-20 h-20 bg-white rounded-xl flex items-center justify-center">
-              <span className="text-2xl font-bold text-primary">{brand.name.slice(0, 3)}</span>
-            </div>
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">{brand.name}</h1>
-              <p className="text-blue-100 mt-1">
-                {products.totalDocs} {locale === 'vi' ? 'sản phẩm' : 'products'}
-              </p>
+    <>
+      {/* Task 1.1 & 1.2: Breadcrumb component - Home > Thương hiệu > [Brand Name] */}
+      <Breadcrumb
+        items={[{ label: tNav('breadcrumb.brands'), href: `/${locale}/products` }, { label: brand.name }]}
+      />
+
+      <div className="min-h-screen bg-background">
+        {/* Task 1.6: BrandHeader section */}
+        <div className="bg-white border-b border-border">
+          <div className="mx-auto max-w-[var(--container-max)] px-md py-lg">
+            <div className="flex items-center gap-lg">
+              {/* Task 1.3: Brand logo from Media relationship */}
+              {logoUrl ? (
+                <img
+                  src={logoUrl}
+                  alt={`${brand.name} logo`}
+                  className="w-20 h-20 object-contain bg-white rounded-lg border border-border p-2"
+                />
+              ) : (
+                <div className="w-20 h-20 bg-white rounded-lg border border-border flex items-center justify-center">
+                  <span className="text-2xl font-bold text-primary">{brand.name.slice(0, 3)}</span>
+                </div>
+              )}
+              <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{brand.name}</h1>
+                <p className="text-text-muted mt-1">
+                  {tProducts('productCount', { count: totalDocs })}
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="container mx-auto px-4 py-12">
-        {/* Brand Description */}
-        {brand.description && (
-          <div className="bg-white rounded-xl shadow-sm p-6 mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              {locale === 'vi' ? 'Giới thiệu' : 'About'} {brand.name}
-            </h2>
-            <p className="text-gray-600">
-              {typeof brand.description === 'string' ? brand.description : `${brand.name} - ${locale === 'vi' ? 'Thương hiệu vòng bi hàng đầu thế giới' : 'World leading bearing brand'}`}
-            </p>
-            {brand.website && (
-              <a href={brand.website} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-primary hover:underline mt-4">
-                {locale === 'vi' ? 'Website chính thức' : 'Official website'} →
-              </a>
-            )}
-          </div>
-        )}
-
-        {/* Products */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">
-          {locale === 'vi' ? `Sản phẩm ${brand.name}` : `${brand.name} Products`}
-        </h2>
-
-        {products.docs.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-            <p className="text-gray-500">{tCommon('noResults')}</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {products.docs.map((product) => (
-              <Link key={product.id} href={`/${locale}/product/${product.slug}`} className="bg-white rounded-xl shadow-sm overflow-hidden group">
-                <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center">
-                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-                    <GearIcon className="w-8 h-8 text-gray-400" />
-                  </div>
+        <div className="mx-auto max-w-[var(--container-max)] px-md py-lg">
+          {/* Task 1.4 & 1.5: Brand Description section */}
+          {(brand.description || brand.website) && (
+            <div className="bg-white rounded-lg shadow-sm p-md mb-lg">
+              <h2 className="text-xl font-semibold text-gray-900 mb-md">
+                {tCommon('about')} {brand.name}
+              </h2>
+              {/* Task 1.4: Render description using RichText */}
+              {brand.description && (
+                <div className="prose prose-gray max-w-none">
+                  <RichText data={brand.description} />
                 </div>
-                <div className="p-4">
-                  {product.sku && (
-                    <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">{product.sku}</span>
-                  )}
-                  <h3 className="font-semibold text-gray-900 mt-2 group-hover:text-primary transition-colors line-clamp-2">
-                    {product.name}
-                  </h3>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
+              )}
+              {/* Task 1.5: Website link with external link icon */}
+              {brand.website && (
+                <a
+                  href={brand.website}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:underline mt-md"
+                >
+                  {tProducts('officialWebsite')}
+                  <ExternalLinkIcon className="w-4 h-4" aria-hidden="true" />
+                </a>
+              )}
+            </div>
+          )}
 
-        {products.totalDocs > 12 && (
-          <div className="mt-8 text-center">
-            <Link href={`/${locale}/products?brand=${slug}`} className="inline-block bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-              {locale === 'vi' ? 'Xem tất cả sản phẩm' : 'View all products'}
-            </Link>
-          </div>
-        )}
+          {/* Task 2: Product grid section with ProductCard */}
+          <h2 className="text-2xl font-bold text-gray-900 mb-md">
+            {tProducts('brandProducts', { brand: brand.name })}
+          </h2>
+
+          {products.length === 0 ? (
+            // Empty state
+            <div className="bg-white rounded-lg shadow-sm p-xl text-center">
+              <p className="text-text-muted">{tCommon('noResults')}</p>
+            </div>
+          ) : (
+            <>
+              {/* Task 2.1 & 2.2: ProductCard grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-md">
+                {products.map((product) => (
+                  <ProductCard key={product.id} product={product} locale={locale} />
+                ))}
+              </div>
+
+              {/* Task 3.4 & 3.5: Load More pagination */}
+              {hasNextPage && (
+                <div className="mt-lg text-center">
+                  <Link
+                    href={`/${locale}/brands/${slug}?page=${nextPage}`}
+                    className="inline-flex items-center justify-center px-md py-sm border border-border rounded-lg text-text hover:border-primary transition-colors"
+                  >
+                    {tCommon('loadMore')}
+                  </Link>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   )
 }
 
-function GearIcon({ className }: { className?: string }) {
+// Task 1.5: External link icon component
+function ExternalLinkIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+    <svg
+      className={className}
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth={2}
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+      />
     </svg>
   )
 }

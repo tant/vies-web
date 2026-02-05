@@ -89,7 +89,9 @@
     "clearFilters": "Xóa bộ lọc",
     "allBrands": "Tất cả hãng",
     "allCategories": "Tất cả danh mục",
-    "productCount": "{count} sản phẩm"
+    "productCount": "{count} sản phẩm",
+    "brandProducts": "Sản phẩm {brand}",
+    "officialWebsite": "Website chính thức"
   },
 
   "services": {

@@ -89,7 +89,9 @@
     "clearFilters": "Clear filters",
     "allBrands": "All brands",
     "allCategories": "All categories",
-    "productCount": "{count} products"
+    "productCount": "{count} products",
+    "brandProducts": "{brand} Products",
+    "officialWebsite": "Official website"
   },
 
   "services": {
