@@ -17,11 +17,11 @@ export async function BrandLogoBar({ brands, locale }: Props) {
   }
 
   return (
-    <section className="bg-white py-lg md:py-xl" aria-labelledby="partner-brands-heading">
-      <div className="mx-auto max-w-[var(--container-max)] px-md">
+    <section className="bg-white py-16 lg:py-20" aria-labelledby="partner-brands-heading">
+      <div className="container mx-auto px-4">
         <h2
           id="partner-brands-heading"
-          className="text-center text-xl md:text-2xl font-semibold text-gray-900 mb-lg"
+          className="text-center text-xl md:text-2xl font-semibold text-gray-900 mb-8"
         >
           {t('ourBrands')}
         </h2>

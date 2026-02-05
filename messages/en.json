@@ -60,8 +60,28 @@
 
   "home": {
     "hero": {
-      "title": "VIES - Industrial Bearings & Components Supplier",
-      "subtitle": "Authorized distributor of SKF, FAG, NTN, TIMKEN"
+      "title": "Search Products",
+      "subtitle": "Genuine bearings and industrial components from world-leading brands"
+    },
+    "quickSearch": {
+      "title": "Quick search:",
+      "ballBearings": "Ball bearings",
+      "rollerBearings": "Roller bearings"
+    },
+    "dualSection": {
+      "services": {
+        "title": "Technical Services",
+        "description": "Experienced engineering team, ready to consult on all bearing and lubrication issues",
+        "cta": "View services",
+        "consultation": "Technical consultation",
+        "vibrationAnalysis": "Vibration analysis",
+        "installation": "Installation & lubrication"
+      },
+      "products": {
+        "title": "Products",
+        "description": "Genuine bearings and industrial components",
+        "cta": "View all products"
+      }
     },
     "featuredProducts": "Featured Products",
     "latestNews": "Latest News",
@@ -70,7 +90,7 @@
     "servicesDesc": "Professional consulting and technical solutions",
     "productsSection": "Industrial Products",
     "ctaTitle": "Need a consultation or quote?",
-    "ctaSubtitle": "VIES engineering team is ready to help you"
+    "ctaSubtitle": "Our technical team is always ready to help you."
   },
 
   "products": {

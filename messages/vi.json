@@ -60,8 +60,28 @@
 
   "home": {
     "hero": {
-      "title": "VIES - Chuyên cung cấp vòng bi và linh kiện công nghiệp",
-      "subtitle": "Nhà phân phối chính hãng các thương hiệu SKF, FAG, NTN, TIMKEN"
+      "title": "Tìm kiếm sản phẩm",
+      "subtitle": "Vòng bi, linh kiện công nghiệp chính hãng từ các thương hiệu hàng đầu thế giới"
+    },
+    "quickSearch": {
+      "title": "Tìm nhanh:",
+      "ballBearings": "Vòng bi cầu",
+      "rollerBearings": "Vòng bi đũa"
+    },
+    "dualSection": {
+      "services": {
+        "title": "Dịch vụ kỹ thuật",
+        "description": "Đội ngũ kỹ sư giàu kinh nghiệm, sẵn sàng tư vấn và hỗ trợ mọi vấn đề về vòng bi và bôi trơn",
+        "cta": "Xem dịch vụ",
+        "consultation": "Tư vấn kỹ thuật",
+        "vibrationAnalysis": "Đo và phân tích rung động",
+        "installation": "Lắp đặt và bôi trơn"
+      },
+      "products": {
+        "title": "Sản phẩm",
+        "description": "Vòng bi và linh kiện công nghiệp chính hãng",
+        "cta": "Xem tất cả sản phẩm"
+      }
     },
     "featuredProducts": "Sản phẩm nổi bật",
     "latestNews": "Tin tức mới nhất",
@@ -70,7 +90,7 @@
     "servicesDesc": "Tư vấn và giải pháp kỹ thuật chuyên nghiệp",
     "productsSection": "Sản phẩm công nghiệp",
     "ctaTitle": "Cần tư vấn hoặc báo giá?",
-    "ctaSubtitle": "Đội ngũ kỹ sư VIES sẵn sàng hỗ trợ bạn"
+    "ctaSubtitle": "Đội ngũ kỹ thuật của VIES luôn sẵn sàng hỗ trợ bạn."
   },
 
   "products": {
