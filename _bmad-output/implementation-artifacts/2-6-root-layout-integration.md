@@ -237,6 +237,8 @@ Story này chủ yếu là **kết nối** — thay đổi nhỏ trong 1 file (l
 
 - 2026-02-05: Verified all integration tasks complete (work done in Story 2.4), build passes
 - 2026-02-05: Code review — extracted shared icons, fixed Footer columns limit, pass locale prop, add favicon select
+- 2026-02-05: Bugfix — LanguageSwitcher rewritten from `router.replace` to `<a>` tags with explicit locale prefix (`/vi/...`, `/en/...`) to fix navigation not working; NEXT_LOCALE cookie caused `as-needed` prefix to skip default locale redirect
+- 2026-02-05: Bugfix — Added `localePrefix: 'as-needed'` to `createNavigation` in `src/i18n/navigation.ts` to match middleware config
 
 ### File List
 
@@ -247,3 +249,5 @@ Story này chủ yếu là **kết nối** — thay đổi nhỏ trong 1 file (l
 | `src/components/layout/ContactBar.tsx` | Modified — use shared icons from icons.tsx |
 | `src/components/layout/Header.tsx` | Modified — use shared icons from icons.tsx |
 | `src/components/layout/Footer.tsx` | Modified — use shared icons, accept locale prop, fix columns slice(0, 4), remove async/getLocale |
+| `src/components/layout/LanguageSwitcher.tsx` | Modified — rewritten to use `<a>` tags with explicit locale URLs instead of `router.replace` |
+| `src/i18n/navigation.ts` | Modified — added `localePrefix: 'as-needed'` to match middleware config |

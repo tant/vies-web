@@ -529,6 +529,7 @@ Claude Opus 4.5
 - 2026-02-05: Refactored Footer from Client Component to Server Component with CMS-driven data (Story 2.4)
 - 2026-02-05: Code review fixes — removed duplicate formatTelHref (import from shared utils), added React key fallbacks, capped CMS columns to 3 (prevents grid overflow), added nav landmark for accessibility, fixed phone label whitespace, handled protocol-relative URLs in FooterLink
 - 2026-02-05: Second review fixes — added YouTube social link, locale-prefixed logo href, replaced nav.contents with per-column nav landmarks, async Server Component for getLocale()
+- 2026-02-05: Bugfix — FooterLink now prepends `/${locale}` to internal URLs (CMS stores paths without locale prefix); fixed `formatTelHref` in `@/lib/utils` to handle numbers already containing country code `(+84)` (was producing `tel:+84(+84)...`)
 
 ### Senior Developer Review
 

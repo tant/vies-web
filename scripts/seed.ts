@@ -199,6 +199,7 @@ const seedData = async () => {
           id: created.id,
           locale: 'en',
           data: {
+            name: brand.name,
             description: makeRichText(brand.description.en),
           },
         })

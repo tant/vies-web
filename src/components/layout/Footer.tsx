@@ -10,7 +10,7 @@ interface FooterProps {
   locale: string
 }
 
-function FooterLink({ url, label }: { url: string; label: string }) {
+function FooterLink({ url, label, locale }: { url: string; label: string; locale: string }) {
   const isExternal = url.startsWith('http') || url.startsWith('//')
   if (isExternal) {
     return (
@@ -24,8 +24,9 @@ function FooterLink({ url, label }: { url: string; label: string }) {
       </a>
     )
   }
+  const localizedUrl = url.startsWith('/') ? `/${locale}${url}` : url
   return (
-    <Link href={url} className="text-gray-400 hover:text-white transition-colors text-sm">
+    <Link href={localizedUrl} className="text-gray-400 hover:text-white transition-colors text-sm">
       {label}
     </Link>
   )
@@ -139,7 +140,7 @@ export function Footer({ footerData, siteSettings, locale }: FooterProps) {
               <ul className="space-y-sm">
                 {column.links?.map((link, linkIndex) => (
                   <li key={link.id ?? linkIndex}>
-                    <FooterLink url={link.url} label={link.label} />
+                    <FooterLink url={link.url} label={link.label} locale={locale} />
                   </li>
                 ))}
               </ul>

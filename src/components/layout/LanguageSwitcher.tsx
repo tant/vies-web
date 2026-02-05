@@ -1,16 +1,15 @@
 'use client'
 
 import { useLocale } from 'next-intl'
-import { useRouter, usePathname } from '@/i18n/navigation'
+import { usePathname } from '@/i18n/navigation'
 import { locales, localeDisplay, type Locale } from '@/i18n/config'
 
 export function LanguageSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
-  const router = useRouter()
 
-  const switchLocale = (newLocale: Locale) => {
-    router.replace(pathname, { locale: newLocale })
+  const getLocalizedHref = (targetLocale: Locale) => {
+    return `/${targetLocale}${pathname}`
   }
 
   return (
@@ -19,9 +18,9 @@ export function LanguageSwitcher() {
         const display = localeDisplay[loc]
         const isActive = locale === loc
         return (
-          <button
+          <a
             key={loc}
-            onClick={() => switchLocale(loc)}
+            href={getLocalizedHref(loc)}
             className={`px-2 py-1 text-sm rounded transition-colors ${
               isActive
                 ? 'bg-white/20 font-semibold'
@@ -32,7 +31,7 @@ export function LanguageSwitcher() {
           >
             <span>{display.flag}</span>
             <span className="ml-1">{display.label}</span>
-          </button>
+          </a>
         )
       })}
     </div>
