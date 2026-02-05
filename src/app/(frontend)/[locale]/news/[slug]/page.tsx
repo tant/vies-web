@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props) {
 export default async function NewsDetailPage({ params }: Props) {
   const { locale, slug } = await params
   const t = await getTranslations({ locale, namespace: 'news' })
-  const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const payload = await getPayload({ config: await config })
 
@@ -95,22 +96,10 @@ export default async function NewsDetailPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Breadcrumb */}
-      <div className="bg-white border-b">
-        <div className="container mx-auto px-4 py-4">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link href={`/${locale}`} className="text-gray-500 hover:text-primary">
-              {tCommon('home')}
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link href={`/${locale}/news`} className="text-gray-500 hover:text-primary">
-              {t('title')}
-            </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-900 font-medium truncate">{article.title}</span>
-          </nav>
-        </div>
-      </div>
+      <Breadcrumb items={[
+        { label: tNav('breadcrumb.news'), href: `/${locale}/news` },
+        { label: article.title },
+      ]} />
 
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
