@@ -10,6 +10,7 @@ import { ProductGallery } from '@/components/product/ProductGallery'
 import { SpecificationsTable } from '@/components/product/SpecificationsTable'
 import { RichTextContent } from '@/components/product/RichTextContent'
 import { QuoteRequestButton } from '@/components/ui/QuoteRequestForm'
+import { MobileStickyBar } from '@/components/ui/MobileStickyBar'
 import type { Product, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -31,8 +32,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = docs[0]
 
   if (!product) {
+    const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
     return {
-      title: locale === 'vi' ? 'Không tìm thấy sản phẩm' : 'Product Not Found',
+      title: tMeta('productNotFound'),
     }
   }
 
@@ -43,8 +45,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? firstImage.sizes?.medium?.url ?? firstImage.url
       : null
 
-  const skuLabel = locale === 'vi' ? 'Mã' : 'SKU'
-  const skuLabelFull = locale === 'vi' ? 'Mã sản phẩm' : 'Product code'
+  const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
+  const skuLabel = tMeta('skuLabel')
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
@@ -72,6 +74,7 @@ export default async function ProductDetailPage({ params }: Props) {
   const payload = await getPayload({ config: await config })
   const t = await getTranslations({ locale, namespace: 'products' })
   const tNav = await getTranslations({ locale, namespace: 'nav' })
+  const tSpec = await getTranslations({ locale, namespace: 'spec' })
 
   // Fetch product by slug with relationships populated (Task 1.2)
   const { docs } = await payload.find({
@@ -119,6 +122,16 @@ export default async function ProductDetailPage({ params }: Props) {
     })
     relatedProducts = related
   }
+
+  // Fetch site settings for mobile sticky bar contact info
+  const siteSettings = await payload.findGlobal({
+    slug: 'site-settings',
+    locale: locale as Locale,
+  })
+
+  // Get contact info for mobile sticky bar
+  const quotePhone = siteSettings.contact?.phone?.[0]?.number || '0903326309'
+  const zaloUrl = siteSettings.social?.zalo || `https://zalo.me/${quotePhone}`
 
   return (
     <>
@@ -207,14 +220,19 @@ export default async function ProductDetailPage({ params }: Props) {
 
           {/* Specifications Table (Task 4) - AC #2 */}
           {specifications.length > 0 && (
-            <SpecificationsTable specifications={specifications} title={t('specifications')} />
+            <SpecificationsTable
+              specifications={specifications}
+              title={t('specifications')}
+              parameterLabel={tSpec('parameter')}
+              valueLabel={tSpec('value')}
+            />
           )}
         </div>
       </div>
 
       {/* Related Products Section (Task 6) - AC #5 */}
       {relatedProducts.length > 0 && (
-        <section className="bg-gray-50 py-xl">
+        <section className="bg-gray-50 py-xl pb-24 md:pb-xl">
           <div className="mx-auto max-w-[var(--container-max)] px-md">
             <h2 className="text-2xl font-semibold mb-lg">{t('relatedProducts')}</h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-md lg:gap-lg">
@@ -225,6 +243,12 @@ export default async function ProductDetailPage({ params }: Props) {
           </div>
         </section>
       )}
+
+      {/* Bottom padding when no related products to prevent content being obscured by mobile sticky bar */}
+      {relatedProducts.length === 0 && <div className="pb-24 md:pb-0" />}
+
+      {/* Mobile Sticky Bottom Bar - Only visible on mobile (< 768px) */}
+      <MobileStickyBar phone={quotePhone} zaloUrl={zaloUrl} />
     </>
   )
 }
