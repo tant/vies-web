@@ -69,10 +69,29 @@ messages/                       # Translation files
 └── km.json
 ```
 
+## Database Backup & Restore
+
+### Backup
+
+```bash
+# Create backup (custom format, recommended)
+docker exec vies-web-postgres-1 pg_dump -U vies -d vies -F c > data/vies-backup-$(date +%Y%m%d-%H%M%S).dump
+```
+
+### Restore on another machine
+
+```bash
+# 1. Start PostgreSQL container
+docker compose up postgres -d
+
+# 2. Restore from backup
+docker exec -i vies-web-postgres-1 pg_restore -U vies -d vies --clean --if-exists < data/vies-backup-YYYYMMDD-HHMMSS.dump
+```
+
 ## Features
 
 - Product catalog (display only)
-- Multi-language support (Vietnamese, English, Khmer)
+- Multi-language support (Vietnamese, English)
 - Product search & filtering
 - Blog/News section
 - Contact form
