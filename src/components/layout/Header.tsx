@@ -108,26 +108,14 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
           <Link href={`/${locale}`} className="flex items-center gap-2">
-            {logo?.url ? (
-              <Image
-                src={logo.url}
-                alt={logo.alt || siteSettings.siteName || 'VIES'}
-                width={120}
-                height={40}
-                className="h-10 w-auto"
-                priority
-              />
-            ) : (
-              <>
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-xl">V</span>
-                </div>
-                <div className="hidden sm:block">
-                  <span className="font-bold text-xl text-primary">VIES</span>
-                  <span className="block text-xs text-gray-500 -mt-1">TRUST PARTNER</span>
-                </div>
-              </>
-            )}
+            <Image
+              src={logo?.url || '/images/logo/vies-logo.webp'}
+              alt={logo?.alt || siteSettings.siteName || 'VIES'}
+              width={120}
+              height={118}
+              className="h-10 w-auto"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}
