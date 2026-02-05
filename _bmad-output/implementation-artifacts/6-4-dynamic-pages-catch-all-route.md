@@ -1,6 +1,6 @@
 # Story 6.4: Dynamic Pages Catch-All Route
 
-Status: review
+Status: done
 
 ## Story
 
