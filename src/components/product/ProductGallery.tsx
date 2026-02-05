@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react'
 import type { Media } from '@/payload-types'
 
 interface ProductGalleryProps {
-  images: Array<{ image: Media | null; id?: string | null }>
+  images: Array<{ image: number | Media | null; id?: string | null }>
   productName: string
 }
 
@@ -43,7 +43,7 @@ export function ProductGallery({ images, productName }: ProductGalleryProps) {
   return (
     <div className="space-y-md" onKeyDown={handleKeyDown} tabIndex={0} role="region" aria-label="Product image gallery">
       {/* Main Image Display */}
-      <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+      <div id="main-product-image" className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
         {mainImageUrl ? (
           <img
             src={mainImageUrl}
