@@ -29,6 +29,9 @@
     "news": "News",
     "aboutUs": "About us",
     "contact": "Contact",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "expandSubmenu": "Expand {label}",
     "breadcrumb": {
       "home": "Home",
       "products": "Products",

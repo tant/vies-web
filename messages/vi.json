@@ -29,6 +29,9 @@
     "news": "Tin tức",
     "aboutUs": "Về chúng tôi",
     "contact": "Liên hệ",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "expandSubmenu": "Mở rộng {label}",
     "breadcrumb": {
       "home": "Trang chủ",
       "products": "Sản phẩm",

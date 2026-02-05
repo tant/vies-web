@@ -36,8 +36,8 @@ export default async function RootLayout({
   const payload = await getPayload({ config: configPromise })
 
   const [siteSettings, headerData] = await Promise.all([
-    payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true } }),
-    payload.findGlobal({ slug: 'header', locale, select: { topBar: true } }),
+    payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true, logo: true, siteName: true } }),
+    payload.findGlobal({ slug: 'header', locale, select: { topBar: true, navigation: true } }),
   ])
 
   return (
@@ -49,7 +49,7 @@ export default async function RootLayout({
             email={siteSettings.contact?.email}
             topBarEnabled={headerData.topBar?.enabled}
           />
-          <Header />
+          <Header headerData={headerData} siteSettings={siteSettings} />
           <main className="flex-1">
             {children}
           </main>
