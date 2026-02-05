@@ -56,7 +56,12 @@
     "noResults": "Không tìm thấy sản phẩm",
     "noResultsHint": "Liên hệ kỹ sư tư vấn: {phone}",
     "searching": "Đang tìm kiếm...",
-    "enterKeywords": "Nhập từ khóa để tìm kiếm sản phẩm"
+    "enterKeywords": "Nhập từ khóa để tìm kiếm sản phẩm",
+    "error": "Có lỗi xảy ra khi tìm kiếm",
+    "mobileOverlay": {
+      "title": "Tìm kiếm sản phẩm",
+      "close": "Đóng tìm kiếm"
+    }
   },
 
   "home": {

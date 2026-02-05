@@ -56,7 +56,12 @@
     "noResults": "No products found",
     "noResultsHint": "Contact our engineer: {phone}",
     "searching": "Searching...",
-    "enterKeywords": "Enter keywords to search for products"
+    "enterKeywords": "Enter keywords to search for products",
+    "error": "An error occurred while searching",
+    "mobileOverlay": {
+      "title": "Search products",
+      "close": "Close search"
+    }
   },
 
   "home": {
