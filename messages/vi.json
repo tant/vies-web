@@ -22,6 +22,7 @@
   },
 
   "nav": {
+    "search": "Tìm kiếm",
     "services": "Dịch vụ",
     "products": "Sản phẩm",
     "productsByBrand": "Theo hãng",
