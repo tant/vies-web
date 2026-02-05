@@ -1,11 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { locales, defaultLocale, type Locale } from '@/i18n/config'
+
+const MAX_QUERY_LENGTH = 100
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl
-  const query = searchParams.get('q')?.trim() ?? ''
-  const locale = searchParams.get('locale') ?? 'vi'
+  const query = searchParams.get('q')?.trim().slice(0, MAX_QUERY_LENGTH) ?? ''
+  const localeParam = searchParams.get('locale') ?? defaultLocale
+  const locale: Locale = locales.includes(localeParam as Locale)
+    ? (localeParam as Locale)
+    : defaultLocale
 
   if (query.length < 2) {
     return NextResponse.json({ results: [] })
@@ -23,7 +29,7 @@ export async function GET(request: NextRequest) {
         ],
       },
       limit: 6,
-      locale: locale as 'vi' | 'en',
+      locale,
       select: {
         name: true,
         sku: true,
@@ -47,6 +53,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ results })
   } catch {
-    return NextResponse.json({ results: [] }, { status: 500 })
+    return NextResponse.json({ results: [], error: 'Internal server error' }, { status: 500 })
   }
 }
