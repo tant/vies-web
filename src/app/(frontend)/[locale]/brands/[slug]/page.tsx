@@ -45,15 +45,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? brand.logo.sizes?.medium?.url ?? brand.logo.url
       : null
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
   // Task 4.1 & 4.3: Title format and description
+  const description =
+    locale === 'vi'
+      ? `Sản phẩm ${brand.name} - VIES cung cấp vòng bi và linh kiện công nghiệp chính hãng`
+      : `${brand.name} products - VIES supplies genuine bearings and industrial components`
+
   return {
     title: `${brand.name} | VIES`,
-    description:
-      locale === 'vi'
-        ? `Sản phẩm ${brand.name} - VIES cung cấp vòng bi và linh kiện công nghiệp chính hãng`
-        : `${brand.name} products - VIES supplies genuine bearings and industrial components`,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/brands/${slug}`,
+    },
     openGraph: {
       title: brand.name,
+      description,
       images: logoUrl ? [{ url: logoUrl }] : undefined,
     },
   }

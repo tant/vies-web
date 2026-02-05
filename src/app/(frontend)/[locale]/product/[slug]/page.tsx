@@ -46,14 +46,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const skuLabel = locale === 'vi' ? 'Mã' : 'SKU'
   const skuLabelFull = locale === 'vi' ? 'Mã sản phẩm' : 'Product code'
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
+  const description = product.sku
+    ? `${product.name} - ${skuLabel}: ${product.sku} - VIES`
+    : `${product.name} - VIES`
+
   return {
     title: `${product.name} | VIES`,
-    description: product.sku
-      ? `${product.name} - ${skuLabel}: ${product.sku} - VIES`
-      : product.name,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/product/${slug}`,
+    },
     openGraph: {
       title: product.name,
-      description: product.sku ? `${skuLabelFull}: ${product.sku}` : undefined,
+      description,
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
     },
   }

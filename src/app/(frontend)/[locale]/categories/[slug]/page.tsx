@@ -43,11 +43,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? category.image.sizes?.medium?.url ?? category.image.url
       : null
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const description = `${locale === 'vi' ? 'Sản phẩm' : 'Products in'} ${category.name} - VIES`
+
   return {
     title: `${category.name} | VIES`,
-    description: `${locale === 'vi' ? 'Sản phẩm' : 'Products in'} ${category.name} - VIES`,
+    description,
+    alternates: {
+      canonical: `${siteUrl}/${locale}/categories/${slug}`,
+    },
     openGraph: {
       title: category.name,
+      description,
       images: imageUrl ? [{ url: imageUrl }] : undefined,
     },
   }
