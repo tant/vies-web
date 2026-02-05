@@ -61,7 +61,7 @@ export default async function ProductsPage({ params, searchParams }: Props) {
       conditions.push({ 'categories.slug': { in: categorySlugs } })
     }
 
-    return conditions.length > 0 ? { and: conditions } : {}
+    return conditions.length > 0 ? { and: conditions } : undefined
   }
 
   // Fetch products and filter options (Task 2.2, 2.3)

@@ -1,138 +1,186 @@
-import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
+import { getTranslations } from 'next-intl/server'
+import type { Metadata } from 'next'
 import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { ProductCard } from '@/components/ui/ProductCard'
+import { ProductGallery } from '@/components/product/ProductGallery'
+import { SpecificationsTable } from '@/components/product/SpecificationsTable'
+import { RichTextContent } from '@/components/product/RichTextContent'
+import type { Product, Category } from '@/payload-types'
+import type { Locale } from '@/i18n/config'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const payload = await getPayload({ config: await config })
 
-  const product = await payload.find({
+  const { docs } = await payload.find({
     collection: 'products',
     where: { slug: { equals: slug } },
     limit: 1,
+    locale: locale as Locale,
   })
 
-  if (!product.docs[0]) return { title: 'Product Not Found' }
+  const product = docs[0]
+
+  if (!product) {
+    return {
+      title: locale === 'vi' ? 'Không tìm thấy sản phẩm' : 'Product Not Found',
+    }
+  }
+
+  // Extract first image for og:image
+  const firstImage = product.images?.[0]?.image
+  const ogImageUrl =
+    typeof firstImage === 'object' && firstImage
+      ? firstImage.sizes?.medium?.url ?? firstImage.url
+      : null
+
+  const skuLabel = locale === 'vi' ? 'Mã' : 'SKU'
+  const skuLabelFull = locale === 'vi' ? 'Mã sản phẩm' : 'Product code'
 
   return {
-    title: product.docs[0].name,
-    description: product.docs[0].sku ? `${product.docs[0].name} - SKU: ${product.docs[0].sku}` : product.docs[0].name,
+    title: `${product.name} | VIES`,
+    description: product.sku
+      ? `${product.name} - ${skuLabel}: ${product.sku} - VIES`
+      : product.name,
+    openGraph: {
+      title: product.name,
+      description: product.sku ? `${skuLabelFull}: ${product.sku}` : undefined,
+      images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
+    },
   }
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { locale, slug } = await params
+  const payload = await getPayload({ config: await config })
   const t = await getTranslations({ locale, namespace: 'products' })
   const tNav = await getTranslations({ locale, namespace: 'nav' })
 
-  const payload = await getPayload({ config: await config })
-
-  const productResult = await payload.find({
+  // Fetch product by slug with relationships populated (Task 1.2)
+  const { docs } = await payload.find({
     collection: 'products',
     where: { slug: { equals: slug } },
     limit: 1,
+    locale: locale as Locale,
+    depth: 2, // Populate brand and categories with their data
   })
 
-  const product = productResult.docs[0]
-  if (!product) notFound()
+  const product = docs[0]
 
-  // Get related products
-  const relatedProducts = await payload.find({
-    collection: 'products',
-    where: {
-      id: { not_equals: product.id },
-      ...(typeof product.brand === 'object' && product.brand?.id ? { brand: { equals: product.brand.id } } : {}),
-    },
-    limit: 4,
-  })
+  // Return 404 if product doesn't exist (Task 1.3)
+  if (!product) {
+    notFound()
+  }
+
+  // Extract brand data
+  const brand = typeof product.brand === 'object' ? product.brand : null
+
+  // Extract categories data
+  const categories = (product.categories ?? [])
+    .map((cat) => (typeof cat === 'object' ? cat : null))
+    .filter((cat): cat is Category => cat !== null)
+
+  // Extract images for gallery
+  const images = product.images ?? []
+
+  // Extract specifications
+  const specifications = product.specifications ?? []
+
+  // Fetch related products (same category, exclude current) (AC #5)
+  const categoryIds = categories.map((cat) => cat.id)
+
+  let relatedProducts: Product[] = []
+  if (categoryIds.length > 0) {
+    const { docs: related } = await payload.find({
+      collection: 'products',
+      where: {
+        and: [{ categories: { in: categoryIds } }, { id: { not_equals: product.id } }],
+      },
+      limit: 4,
+      locale: locale as Locale,
+      depth: 1,
+    })
+    relatedProducts = related
+  }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <Breadcrumb items={[
-        { label: tNav('breadcrumb.products'), href: `/${locale}/products` },
-        { label: product.name },
-      ]} />
+    <>
+      {/* Breadcrumb (Task 1.4): Home > Sản phẩm > [Product Name] */}
+      <Breadcrumb
+        items={[
+          { label: tNav('breadcrumb.products'), href: `/${locale}/products` },
+          { label: product.name },
+        ]}
+      />
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-xl shadow-sm overflow-hidden">
-          <div className="grid md:grid-cols-2 gap-8 p-6 lg:p-8">
-            {/* Image */}
-            <div className="aspect-square bg-gray-100 rounded-xl flex items-center justify-center">
-              <div className="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center">
-                <BearingIcon className="w-16 h-16 text-gray-400" />
-              </div>
-            </div>
+      {/* Main Content */}
+      <div className="bg-white">
+        <div className="mx-auto max-w-[var(--container-max)] px-md py-lg md:py-xl">
+          {/* Product Detail Grid - Gallery + Info (Task 1.6) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-lg lg:gap-xl">
+            {/* Left: Product Gallery (Task 2) */}
+            <ProductGallery images={images} productName={product.name} />
 
-            {/* Info */}
-            <div>
+            {/* Right: Product Info (Task 3) */}
+            <div className="space-y-md">
+              {/* Product Name (H1) - Task 3.1 */}
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{product.name}</h1>
+
+              {/* SKU Badge - Task 3.2 */}
               {product.sku && (
-                <span className="inline-block text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
-                  SKU: {product.sku}
-                </span>
+                <div className="flex items-center gap-sm">
+                  <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">
+                    {product.sku}
+                  </span>
+                </div>
               )}
 
-              <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 mb-4">
-                {product.name}
-              </h1>
-
-              {typeof product.brand === 'object' && product.brand && (
-                <div className="flex items-center gap-2 mb-6">
-                  <span className="text-gray-500">
-                    {locale === 'vi' ? 'Thương hiệu:' : 'Brand:'}
-                  </span>
+              {/* Brand Link - Task 3.3 */}
+              {brand && (
+                <div className="flex items-center gap-sm">
+                  <span className="text-gray-500">{t('brand')}:</span>
                   <Link
-                    href={`/${locale}/products?brand=${product.brand.slug}`}
-                    className="font-semibold text-primary hover:underline"
+                    href={`/${locale}/products?brand=${brand.slug}`}
+                    className="text-lg text-primary hover:underline font-medium"
                   >
-                    {product.brand.name}
+                    {brand.name}
                   </Link>
                 </div>
               )}
 
-              {/* Specifications */}
-              {product.specifications && product.specifications.length > 0 && (
-                <div className="mb-6">
-                  <h3 className="font-semibold text-gray-900 mb-3">
-                    {locale === 'vi' ? 'Thông số kỹ thuật' : 'Specifications'}
-                  </h3>
-                  <div className="bg-gray-50 rounded-lg overflow-hidden">
-                    <table className="w-full text-sm">
-                      <tbody>
-                        {product.specifications.map((spec, idx) => (
-                          <tr key={idx} className="border-b border-gray-200 last:border-0">
-                            <td className="px-4 py-3 font-medium text-gray-700 bg-gray-100 w-1/3">
-                              {spec.key}
-                            </td>
-                            <td className="px-4 py-3 text-gray-900">
-                              {spec.value}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+              {/* Categories Links - Task 3.4 */}
+              {categories.length > 0 && (
+                <div className="flex items-center gap-sm flex-wrap">
+                  <span className="text-gray-500">{t('category')}:</span>
+                  {categories.map((cat, index) => (
+                    <span key={cat.id}>
+                      <Link
+                        href={`/${locale}/products?category=${cat.slug}`}
+                        className="text-gray-600 hover:text-primary hover:underline"
+                      >
+                        {cat.name}
+                      </Link>
+                      {index < categories.length - 1 && (
+                        <span className="text-gray-400 ml-1">,</span>
+                      )}
+                    </span>
+                  ))}
                 </div>
               )}
 
-              {/* CTA */}
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="tel:+84963048317"
-                  className="flex-1 min-w-[200px] bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center gap-2"
-                >
-                  <PhoneIcon className="w-5 h-5" />
-                  {locale === 'vi' ? 'Gọi ngay' : 'Call Now'}
-                </a>
+              {/* Quote Request Button (amber CTA) - Task 3.5 */}
+              <div className="pt-md">
                 <Link
-                  href={`/${locale}/contact?product=${product.slug}`}
-                  className="flex-1 min-w-[200px] bg-secondary hover:bg-secondary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors text-center"
+                  href={`/${locale}/contact?product=${encodeURIComponent(product.name)}&sku=${product.sku || ''}`}
+                  className="inline-flex items-center justify-center px-6 py-3 bg-accent text-gray-900 font-semibold rounded-lg hover:bg-accent/90 transition-colors"
                 >
                   {t('requestQuote')}
                 </Link>
@@ -140,69 +188,34 @@ export default async function ProductDetailPage({ params }: Props) {
             </div>
           </div>
 
-          {/* Description */}
+          {/* Product Description Section (Task 5) - AC #3 */}
           {product.description && (
-            <div className="border-t p-6 lg:p-8">
-              <h3 className="font-semibold text-gray-900 mb-4">
-                {locale === 'vi' ? 'Mô tả sản phẩm' : 'Product Description'}
-              </h3>
-              <div className="prose max-w-none text-gray-600">
-                {typeof product.description === 'string' ? (
-                  <p>{product.description}</p>
-                ) : (
-                  <p>{locale === 'vi' ? 'Liên hệ để biết thêm chi tiết.' : 'Contact us for more details.'}</p>
-                )}
-              </div>
-            </div>
+            <section className="mt-xl border-t border-border pt-xl">
+              <h2 className="text-xl font-semibold mb-md">{t('description')}</h2>
+              <RichTextContent data={product.description} className="prose prose-gray max-w-none" />
+            </section>
+          )}
+
+          {/* Specifications Table (Task 4) - AC #2 */}
+          {specifications.length > 0 && (
+            <SpecificationsTable specifications={specifications} title={t('specifications')} />
           )}
         </div>
+      </div>
 
-        {/* Related Products */}
-        {relatedProducts.docs.length > 0 && (
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">
-              {locale === 'vi' ? 'Sản phẩm liên quan' : 'Related Products'}
-            </h2>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.docs.map((p) => (
-                <Link
-                  key={p.id}
-                  href={`/${locale}/product/${p.slug}`}
-                  className="card overflow-hidden group"
-                >
-                  <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-                      <BearingIcon className="w-8 h-8 text-gray-400" />
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 text-sm group-hover:text-primary transition-colors line-clamp-2">
-                      {p.name}
-                    </h3>
-                  </div>
-                </Link>
+      {/* Related Products Section (Task 6) - AC #5 */}
+      {relatedProducts.length > 0 && (
+        <section className="bg-gray-50 py-xl">
+          <div className="mx-auto max-w-[var(--container-max)] px-md">
+            <h2 className="text-2xl font-semibold mb-lg">{t('relatedProducts')}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-md lg:gap-lg">
+              {relatedProducts.map((relatedProduct) => (
+                <ProductCard key={relatedProduct.id} product={relatedProduct} locale={locale} />
               ))}
             </div>
           </div>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function BearingIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
-  )
-}
-
-function PhoneIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-    </svg>
+        </section>
+      )}
+    </>
   )
 }
