@@ -233,5 +233,62 @@
     "noResults": "No results found",
     "contactEngineer": "Contact our engineer",
     "contactEngineerPhone": "Call: {phone}"
+  },
+
+  "aria": {
+    "switchTo": "Switch to {language}",
+    "dismiss": "Dismiss",
+    "close": "Close",
+    "removeFilter": "Remove {label}",
+    "galleryRegion": "Product image gallery",
+    "thumbnails": "Image thumbnails",
+    "viewImage": "View image {index} of {total}",
+    "galleryKeyboardHint": "Use left and right arrow keys to navigate between images"
+  },
+
+  "spec": {
+    "parameter": "Parameter",
+    "value": "Value"
+  },
+
+  "filter": {
+    "title": "Filters",
+    "brands": "Brands",
+    "categories": "Categories",
+    "clearAll": "Clear all",
+    "close": "Close",
+    "viewProducts": "View {count} products"
+  },
+
+  "gallery": {
+    "fallbackAlt": "Gallery image"
+  },
+
+  "meta": {
+    "productNotFound": "Product Not Found",
+    "serviceNotFound": "Service Not Found",
+    "brandNotFound": "Brand Not Found",
+    "categoryNotFound": "Category Not Found",
+    "pageNotFound": "Page Not Found",
+    "articleNotFound": "Article Not Found",
+    "searchTitle": "Search",
+    "searchDescription": "Search for bearings and industrial lubricants at VIES",
+    "productsDescription": "Discover high-quality bearings and industrial lubricants from leading brands like SKF, FAG, NSK.",
+    "brandDescription": "{brand} products - VIES supplies genuine bearings and industrial components",
+    "categoryDescription": "Products in {category} - VIES",
+    "skuLabel": "SKU",
+    "skuLabelFull": "Product code"
+  },
+
+  "category": {
+    "subcategories": "Subcategories",
+    "productsInCategory": "Products in this category",
+    "showing": "Showing {from}-{to} of {total} products",
+    "productCount": "{count} products"
+  },
+
+  "mobileCta": {
+    "call": "Call now",
+    "zalo": "Zalo chat"
   }
 }

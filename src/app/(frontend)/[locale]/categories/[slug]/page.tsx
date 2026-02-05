@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import { cache } from 'react'
 import type { Metadata } from 'next'
+import { getTranslations } from 'next-intl/server'
 import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductCard } from '@/components/ui/ProductCard'
@@ -30,10 +31,11 @@ const getCategory = cache(async (slug: string, locale: Locale) => {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const category = await getCategory(slug, locale as Locale)
+  const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
 
   if (!category) {
     return {
-      title: locale === 'vi' ? 'Không tìm thấy danh mục' : 'Category Not Found',
+      title: tMeta('categoryNotFound'),
     }
   }
 
@@ -44,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : null
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
-  const description = `${locale === 'vi' ? 'Sản phẩm' : 'Products in'} ${category.name} - VIES`
+  const description = tMeta('categoryDescription', { category: category.name })
 
   return {
     title: `${category.name} | VIES`,
@@ -66,6 +68,11 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
   const { page = '1' } = await searchParams
   const currentPage = parseInt(page, 10) || 1
   const limit = 12
+
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
+  const tCategory = await getTranslations({ locale, namespace: 'category' })
+  const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tEmpty = await getTranslations({ locale, namespace: 'empty' })
 
   const payload = await getPayload({ config: await config })
 
@@ -111,7 +118,7 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
       {/* Breadcrumb */}
       <Breadcrumb
         items={[
-          { label: locale === 'vi' ? 'Danh mục' : 'Categories', href: `/${locale}/products` },
+          { label: tNav('breadcrumb.categories'), href: `/${locale}/products` },
           { label: category.name },
         ]}
       />
@@ -135,7 +142,7 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
             <div className="flex-1">
               <h1 className="text-3xl md:text-4xl font-bold">{category.name}</h1>
               <p className="text-blue-100 mt-2">
-                {totalDocs} {locale === 'vi' ? 'sản phẩm' : 'products'}
+                {tCategory('productCount', { count: totalDocs })}
               </p>
             </div>
           </div>
@@ -156,7 +163,7 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
         {subcategories.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-text mb-4">
-              {locale === 'vi' ? 'Danh mục con' : 'Subcategories'}
+              {tCategory('subcategories')}
             </h2>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {subcategories.map((sub) => {
@@ -197,13 +204,15 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
         {/* Products Section */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
           <h2 className="text-2xl font-bold text-text">
-            {locale === 'vi' ? 'Sản phẩm trong danh mục' : 'Products in this category'}
+            {tCategory('productsInCategory')}
           </h2>
           {totalDocs > 0 && (
             <p className="text-sm text-text-muted">
-              {locale === 'vi'
-                ? `Hiển thị ${(currentPage - 1) * limit + 1}-${Math.min(currentPage * limit, totalDocs)} / ${totalDocs} sản phẩm`
-                : `Showing ${(currentPage - 1) * limit + 1}-${Math.min(currentPage * limit, totalDocs)} of ${totalDocs} products`}
+              {tCategory('showing', {
+                from: (currentPage - 1) * limit + 1,
+                to: Math.min(currentPage * limit, totalDocs),
+                total: totalDocs,
+              })}
             </p>
           )}
         </div>
@@ -211,7 +220,7 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
         {products.length === 0 ? (
           <div className="bg-white rounded-xl shadow-sm p-12 text-center">
             <p className="text-text-muted">
-              {locale === 'vi' ? 'Không có sản phẩm nào' : 'No products found'}
+              {tEmpty('noProducts')}
             </p>
           </div>
         ) : (
@@ -230,7 +239,7 @@ export default async function CategoryDetailPage({ params, searchParams }: Props
                   href={`/${locale}/categories/${slug}?page=${nextPage}`}
                   className="inline-flex items-center justify-center px-6 py-3 border border-border rounded-lg text-text hover:border-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-colors"
                 >
-                  {locale === 'vi' ? 'Xem thêm' : 'Load More'}
+                  {tCommon('loadMore')}
                 </Link>
               </div>
             )}

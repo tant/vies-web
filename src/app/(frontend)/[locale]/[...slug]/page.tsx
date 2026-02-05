@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import { getPayload } from 'payload'
+import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
 import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
@@ -15,6 +16,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
   const slugString = slug.join('/')
   const payload = await getPayload({ config: await config })
+  const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
 
   const { docs } = await payload.find({
     collection: 'pages',
@@ -26,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const page = docs[0]
   if (!page) {
-    return { title: locale === 'vi' ? 'Không tìm thấy trang' : 'Page Not Found' }
+    return { title: tMeta('pageNotFound') }
   }
 
   // Extract og:image from featuredImage
@@ -102,7 +104,7 @@ export default async function DynamicPage({ params }: Props) {
 
       {/* Layout Blocks (if any) */}
       {page.layout && page.layout.length > 0 && (
-        <RenderBlocks blocks={page.layout} locale={locale} />
+        <RenderBlocks blocks={page.layout} locale={locale as Locale} />
       )}
 
       {/* Rich Text Content (if any, separate from blocks) */}

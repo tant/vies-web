@@ -233,5 +233,62 @@
     "noResults": "Không tìm thấy kết quả",
     "contactEngineer": "Liên hệ kỹ sư tư vấn",
     "contactEngineerPhone": "Gọi: {phone}"
+  },
+
+  "aria": {
+    "switchTo": "Chuyển sang {language}",
+    "dismiss": "Đóng thông báo",
+    "close": "Đóng",
+    "removeFilter": "Xóa {label}",
+    "galleryRegion": "Thư viện hình ảnh sản phẩm",
+    "thumbnails": "Hình thu nhỏ",
+    "viewImage": "Xem hình {index} trong số {total}",
+    "galleryKeyboardHint": "Sử dụng phím mũi tên trái phải để điều hướng giữa các hình ảnh"
+  },
+
+  "spec": {
+    "parameter": "Thông số",
+    "value": "Giá trị"
+  },
+
+  "filter": {
+    "title": "Bộ lọc",
+    "brands": "Thương hiệu",
+    "categories": "Danh mục",
+    "clearAll": "Xóa tất cả",
+    "close": "Đóng",
+    "viewProducts": "Xem {count} sản phẩm"
+  },
+
+  "gallery": {
+    "fallbackAlt": "Hình ảnh thư viện"
+  },
+
+  "meta": {
+    "productNotFound": "Không tìm thấy sản phẩm",
+    "serviceNotFound": "Không tìm thấy dịch vụ",
+    "brandNotFound": "Không tìm thấy thương hiệu",
+    "categoryNotFound": "Không tìm thấy danh mục",
+    "pageNotFound": "Không tìm thấy trang",
+    "articleNotFound": "Không tìm thấy bài viết",
+    "searchTitle": "Tìm kiếm",
+    "searchDescription": "Tìm kiếm sản phẩm vòng bi, dầu mỡ công nghiệp tại VIES",
+    "productsDescription": "Khám phá các sản phẩm vòng bi, dầu mỡ công nghiệp chất lượng cao từ các thương hiệu hàng đầu như SKF, FAG, NSK.",
+    "brandDescription": "Sản phẩm {brand} - VIES cung cấp vòng bi và linh kiện công nghiệp chính hãng",
+    "categoryDescription": "Sản phẩm {category} - VIES",
+    "skuLabel": "Mã",
+    "skuLabelFull": "Mã sản phẩm"
+  },
+
+  "category": {
+    "subcategories": "Danh mục con",
+    "productsInCategory": "Sản phẩm trong danh mục",
+    "showing": "Hiển thị {from}-{to} / {total} sản phẩm",
+    "productCount": "{count} sản phẩm"
+  },
+
+  "mobileCta": {
+    "call": "Gọi ngay",
+    "zalo": "Nhắn Zalo"
   }
 }
