@@ -1,6 +1,6 @@
 # Story 6.3: Block Components for Pages
 
-Status: review
+Status: done
 
 ## Story
 
