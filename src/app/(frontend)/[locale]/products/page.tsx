@@ -1,233 +1,178 @@
 import { getTranslations } from 'next-intl/server'
-import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { ProductsPageClient } from './ProductsPageClient'
+import { SearchIcon, PhoneIcon } from '@/components/layout/icons'
+import { formatTelHref } from '@/lib/utils'
+import type { Media, Brand, Category } from '@/payload-types'
+import type { Locale } from '@/i18n/config'
 
 type Props = {
   params: Promise<{ locale: string }>
-  searchParams: Promise<{ brand?: string; category?: string; search?: string; page?: string }>
+  searchParams: Promise<{ brand?: string; category?: string; page?: string }>
 }
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'products' })
 
+  // SEO descriptions - static content for better SEO
+  const descriptions: Record<string, string> = {
+    vi: 'Khám phá các sản phẩm vòng bi, dầu mỡ công nghiệp chất lượng cao từ các thương hiệu hàng đầu như SKF, FAG, NSK.',
+    en: 'Discover high-quality bearings and industrial lubricants from leading brands like SKF, FAG, NSK.',
+  }
+
   return {
     title: t('title'),
+    description: descriptions[locale] ?? descriptions.en,
   }
 }
 
 export default async function ProductsPage({ params, searchParams }: Props) {
   const { locale } = await params
-  const { brand, category, search, page = '1' } = await searchParams
+  const { brand, category, page = '1' } = await searchParams
   const t = await getTranslations({ locale, namespace: 'products' })
-  const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const payload = await getPayload({ config: await config })
+  const tEmpty = await getTranslations({ locale, namespace: 'empty' })
   const currentPage = parseInt(page)
   const limit = 12
+  // TODO: Move to site globals when available
+  const consultPhone = '0908748304'
 
-  // Build where clause
-  const where: any = {}
-  if (brand) {
-    const brandDoc = await payload.find({ collection: 'brands', where: { slug: { equals: brand } }, limit: 1 })
-    if (brandDoc.docs[0]) {
-      where.brand = { equals: brandDoc.docs[0].id }
+  // Parse comma-separated filter values (Task 2.2)
+  const brandSlugs = brand?.split(',').filter(Boolean) || []
+  const categorySlugs = category?.split(',').filter(Boolean) || []
+
+  // Build Payload where clause (Task 2.4 - AND logic)
+  // Note: _status filter removed - Products collection has `read: publishedOnly` access control
+  const buildWhereClause = () => {
+    const conditions: any[] = []
+
+    // Brand filter - filter by brand slug
+    if (brandSlugs.length > 0) {
+      conditions.push({ 'brand.slug': { in: brandSlugs } })
     }
-  }
-  if (category) {
-    const catDoc = await payload.find({ collection: 'categories', where: { slug: { equals: category } }, limit: 1 })
-    if (catDoc.docs[0]) {
-      where.categories = { contains: catDoc.docs[0].id }
+
+    // Category filter - categories is hasMany relationship
+    if (categorySlugs.length > 0) {
+      conditions.push({ 'categories.slug': { in: categorySlugs } })
     }
-  }
-  if (search) {
-    where.or = [
-      { name: { contains: search } },
-      { sku: { contains: search } },
-    ]
+
+    return conditions.length > 0 ? { and: conditions } : {}
   }
 
-  const [products, brands, categories] = await Promise.all([
+  // Fetch products and filter options (Task 2.2, 2.3)
+  const [productsResult, brandsResult, categoriesResult] = await Promise.all([
     payload.find({
       collection: 'products',
-      where,
+      where: buildWhereClause(),
       limit,
       page: currentPage,
+      sort: 'name',
+      locale: locale as Locale,
+      depth: 1,
     }),
-    payload.find({ collection: 'brands', limit: 20 }),
-    payload.find({ collection: 'categories', limit: 20 }),
+    payload.find({
+      collection: 'brands',
+      limit: 100,
+      sort: 'name',
+      locale: locale as Locale,
+    }),
+    payload.find({
+      collection: 'categories',
+      limit: 100,
+      sort: 'order',
+      locale: locale as Locale,
+    }),
   ])
 
-  const totalPages = Math.ceil(products.totalDocs / limit)
+  // Transform products for ProductCard (Task 2.6)
+  const products = productsResult.docs.map((product) => {
+    const firstImage = product.images?.[0]?.image as Media | null
+    const productBrand = product.brand as Brand | null
+
+    return {
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      sku: product.sku || null,
+      brand: productBrand ? { name: productBrand.name } : null,
+      image: firstImage?.sizes?.thumbnail
+        ? { url: firstImage.sizes.thumbnail.url || '', alt: firstImage.alt || '' }
+        : null,
+    }
+  })
+
+  // Transform brands and categories for filter (Task 2.3)
+  const brands = brandsResult.docs.map((b) => ({
+    id: b.id,
+    name: b.name,
+    slug: b.slug,
+  }))
+
+  const categories = categoriesResult.docs.map((c) => ({
+    id: c.id,
+    name: c.name,
+    slug: c.slug,
+    parent: typeof c.parent === 'number' ? c.parent : c.parent?.id || null,
+  }))
+
+  // Active filters from URL
+  const activeFilters = {
+    brands: brandSlugs,
+    categories: categorySlugs,
+  }
+
+  // Pagination info (Task 2.7)
+  const hasMore = productsResult.hasNextPage
+  const totalProducts = productsResult.totalDocs
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <>
+      {/* Breadcrumb (Task 2.5) */}
+      <Breadcrumb items={[{ label: tNav('breadcrumb.products') }]} />
+
       {/* Header */}
-      <div className="bg-primary text-white py-12">
+      <div className="bg-primary text-white py-8 md:py-12">
         <div className="container mx-auto px-4">
-          <h1 className="text-3xl md:text-4xl font-bold mb-2">{t('title')}</h1>
-          <p className="text-blue-100">
-            {locale === 'vi'
-              ? `Hiển thị ${products.totalDocs} sản phẩm`
-              : `Showing ${products.totalDocs} products`}
-          </p>
+          <h1 className="text-2xl md:text-3xl font-bold mb-2">{t('title')}</h1>
+          <p className="text-blue-100">{t('productCount', { count: totalProducts })}</p>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 py-8">
-        <div className="flex flex-col lg:flex-row gap-8">
-          {/* Sidebar Filters */}
-          <aside className="lg:w-64 shrink-0">
-            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-24">
-              <h3 className="font-semibold text-gray-900 mb-4">{t('filter')}</h3>
-
-              {/* Search */}
-              <form className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  {tCommon('search')}
-                </label>
-                <input
-                  type="text"
-                  name="search"
-                  defaultValue={search}
-                  placeholder={locale === 'vi' ? 'Tìm theo tên, SKU...' : 'Search by name, SKU...'}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                />
-              </form>
-
-              {/* Brands */}
-              <div className="mb-6">
-                <h4 className="text-sm font-medium text-gray-700 mb-3">{t('brand')}</h4>
-                <div className="space-y-2">
-                  <Link
-                    href={`/${locale}/products${category ? `?category=${category}` : ''}`}
-                    className={`block px-3 py-2 rounded-lg text-sm transition-colors ${!brand ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
-                  >
-                    {locale === 'vi' ? 'Tất cả' : 'All'}
-                  </Link>
-                  {brands.docs.map((b) => (
-                    <Link
-                      key={b.id}
-                      href={`/${locale}/products?brand=${b.slug}${category ? `&category=${category}` : ''}`}
-                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${brand === b.slug ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
-                    >
-                      {b.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
-              {/* Categories */}
-              <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-3">{t('category')}</h4>
-                <div className="space-y-2">
-                  <Link
-                    href={`/${locale}/products${brand ? `?brand=${brand}` : ''}`}
-                    className={`block px-3 py-2 rounded-lg text-sm transition-colors ${!category ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
-                  >
-                    {locale === 'vi' ? 'Tất cả' : 'All'}
-                  </Link>
-                  {categories.docs.map((c) => (
-                    <Link
-                      key={c.id}
-                      href={`/${locale}/products?category=${c.slug}${brand ? `&brand=${brand}` : ''}`}
-                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${category === c.slug ? 'bg-primary text-white' : 'hover:bg-gray-100'}`}
-                    >
-                      {c.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </aside>
-
-          {/* Products Grid */}
-          <div className="flex-1">
-            {products.docs.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm p-12 text-center">
-                <p className="text-gray-500">{tCommon('noResults')}</p>
-              </div>
-            ) : (
-              <>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {products.docs.map((product) => (
-                    <Link
-                      key={product.id}
-                      href={`/${locale}/product/${product.slug}`}
-                      className="card overflow-hidden group"
-                    >
-                      <div className="aspect-[4/3] bg-gray-100 flex items-center justify-center">
-                        <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
-                          <BearingIcon className="w-10 h-10 text-gray-400" />
-                        </div>
-                      </div>
-                      <div className="p-5">
-                        {product.sku && (
-                          <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded">
-                            {product.sku}
-                          </span>
-                        )}
-                        <h3 className="font-semibold text-gray-900 mt-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {product.name}
-                        </h3>
-                        <div className="mt-3 flex items-center justify-between">
-                          <span className="text-sm text-gray-500">
-                            {typeof product.brand === 'object' && product.brand?.name}
-                          </span>
-                          <span className="text-primary font-medium text-sm">
-                            {tCommon('readMore')} →
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Pagination */}
-                {totalPages > 1 && (
-                  <div className="mt-8 flex justify-center gap-2">
-                    {currentPage > 1 && (
-                      <Link
-                        href={`/${locale}/products?page=${currentPage - 1}${brand ? `&brand=${brand}` : ''}${category ? `&category=${category}` : ''}`}
-                        className="px-4 py-2 bg-white rounded-lg shadow-sm hover:bg-gray-50"
-                      >
-                        ←
-                      </Link>
-                    )}
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-                      <Link
-                        key={p}
-                        href={`/${locale}/products?page=${p}${brand ? `&brand=${brand}` : ''}${category ? `&category=${category}` : ''}`}
-                        className={`px-4 py-2 rounded-lg shadow-sm ${p === currentPage ? 'bg-primary text-white' : 'bg-white hover:bg-gray-50'}`}
-                      >
-                        {p}
-                      </Link>
-                    ))}
-                    {currentPage < totalPages && (
-                      <Link
-                        href={`/${locale}/products?page=${currentPage + 1}${brand ? `&brand=${brand}` : ''}${category ? `&category=${category}` : ''}`}
-                        className="px-4 py-2 bg-white rounded-lg shadow-sm hover:bg-gray-50"
-                      >
-                        →
-                      </Link>
-                    )}
-                  </div>
-                )}
-              </>
-            )}
+      {/* Main Content (Task 2.5) */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
+        {products.length === 0 ? (
+          /* Empty state (Task 2.8) */
+          <div className="bg-white rounded-xl shadow-sm p-12 text-center max-w-md mx-auto">
+            <SearchIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <p className="text-gray-700 font-medium mb-2">{tEmpty('noProducts')}</p>
+            <p className="text-gray-500 text-sm">{tEmpty('noProductsHint')}</p>
+            <a
+              href={formatTelHref(consultPhone)}
+              className="inline-flex items-center gap-2 mt-4 text-primary hover:underline font-medium"
+            >
+              <PhoneIcon className="w-4 h-4" />
+              {tEmpty('contactEngineerPhone', { phone: consultPhone })}
+            </a>
           </div>
-        </div>
+        ) : (
+          /* Products with filters (Task 2.5, 2.6) */
+          <ProductsPageClient
+            products={products}
+            brands={brands}
+            categories={categories}
+            activeFilters={activeFilters}
+            locale={locale}
+            totalProducts={totalProducts}
+            hasMore={hasMore}
+            currentPage={currentPage}
+          />
+        )}
       </div>
-    </div>
-  )
-}
-
-function BearingIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-    </svg>
+    </>
   )
 }
