@@ -1,4 +1,5 @@
 import type { Page } from '@/payload-types'
+import type { Locale } from '@/i18n/config'
 import { HeroBlock } from './HeroBlock'
 import { ContentBlock } from './ContentBlock'
 import { CTABlock } from './CTABlock'
@@ -7,7 +8,7 @@ import { GalleryBlock } from './GalleryBlock'
 
 interface RenderBlocksProps {
   blocks: Page['layout']
-  locale: string
+  locale: Locale
 }
 
 export function RenderBlocks({ blocks, locale }: RenderBlocksProps) {
@@ -26,7 +27,7 @@ export function RenderBlocks({ blocks, locale }: RenderBlocksProps) {
           case 'faq':
             return <FAQBlock key={block.id ?? index} block={block} />
           case 'gallery':
-            return <GalleryBlock key={block.id ?? index} block={block} />
+            return <GalleryBlock key={block.id ?? index} block={block} locale={locale} />
           default:
             return null
         }

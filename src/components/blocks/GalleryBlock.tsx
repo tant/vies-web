@@ -1,14 +1,19 @@
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 import type { Page, Media } from '@/payload-types'
+import type { Locale } from '@/i18n/config'
 
 type GalleryBlockData = Extract<NonNullable<Page['layout']>[number], { blockType: 'gallery' }>
 
 interface GalleryBlockProps {
   block: GalleryBlockData
+  locale: Locale
 }
 
-export function GalleryBlock({ block }: GalleryBlockProps) {
+export async function GalleryBlock({ block, locale }: GalleryBlockProps) {
   if (!block.images?.length) return null
+
+  const t = await getTranslations({ locale, namespace: 'gallery' })
 
   return (
     <section className="py-xl">
@@ -20,7 +25,7 @@ export function GalleryBlock({ block }: GalleryBlockProps) {
           {block.images.map((item, index) => {
             const imageData = typeof item.image === 'object' ? (item.image as Media) : null
             const imageUrl = imageData?.sizes?.medium?.url ?? imageData?.url
-            const imageAlt = imageData?.alt || item.caption || 'Gallery image'
+            const imageAlt = imageData?.alt || item.caption || t('fallbackAlt')
 
             if (!imageUrl) return null
 

@@ -1,9 +1,11 @@
 interface SpecificationsTableProps {
   specifications: Array<{ key: string; value: string; id?: string | null }>
   title: string
+  parameterLabel?: string
+  valueLabel?: string
 }
 
-export function SpecificationsTable({ specifications, title }: SpecificationsTableProps) {
+export function SpecificationsTable({ specifications, title, parameterLabel = 'Parameter', valueLabel = 'Value' }: SpecificationsTableProps) {
   if (!specifications || specifications.length === 0) {
     return null
   }
@@ -15,8 +17,8 @@ export function SpecificationsTable({ specifications, title }: SpecificationsTab
         <table className="w-full">
           <thead className="sr-only">
             <tr>
-              <th scope="col">Thông số</th>
-              <th scope="col">Giá trị</th>
+              <th scope="col">{parameterLabel}</th>
+              <th scope="col">{valueLabel}</th>
             </tr>
           </thead>
           <tbody>
