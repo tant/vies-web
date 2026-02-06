@@ -29,7 +29,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const article = docs[0]
   if (!article) {
-    return { title: locale === 'vi' ? 'Không tìm thấy bài viết' : 'Article Not Found' }
+    const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
+    return { title: tMeta('articleNotFound') }
   }
 
   // Extract og:image from featuredImage

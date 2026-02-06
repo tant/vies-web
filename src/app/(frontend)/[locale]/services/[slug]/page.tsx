@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const service = docs[0]
   if (!service) {
-    return { title: locale === 'vi' ? 'Không tìm thấy dịch vụ' : 'Service Not Found' }
+    const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
+    return { title: tMeta('serviceNotFound') }
   }
 
   const imageUrl =

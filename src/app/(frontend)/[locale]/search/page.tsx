@@ -20,11 +20,10 @@ export async function generateMetadata({ params, searchParams }: Props) {
   const { q } = await searchParams
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
-  const baseTitle = locale === 'vi' ? 'Tìm kiếm' : 'Search'
+  const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
+  const baseTitle = tMeta('searchTitle')
   const title = q ? `${baseTitle}: ${q} | VIES` : `${baseTitle} | VIES`
-  const description = locale === 'vi'
-    ? 'Tìm kiếm sản phẩm vòng bi, dầu mỡ công nghiệp tại VIES'
-    : 'Search for bearings and industrial lubricants at VIES'
+  const description = tMeta('searchDescription')
 
   return {
     title,

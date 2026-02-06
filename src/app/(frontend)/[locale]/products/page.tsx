@@ -17,23 +17,20 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'products' })
+  const tMeta = await getTranslations({ locale, namespace: 'meta' })
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
-  // SEO descriptions - static content for better SEO
-  const descriptions: Record<string, string> = {
-    vi: 'Khám phá các sản phẩm vòng bi, dầu mỡ công nghiệp chất lượng cao từ các thương hiệu hàng đầu như SKF, FAG, NSK.',
-    en: 'Discover high-quality bearings and industrial lubricants from leading brands like SKF, FAG, NSK.',
-  }
+  const description = tMeta('productsDescription')
 
   return {
     title: `${t('title')} | VIES`,
-    description: descriptions[locale] ?? descriptions.en,
+    description,
     alternates: {
       canonical: `${siteUrl}/${locale}/products`,
     },
     openGraph: {
       title: t('title'),
-      description: descriptions[locale] ?? descriptions.en,
+      description,
       type: 'website',
       images: [{ url: getDefaultOgImage() }],
     },
