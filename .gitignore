@@ -48,3 +48,11 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+/.playwright-mcp/
+
+# Database backups
+/data/*.dump
+/data/*.sql
+
+# Screenshots (temporary)
+*.png
