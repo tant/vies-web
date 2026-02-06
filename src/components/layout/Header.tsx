@@ -9,6 +9,7 @@ import { cn, formatTelHref } from '@/lib/utils'
 import type { Header as HeaderType, SiteSetting, Media } from '@/payload-types'
 import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon } from './icons'
 import { SearchBar } from '@/components/ui/SearchBar'
+import { MobileSearchOverlay } from '@/components/ui/MobileSearchOverlay'
 
 interface NavigationHeaderProps {
   headerData: HeaderType
@@ -207,12 +208,12 @@ export function Header({ headerData, siteSettings }: NavigationHeaderProps) {
         </div>
       </div>
 
-      {/* Mobile search bar */}
-      {mobileSearchOpen && (
-        <div className="lg:hidden border-t border-border px-md py-2 bg-white">
-          <SearchBar variant="header" className="w-full" consultPhone={phones[1]?.number ?? phones[0]?.number} />
-        </div>
-      )}
+      {/* Mobile search overlay */}
+      <MobileSearchOverlay
+        isOpen={mobileSearchOpen}
+        onClose={() => setMobileSearchOpen(false)}
+        consultPhone={phones[1]?.number ?? phones[0]?.number}
+      />
 
       {/* Mobile menu overlay */}
       {mobileMenuOpen && (

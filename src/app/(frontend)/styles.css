@@ -176,6 +176,22 @@ img {
   animation: slide-up 0.3s ease-out;
 }
 
+/* Slide down animation (for closing MobileSearchOverlay) */
+@keyframes slide-down {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+.animate-slide-down {
+  animation: slide-down 0.25s ease-in forwards;
+}
+
 /* Toast animations */
 @keyframes fade-in-right {
   from {
@@ -210,7 +226,9 @@ img {
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in-right,
-  .animate-fade-out-right {
+  .animate-fade-out-right,
+  .animate-slide-up,
+  .animate-slide-down {
     animation: none;
   }
 }
