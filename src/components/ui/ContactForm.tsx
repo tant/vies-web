@@ -56,6 +56,7 @@ const SUBJECT_OPTIONS = [
 export function ContactForm({ locale, onSuccess }: ContactFormProps) {
   const t = useTranslations('contact')
   const tForms = useTranslations('forms')
+  const tAria = useTranslations('aria')
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -213,7 +214,7 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             <button
               onClick={() => setToast({ type: null, message: '' })}
               className="flex-shrink-0 hover:opacity-80"
-              aria-label="Dismiss"
+              aria-label={tAria('dismiss')}
             >
               <XIcon className="w-5 h-5" />
             </button>

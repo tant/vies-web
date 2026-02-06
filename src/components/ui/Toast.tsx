@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState, useCallback } from 'react'
+import { useTranslations } from 'next-intl'
 import {
   CheckCircleIcon,
   XCircleIcon,
@@ -48,12 +49,17 @@ export function Toast({
   type,
   message,
   duration,
-  retryLabel = 'Thử lại',
+  retryLabel,
   onRetry,
   onDismiss,
-  dismissLabel = 'Đóng thông báo',
+  dismissLabel,
 }: ToastProps) {
+  const t = useTranslations('toast')
+  const tAria = useTranslations('aria')
   const [isExiting, setIsExiting] = useState(false)
+
+  const finalRetryLabel = retryLabel ?? t('retry')
+  const finalDismissLabel = dismissLabel ?? tAria('dismiss')
 
   const handleDismiss = useCallback(() => {
     setIsExiting(true)
@@ -97,14 +103,14 @@ export function Toast({
             onClick={onRetry}
             className="mt-2 text-sm underline hover:no-underline focus:outline-none focus:ring-2 focus:ring-white/50 rounded"
           >
-            {retryLabel}
+            {finalRetryLabel}
           </button>
         )}
       </div>
       <button
         onClick={handleDismiss}
         className="flex-shrink-0 p-1 rounded hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-white/50"
-        aria-label={dismissLabel}
+        aria-label={finalDismissLabel}
       >
         <XIcon className="w-4 h-4" aria-hidden="true" />
       </button>

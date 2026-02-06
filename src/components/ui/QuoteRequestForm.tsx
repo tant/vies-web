@@ -48,6 +48,7 @@ const validateEmail = (email: string): boolean => {
 
 export function QuoteRequestForm({ productName, productSku, locale, onClose }: QuoteRequestFormProps) {
   const t = useTranslations('forms')
+  const tAria = useTranslations('aria')
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -196,7 +197,7 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
             <button
               onClick={() => setToast({ type: null, message: '' })}
               className="flex-shrink-0 hover:opacity-80"
-              aria-label="Dismiss"
+              aria-label={tAria('dismiss')}
             >
               <XIcon className="w-5 h-5" />
             </button>
@@ -365,6 +366,7 @@ export function QuoteRequestModal({
   productSku,
   locale,
 }: QuoteRequestModalProps) {
+  const tAria = useTranslations('aria')
   const modalRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
 
@@ -447,7 +449,7 @@ export function QuoteRequestModal({
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 z-10"
-          aria-label="Close"
+          aria-label={tAria('close')}
         >
           <XIcon className="w-6 h-6" />
         </button>

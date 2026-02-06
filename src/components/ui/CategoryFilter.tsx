@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 // Props interface (Task 1.2)
 export interface CategoryFilterProps {
@@ -25,6 +26,8 @@ export function CategoryFilter({
   const searchParams = useSearchParams()
   const router = useRouter()
   const pathname = usePathname()
+  const t = useTranslations('filter')
+  const tAria = useTranslations('aria')
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
     brands: true,
@@ -133,33 +136,41 @@ export function CategoryFilter({
       {hasActiveFilters && (
         <div className="pb-4 border-b border-gray-200">
           <div className="flex flex-wrap gap-2 mb-3">
-            {activeFilters.brands.map((slug) => (
-              <FilterChip
-                key={`brand-${slug}`}
-                label={getBrandName(slug)}
-                onRemove={() => handleFilterChange('brand', slug, false)}
-              />
-            ))}
-            {activeFilters.categories.map((slug) => (
-              <FilterChip
-                key={`category-${slug}`}
-                label={getCategoryName(slug)}
-                onRemove={() => handleFilterChange('category', slug, false)}
-              />
-            ))}
+            {activeFilters.brands.map((slug) => {
+              const brandName = getBrandName(slug)
+              return (
+                <FilterChip
+                  key={`brand-${slug}`}
+                  label={brandName}
+                  onRemove={() => handleFilterChange('brand', slug, false)}
+                  removeAriaLabel={tAria('removeFilter', { label: brandName })}
+                />
+              )
+            })}
+            {activeFilters.categories.map((slug) => {
+              const categoryName = getCategoryName(slug)
+              return (
+                <FilterChip
+                  key={`category-${slug}`}
+                  label={categoryName}
+                  onRemove={() => handleFilterChange('category', slug, false)}
+                  removeAriaLabel={tAria('removeFilter', { label: categoryName })}
+                />
+              )
+            })}
           </div>
           <button
             onClick={clearAllFilters}
             className="text-sm text-gray-500 hover:text-primary transition-colors"
           >
-            {locale === 'vi' ? 'Xóa tất cả' : 'Clear all'}
+            {t('clearAll')}
           </button>
         </div>
       )}
 
       {/* Brands filter group (Task 1.4) */}
       <FilterGroup
-        title={locale === 'vi' ? 'Thương hiệu' : 'Brands'}
+        title={t('brands')}
         isExpanded={expandedGroups.brands}
         onToggle={() => toggleGroup('brands')}
       >
@@ -176,7 +187,7 @@ export function CategoryFilter({
 
       {/* Categories filter group (Task 1.4) */}
       <FilterGroup
-        title={locale === 'vi' ? 'Danh mục' : 'Categories'}
+        title={t('categories')}
         isExpanded={expandedGroups.categories}
         onToggle={() => toggleGroup('categories')}
       >
@@ -210,7 +221,7 @@ export function CategoryFilter({
           aria-controls="mobile-filter-sheet"
         >
           <FilterIcon />
-          {locale === 'vi' ? 'Bộ lọc' : 'Filters'}
+          {t('title')}
           {activeCount > 0 && (
             <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
               {activeCount}
@@ -246,7 +257,7 @@ export function CategoryFilter({
             {/* Header */}
             <div className="sticky top-0 bg-white border-b border-gray-200 p-4 flex justify-between items-center">
               <h3 id="filter-sheet-title" className="font-semibold text-lg">
-                {locale === 'vi' ? 'Bộ lọc' : 'Filters'}
+                {t('title')}
               </h3>
               <button
                 onClick={() => {
@@ -254,7 +265,7 @@ export function CategoryFilter({
                   triggerButtonRef.current?.focus()
                 }}
                 className="p-2 -mr-2 hover:bg-gray-100 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                aria-label={locale === 'vi' ? 'Đóng' : 'Close'}
+                aria-label={tAria('close')}
               >
                 <XIcon />
               </button>
@@ -272,9 +283,7 @@ export function CategoryFilter({
                 }}
                 className="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 transition-colors"
               >
-                {locale === 'vi'
-                  ? `Xem ${totalProducts} sản phẩm`
-                  : `View ${totalProducts} products`}
+                {t('viewProducts', { count: totalProducts })}
               </button>
             </div>
           </div>
@@ -345,14 +354,14 @@ function FilterCheckbox({
 }
 
 // Filter Chip Component (Task 1.5)
-function FilterChip({ label, onRemove }: { label: string; onRemove: () => void }) {
+function FilterChip({ label, onRemove, removeAriaLabel }: { label: string; onRemove: () => void; removeAriaLabel: string }) {
   return (
     <span className="inline-flex items-center gap-1 bg-primary/10 text-primary rounded-full px-3 py-1 text-sm">
       {label}
       <button
         onClick={onRemove}
         className="p-0.5 hover:bg-primary/20 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-        aria-label={`Remove ${label}`}
+        aria-label={removeAriaLabel}
       >
         <XIcon className="w-3 h-3" />
       </button>

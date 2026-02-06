@@ -24,6 +24,7 @@ interface ContactInfoProps {
 
 export async function ContactInfo({ contact, social, locale }: ContactInfoProps) {
   const t = await getTranslations({ locale, namespace: 'contact' })
+  const tCommon = await getTranslations({ locale, namespace: 'common' })
 
   return (
     <div className="space-y-6">
@@ -65,7 +66,7 @@ export async function ContactInfo({ contact, social, locale }: ContactInfoProps)
         <div className="flex gap-3">
           <MailIcon className="w-5 h-5 text-primary shrink-0 mt-1" />
           <div>
-            <h3 className="font-semibold text-text text-sm mb-1">Email</h3>
+            <h3 className="font-semibold text-text text-sm mb-1">{tCommon('email')}</h3>
             <a
               href={`mailto:${contact.email}`}
               className="text-primary hover:underline text-sm break-all"

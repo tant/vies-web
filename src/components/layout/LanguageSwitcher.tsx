@@ -1,12 +1,13 @@
 'use client'
 
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 import { usePathname } from '@/i18n/navigation'
 import { locales, localeDisplay, type Locale } from '@/i18n/config'
 
 export function LanguageSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
+  const t = useTranslations('aria')
 
   const getLocalizedHref = (targetLocale: Locale) => {
     return `/${targetLocale}${pathname}`
@@ -26,7 +27,7 @@ export function LanguageSwitcher() {
                 ? 'bg-white/20 font-semibold'
                 : 'hover:bg-white/10'
             }`}
-            aria-label={`Switch to ${display.label}`}
+            aria-label={t('switchTo', { language: display.label })}
             aria-current={isActive ? 'true' : undefined}
           >
             <span>{display.flag}</span>
