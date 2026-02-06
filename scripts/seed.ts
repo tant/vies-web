@@ -609,68 +609,110 @@ const seedData = async () => {
   console.log('🔧 Creating services...')
   const servicesData = [
     {
-      title: 'Tư vấn kỹ thuật',
+      title: { vi: 'Tư vấn kỹ thuật', en: 'Technical Consulting' },
       slug: 'tu-van-ky-thuat',
-      excerpt: 'Đội ngũ chuyên gia giàu kinh nghiệm sẵn sàng tư vấn loại vòng bi phù hợp nhất với điều kiện làm việc và yêu cầu kỹ thuật của từng máy móc. Chúng tôi giúp bạn chọn đúng loại chất bôi trơn để tăng tuổi thọ và hiệu suất của thiết bị.',
-      benefits: [
-        { text: 'Tư vấn lựa chọn vòng bi phù hợp với điều kiện làm việc' },
-        { text: 'Lựa chọn chất bôi trơn tối ưu cho thiết bị' },
-        { text: 'Hỗ trợ kỹ thuật toàn diện trong quá trình lắp đặt và bảo trì' },
-        { text: 'Tiết kiệm chi phí và tăng năng suất máy móc' },
-      ],
+      excerpt: {
+        vi: 'Đội ngũ chuyên gia giàu kinh nghiệm sẵn sàng tư vấn loại vòng bi phù hợp nhất với điều kiện làm việc và yêu cầu kỹ thuật của từng máy móc. Chúng tôi giúp bạn chọn đúng loại chất bôi trơn để tăng tuổi thọ và hiệu suất của thiết bị.',
+        en: 'Our experienced team of experts is ready to advise on the most suitable bearing type for your working conditions and technical requirements. We help you choose the right lubricant to extend equipment life and performance.',
+      },
+      benefits: {
+        vi: [
+          { text: 'Tư vấn lựa chọn vòng bi phù hợp với điều kiện làm việc' },
+          { text: 'Lựa chọn chất bôi trơn tối ưu cho thiết bị' },
+          { text: 'Hỗ trợ kỹ thuật toàn diện trong quá trình lắp đặt và bảo trì' },
+          { text: 'Tiết kiệm chi phí và tăng năng suất máy móc' },
+        ],
+        en: [
+          { text: 'Expert advice on selecting bearings suitable for working conditions' },
+          { text: 'Optimal lubricant selection for your equipment' },
+          { text: 'Comprehensive technical support during installation and maintenance' },
+          { text: 'Cost savings and increased machine productivity' },
+        ],
+      },
       order: 1,
     },
     {
-      title: 'Đo và phân tích rung động',
+      title: { vi: 'Đo và phân tích rung động', en: 'Vibration Measurement & Analysis' },
       slug: 'do-va-phan-tich-rung-dong',
-      excerpt: 'Dịch vụ đo và phân tích rung động giúp phát hiện sớm các vấn đề tiềm ẩn của vòng bi và thiết bị quay. Bằng việc giám sát tình trạng rung động, chúng tôi giúp bạn lên kế hoạch bảo trì chủ động, tránh hỏng hóc bất ngờ và giảm thiểu thời gian dừng máy.',
-      benefits: [
-        { text: 'Phát hiện sớm hư hỏng vòng bi và thiết bị' },
-        { text: 'Lập kế hoạch bảo trì chủ động' },
-        { text: 'Giảm thiểu thời gian dừng máy ngoài kế hoạch' },
-        { text: 'Kéo dài tuổi thọ thiết bị' },
-      ],
+      excerpt: {
+        vi: 'Dịch vụ đo và phân tích rung động giúp phát hiện sớm các vấn đề tiềm ẩn của vòng bi và thiết bị quay. Bằng việc giám sát tình trạng rung động, chúng tôi giúp bạn lên kế hoạch bảo trì chủ động, tránh hỏng hóc bất ngờ và giảm thiểu thời gian dừng máy.',
+        en: 'Our vibration measurement and analysis service helps detect potential issues in bearings and rotating equipment early. By monitoring vibration conditions, we help you plan proactive maintenance, avoid unexpected failures and minimize downtime.',
+      },
+      benefits: {
+        vi: [
+          { text: 'Phát hiện sớm hư hỏng vòng bi và thiết bị' },
+          { text: 'Lập kế hoạch bảo trì chủ động' },
+          { text: 'Giảm thiểu thời gian dừng máy ngoài kế hoạch' },
+          { text: 'Kéo dài tuổi thọ thiết bị' },
+        ],
+        en: [
+          { text: 'Early detection of bearing and equipment damage' },
+          { text: 'Proactive maintenance planning' },
+          { text: 'Minimize unplanned machine downtime' },
+          { text: 'Extend equipment lifespan' },
+        ],
+      },
       order: 2,
     },
     {
-      title: 'Tư vấn lắp đặt và bôi trơn vòng bi',
+      title: { vi: 'Tư vấn lắp đặt và bôi trơn vòng bi', en: 'Bearing Installation & Lubrication Consulting' },
       slug: 'tu-van-lap-dat-va-boi-tron',
-      excerpt: 'Lắp đặt đúng cách và bôi trơn phù hợp là yếu tố quan trọng quyết định tuổi thọ của vòng bi. Chúng tôi cung cấp dịch vụ hướng dẫn lắp đặt tại chỗ, tư vấn quy trình bôi trơn và lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng cụ thể.',
-      benefits: [
-        { text: 'Hướng dẫn lắp đặt vòng bi đúng kỹ thuật' },
-        { text: 'Tư vấn quy trình bôi trơn đúng cách' },
-        { text: 'Lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng' },
-        { text: 'Tăng tuổi thọ vòng bi và giảm chi phí thay thế' },
-      ],
+      excerpt: {
+        vi: 'Lắp đặt đúng cách và bôi trơn phù hợp là yếu tố quan trọng quyết định tuổi thọ của vòng bi. Chúng tôi cung cấp dịch vụ hướng dẫn lắp đặt tại chỗ, tư vấn quy trình bôi trơn và lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng cụ thể.',
+        en: 'Proper installation and appropriate lubrication are key factors determining bearing lifespan. We provide on-site installation guidance, lubrication process consulting, and help select the right grease/oil for each specific application.',
+      },
+      benefits: {
+        vi: [
+          { text: 'Hướng dẫn lắp đặt vòng bi đúng kỹ thuật' },
+          { text: 'Tư vấn quy trình bôi trơn đúng cách' },
+          { text: 'Lựa chọn loại mỡ/dầu phù hợp cho từng ứng dụng' },
+          { text: 'Tăng tuổi thọ vòng bi và giảm chi phí thay thế' },
+        ],
+        en: [
+          { text: 'Technical guidance for proper bearing installation' },
+          { text: 'Correct lubrication process consulting' },
+          { text: 'Appropriate grease/oil selection for each application' },
+          { text: 'Extended bearing life and reduced replacement costs' },
+        ],
+      },
       order: 3,
     },
   ]
 
+  // Delete existing services first to recreate with proper data
+  const existingServices = await payload.find({
+    collection: 'services',
+    limit: 100,
+  })
+  for (const existing of existingServices.docs) {
+    await payload.delete({
+      collection: 'services',
+      id: existing.id,
+    })
+    console.log(`  🗑️ Deleted existing service: ${existing.title}`)
+  }
+
   for (const service of servicesData) {
     try {
-      const existing = await payload.find({
+      // Create service with VI locale (default)
+      await payload.create({
         collection: 'services',
-        where: { slug: { equals: service.slug } },
+        data: {
+          title: service.title.vi,
+          slug: service.slug,
+          excerpt: service.excerpt.vi,
+          benefits: service.benefits.vi,
+          order: service.order,
+          _status: 'published',
+        },
       })
 
-      if (existing.docs.length === 0) {
-        await payload.create({
-          collection: 'services',
-          data: {
-            title: service.title,
-            slug: service.slug,
-            excerpt: service.excerpt,
-            benefits: service.benefits,
-            order: service.order,
-            _status: 'published',
-          },
-        })
-        console.log(`  ✓ Created service: ${service.title}`)
-      } else {
-        console.log(`  - Service exists: ${service.title}`)
-      }
+      // Note: EN locale for services needs to be updated manually in admin
+      // due to PayloadCMS validation issues with required localized array fields
+
+      console.log(`  ✓ Created service: ${service.title.vi}`)
     } catch (error) {
-      console.error(`  ✗ Error creating service ${service.title}:`, error)
+      console.error(`  ✗ Error creating service ${service.title.vi}:`, error)
     }
   }
 
