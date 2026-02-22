@@ -104,11 +104,17 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
     setLastSubmittedData(formData)
 
     try {
+      // Look up form ID by title
+      const formLookup = await fetch('/api/forms?where[title][equals]=Quote Request&limit=1')
+      const formLookupData = await formLookup.json()
+      const formId = formLookupData.docs?.[0]?.id
+      if (!formId) throw new Error('Quote Request form not found')
+
       const response = await fetch('/api/form-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          form: 'quote-request',
+          form: formId,
           submissionData: [
             { field: 'name', value: formData.name },
             { field: 'phone', value: formData.phone },

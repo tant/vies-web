@@ -117,11 +117,17 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
     setLastSubmittedData(formData)
 
     try {
+      // Look up form ID by title
+      const formLookup = await fetch('/api/forms?where[title][equals]=Contact&limit=1')
+      const formLookupData = await formLookup.json()
+      const formId = formLookupData.docs?.[0]?.id
+      if (!formId) throw new Error('Contact form not found')
+
       const response = await fetch('/api/form-submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          form: 'contact',
+          form: formId,
           submissionData: [
             { field: 'name', value: formData.name },
             { field: 'phone', value: formData.phone },
