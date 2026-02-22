@@ -108,10 +108,10 @@
     </check>
   </step>
 
-  <step n="4" goal="Present findings summary">
+  <step n="4" goal="Present findings and fix them">
     <action>Categorize findings: HIGH (must fix), MEDIUM (should fix), LOW (nice to fix)</action>
     <action>Set {{fixed_count}} = 0</action>
-    <action>Set {{unclear_issues}} = empty list</action>
+    <action>Set {{action_count}} = 0</action>
 
     <output>**🔥 CODE REVIEW FINDINGS, {user_name}!**
 
@@ -119,7 +119,7 @@
       **Git vs Story Discrepancies:** {{git_discrepancy_count}} found
       **Issues Found:** {{high_count}} High, {{medium_count}} Medium, {{low_count}} Low
 
-      ## 🔴 CRITICAL/HIGH ISSUES
+      ## 🔴 CRITICAL ISSUES
       - Tasks marked [x] but not actually implemented
       - Acceptance Criteria not implemented
       - Story claims files changed but no git evidence
@@ -136,99 +136,39 @@
       - Code style improvements
       - Documentation gaps
       - Git commit message quality
-
-      ---
-      🔧 **Auto-fix mode enabled** - Researching best practices and applying fixes...
     </output>
-  </step>
 
-  <step n="5" goal="Research best practices and apply fixes">
-    <critical>For EACH issue found (HIGH and MEDIUM priority), research and fix</critical>
+    <ask>What should I do with these issues?
 
-    <action>For EACH HIGH and MEDIUM issue:
-      1. **Research Phase**:
-         - Search codebase for similar patterns/implementations
-         - Consider project conventions from {project_context}
-         - Apply industry best practices for the tech stack
-         - Determine clear solution based on research
+      1. **Fix them automatically** - I'll update the code and tests
+      2. **Create action items** - Add to story Tasks/Subtasks for later
+      3. **Show me details** - Deep dive into specific issues
 
-      2. **Solution Clarity Check**:
-         - If solution is CLEAR → proceed to fix
-         - If solution is UNCLEAR (multiple valid approaches, architectural decision, business logic) → add to {{unclear_issues}}
+      Choose [1], [2], or specify which issue to examine:</ask>
 
-      3. **Apply Fix** (if solution clear):
-         - Implement the fix following project conventions
-         - Add/update tests if applicable
-         - Record: issue description, solution applied, files changed
-         - Increment {{fixed_count}}
-    </action>
-
-    <!-- Handle unclear issues - ask user -->
-    <check if="{{unclear_issues}} is not empty">
-      <output>**⚠️ Need clarification on {{unclear_issues.length}} issue(s):**</output>
-
-      <action>For EACH unclear issue:
-        <ask>**Issue:** {{issue_description}}
-          **Context:** {{issue_context}}
-          **Possible approaches:**
-          1. {{approach_1}}
-          2. {{approach_2}}
-
-          Which approach should I use? (or describe your preferred solution)</ask>
-
-        <action>Apply user's chosen solution</action>
-        <action>Increment {{fixed_count}}</action>
-      </action>
+    <check if="user chooses 1">
+      <action>Fix all HIGH and MEDIUM issues in the code</action>
+      <action>Add/update tests as needed</action>
+      <action>Update File List in story if files changed</action>
+      <action>Update story Dev Agent Record with fixes applied</action>
+      <action>Set {{fixed_count}} = number of HIGH and MEDIUM issues fixed</action>
+      <action>Set {{action_count}} = 0</action>
     </check>
 
-    <!-- Update story with all fixes -->
-    <action>Update File List in story if files changed</action>
-    <action>Update story Dev Agent Record with all fixes applied:
-      ```
-      ### Code Review Fixes Applied
-      - [Issue description] → [Solution applied] (file:line)
-      ```
-    </action>
-
-    <output>**✅ Fixed {{fixed_count}} issues**</output>
-  </step>
-
-  <step n="6" goal="Commit all changes">
-    <critical>Commit all fixes with a descriptive commit message</critical>
-
-    <!-- Stage all changed files -->
-    <action>Run `git status --porcelain` to list all changed files</action>
-    <action>Stage all modified/new files related to the fixes (exclude unrelated files)</action>
-
-    <!-- Create commit message -->
-    <action>Generate commit message following project conventions:
-      ```
-      fix(review): {{story_key}} - address code review findings
-
-      Fixes applied:
-      {{#each fixed_issues}}
-      - {{severity}}: {{description}}
-      {{/each}}
-
-      Story: {{story_file}}
-      ```
-    </action>
-
-    <action>Run `git commit` with the generated message</action>
-
-    <check if="commit fails">
-      <output>⚠️ Commit failed. Please review staged changes and commit manually.</output>
-      <action>Run `git status` to show current state</action>
+    <check if="user chooses 2">
+      <action>Add "Review Follow-ups (AI)" subsection to Tasks/Subtasks</action>
+      <action>For each issue: `- [ ] [AI-Review][Severity] Description [file:line]`</action>
+      <action>Set {{action_count}} = number of action items created</action>
+      <action>Set {{fixed_count}} = 0</action>
     </check>
 
-    <check if="commit succeeds">
-      <output>**✅ Changes committed successfully!**
-        Commit: `fix(review): {{story_key}} - address code review findings`
-      </output>
+    <check if="user chooses 3">
+      <action>Show detailed explanation with code examples</action>
+      <action>Return to fix decision</action>
     </check>
   </step>
 
-  <step n="7" goal="Update story status and sync sprint tracking">
+  <step n="5" goal="Update story status and sync sprint tracking">
     <!-- Determine new status based on review outcome -->
     <check if="all HIGH and MEDIUM issues fixed AND all ACs implemented">
       <action>Set {{new_status}} = "done"</action>
@@ -278,9 +218,9 @@
 
       **Story Status:** {{new_status}}
       **Issues Fixed:** {{fixed_count}}
-      **Commit:** fix(review): {{story_key}}
+      **Action Items Created:** {{action_count}}
 
-      {{#if new_status == "done"}}Code review complete! All issues fixed and committed.{{else}}Some issues may need manual attention. Please review and continue development.{{/if}}
+      {{#if new_status == "done"}}Code review complete!{{else}}Address the action items and continue development.{{/if}}
     </output>
   </step>
 
