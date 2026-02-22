@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: ContactPageProps): Promise<Me
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
-    title: `${t('title')} | VIES`,
+    title: t('title'),
     description: t('subtitle'),
     alternates: {
       canonical: `${siteUrl}/${locale}/contact`,
@@ -48,7 +48,7 @@ export default async function ContactPage({ params }: ContactPageProps) {
   const address = contact.address || 'VIES Vietnam'
 
   return (
-    <main>
+    <>
       {/* Breadcrumb - AC #8 */}
       <Breadcrumb items={[{ label: t('title') }]} />
 
@@ -87,6 +87,6 @@ export default async function ContactPage({ params }: ContactPageProps) {
           </div>
         </div>
       </div>
-    </main>
+    </>
   )
 }

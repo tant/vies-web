@@ -2,15 +2,18 @@
 
 import { useLocale, useTranslations } from 'next-intl'
 import { usePathname } from '@/i18n/navigation'
+import { useSearchParams } from 'next/navigation'
 import { locales, localeDisplay, type Locale } from '@/i18n/config'
 
 export function LanguageSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
+  const searchParams = useSearchParams()
   const t = useTranslations('aria')
 
   const getLocalizedHref = (targetLocale: Locale) => {
-    return `/${targetLocale}${pathname}`
+    const search = searchParams.toString()
+    return `/${targetLocale}${pathname}${search ? `?${search}` : ''}`
   }
 
   return (
