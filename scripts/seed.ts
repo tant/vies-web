@@ -607,6 +607,89 @@ const seedData = async () => {
     }
   }
 
+  // Create news articles
+  console.log('📰 Creating news articles...')
+  const newsData = [
+    {
+      title: { vi: 'Hướng dẫn chọn mỡ bôi trơn phù hợp cho vòng bi công nghiệp', en: 'Guide to Choosing the Right Lubricant for Industrial Bearings' },
+      slug: 'huong-dan-chon-mo-boi-tron',
+      excerpt: {
+        vi: 'Việc lựa chọn đúng loại mỡ bôi trơn là yếu tố quan trọng giúp kéo dài tuổi thọ vòng bi và giảm chi phí bảo trì. Bài viết này sẽ hướng dẫn bạn cách chọn mỡ phù hợp dựa trên điều kiện vận hành.',
+        en: 'Choosing the right lubricant is a key factor in extending bearing life and reducing maintenance costs. This article guides you on selecting the appropriate grease based on operating conditions.',
+      },
+      content: {
+        vi: 'Mỡ bôi trơn đóng vai trò quan trọng trong việc bảo vệ vòng bi khỏi ma sát, mài mòn và ăn mòn. Việc lựa chọn đúng loại mỡ phụ thuộc vào nhiều yếu tố: nhiệt độ hoạt động, tốc độ quay, tải trọng, và môi trường làm việc. SKF LGMT 2 phù hợp cho hầu hết ứng dụng thông thường, trong khi LGEP 2 được khuyên dùng cho môi trường tải nặng. Đối với môi trường ẩm ướt, LGNL 2 là lựa chọn tối ưu nhờ khả năng chống nước xuất sắc.',
+        en: 'Lubricating grease plays a crucial role in protecting bearings from friction, wear and corrosion. Choosing the right grease depends on several factors: operating temperature, rotational speed, load, and working environment. SKF LGMT 2 is suitable for most general applications, while LGEP 2 is recommended for heavy-load environments. For wet environments, LGNL 2 is the optimal choice thanks to its excellent water resistance.',
+      },
+      publishedAt: '2025-12-15T08:00:00.000Z',
+    },
+    {
+      title: { vi: '5 dấu hiệu nhận biết vòng bi cần thay thế', en: '5 Signs Your Bearings Need Replacement' },
+      slug: '5-dau-hieu-vong-bi-can-thay-the',
+      excerpt: {
+        vi: 'Phát hiện sớm các dấu hiệu hư hỏng vòng bi giúp tránh sự cố dừng máy ngoài kế hoạch và giảm thiểu thiệt hại. Tìm hiểu 5 dấu hiệu quan trọng nhất cần chú ý.',
+        en: 'Early detection of bearing damage signs helps avoid unplanned downtime and minimize losses. Learn the 5 most important signs to watch for.',
+      },
+      content: {
+        vi: 'Vòng bi là bộ phận quan trọng trong hầu hết máy móc công nghiệp. Dưới đây là 5 dấu hiệu cho thấy vòng bi cần được thay thế: 1) Tiếng ồn bất thường - tiếng rít, tiếng gõ hoặc tiếng ồn tăng dần; 2) Rung động quá mức - có thể phát hiện bằng thiết bị đo rung hoặc cảm nhận bằng tay; 3) Nhiệt độ tăng cao - vòng bi hoạt động nóng hơn bình thường; 4) Rò rỉ mỡ bôi trơn - dấu hiệu phớt bị hỏng; 5) Độ rơ tăng - trục quay có độ rung lắc. Liên hệ VIES để được tư vấn kiểm tra và thay thế vòng bi kịp thời.',
+        en: 'Bearings are critical components in most industrial machinery. Here are 5 signs indicating bearings need replacement: 1) Unusual noise - squealing, knocking or gradually increasing noise; 2) Excessive vibration - detectable with vibration measuring equipment or by hand; 3) Elevated temperature - bearing running hotter than normal; 4) Grease leakage - signs of seal damage; 5) Increased play - shaft has wobble or looseness. Contact VIES for timely bearing inspection and replacement consulting.',
+      },
+      publishedAt: '2026-01-20T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'VIES trở thành nhà phân phối ủy quyền Lincoln tại Việt Nam', en: 'VIES Becomes Authorized Lincoln Distributor in Vietnam' },
+      slug: 'vies-nha-phan-phoi-lincoln',
+      excerpt: {
+        vi: 'VIES chính thức trở thành nhà phân phối ủy quyền của Lincoln Industrial tại Việt Nam, mở rộng danh mục sản phẩm hệ thống bôi trơn tập trung và thiết bị bơm mỡ tự động.',
+        en: 'VIES has officially become an authorized distributor of Lincoln Industrial in Vietnam, expanding our centralized lubrication systems and automatic grease pump product portfolio.',
+      },
+      content: {
+        vi: 'VIES vui mừng thông báo đã chính thức trở thành nhà phân phối ủy quyền của Lincoln Industrial - thương hiệu hàng đầu thế giới về hệ thống bôi trơn tập trung. Với sự hợp tác này, VIES sẽ cung cấp đầy đủ các giải pháp bôi trơn tự động từ Lincoln, bao gồm hệ thống bôi trơn tập trung, bơm mỡ điện và bơm mỡ khí nén. Đây là bước tiến quan trọng trong chiến lược mở rộng danh mục sản phẩm, giúp VIES phục vụ khách hàng tốt hơn với giải pháp bôi trơn toàn diện.',
+        en: 'VIES is pleased to announce our official partnership as an authorized distributor of Lincoln Industrial - a world-leading brand in centralized lubrication systems. With this partnership, VIES will provide comprehensive Lincoln automatic lubrication solutions, including centralized lubrication systems, electric grease pumps and pneumatic grease pumps. This is an important step in our product portfolio expansion strategy, enabling VIES to better serve customers with comprehensive lubrication solutions.',
+      },
+      publishedAt: '2026-02-10T08:00:00.000Z',
+    },
+  ]
+
+  for (const article of newsData) {
+    try {
+      const existing = await payload.find({
+        collection: 'news',
+        where: { slug: { equals: article.slug } },
+      })
+
+      if (existing.docs.length === 0) {
+        const created = await payload.create({
+          collection: 'news',
+          data: {
+            title: article.title.vi,
+            slug: article.slug,
+            excerpt: article.excerpt.vi,
+            content: makeRichText(article.content.vi),
+            publishedAt: article.publishedAt,
+            _status: 'published',
+          },
+        })
+        // Seed English locale
+        await payload.update({
+          collection: 'news',
+          id: created.id,
+          locale: 'en',
+          data: {
+            title: article.title.en,
+            excerpt: article.excerpt.en,
+            content: makeRichText(article.content.en),
+          },
+        })
+        console.log(`  ✓ Created news: ${article.title.vi}`)
+      } else {
+        console.log(`  - News exists: ${article.title.vi}`)
+      }
+    } catch (error) {
+      console.error(`  ✗ Error creating news ${article.title.vi}:`, error)
+    }
+  }
+
   // Create services
   console.log('🔧 Creating services...')
   const servicesData = [

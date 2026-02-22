@@ -17,7 +17,10 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+
 export const metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
     default: 'VIES - Vòng bi & Linh kiện công nghiệp',
     template: '%s | VIES',
