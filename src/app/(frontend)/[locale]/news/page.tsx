@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
-    title: `${t('title')} | VIES`,
+    title: t('title'),
     description: t('description'),
     alternates: {
       canonical: `${siteUrl}/${locale}/news`,

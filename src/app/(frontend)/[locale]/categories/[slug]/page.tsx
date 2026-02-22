@@ -51,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description = tMeta('categoryDescription', { category: category.name })
 
   return {
-    title: `${category.name} | VIES`,
+    title: category.name,
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/categories/${slug}`,

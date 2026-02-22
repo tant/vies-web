@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : 'Technical consulting services for bearings, vibration analysis, installation and lubrication from VIES'
 
   return {
-    title: `${t('title')} | VIES`,
+    title: t('title'),
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/services`,

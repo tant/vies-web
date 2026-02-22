@@ -22,7 +22,7 @@ export async function generateMetadata({ params, searchParams }: Props) {
 
   const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
   const baseTitle = tMeta('searchTitle')
-  const title = q ? `${baseTitle}: ${q} | VIES` : `${baseTitle} | VIES`
+  const title = q ? `${baseTitle}: ${q}` : baseTitle
   const description = tMeta('searchDescription')
 
   return {

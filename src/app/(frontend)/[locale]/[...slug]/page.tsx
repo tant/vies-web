@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const pageUrl = `${siteUrl}/${locale}/${slugString}`
 
   return {
-    title: `${page.meta?.title || page.title} | VIES`,
+    title: page.meta?.title || page.title,
     description: page.meta?.description ?? undefined,
     openGraph: {
       title: page.meta?.title || page.title,

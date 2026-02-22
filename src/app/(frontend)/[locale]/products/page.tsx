@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props) {
   const description = tMeta('productsDescription')
 
   return {
-    title: `${t('title')} | VIES`,
+    title: t('title'),
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/products`,

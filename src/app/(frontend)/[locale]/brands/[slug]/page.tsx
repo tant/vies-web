@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : `${brand.name} products - VIES supplies genuine bearings and industrial components`
 
   return {
-    title: `${brand.name} | VIES`,
+    title: brand.name,
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/brands/${slug}`,

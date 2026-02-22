@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
-    title: `${service.title} | VIES`,
+    title: service.title,
     description: service.excerpt ?? undefined,
     alternates: {
       canonical: `${siteUrl}/${locale}/services/${slug}`,
