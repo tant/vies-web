@@ -152,7 +152,7 @@ export function Footer({ footerData, siteSettings, locale }: FooterProps) {
       {/* Bottom Bar — copyright */}
       <div className="border-t border-gray-800">
         <div className="mx-auto max-w-[var(--container-max)] px-md py-lg">
-          <p className="text-center text-sm text-gray-500">{footerData.copyright}</p>
+          <p className="text-center text-sm text-gray-400">{footerData.copyright}</p>
         </div>
       </div>
     </footer>

@@ -311,7 +311,9 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             {tForms('quoteRequest.email')}
           </label>
           <input
-            type="email"
+            type="text"
+            inputMode="email"
+            autoComplete="email"
             id="email"
             name="email"
             value={formData.email}

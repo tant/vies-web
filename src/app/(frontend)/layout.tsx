@@ -48,6 +48,9 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={inter.variable}>
       <body className="antialiased min-h-screen flex flex-col">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">
+          {locale === 'vi' ? 'Chuyển đến nội dung chính' : 'Skip to main content'}
+        </a>
         <NextIntlClientProvider messages={messages}>
           <ToastProvider>
             <ContactBar
@@ -56,7 +59,7 @@ export default async function RootLayout({
               topBarEnabled={headerData.topBar?.enabled}
             />
             <Header headerData={headerData} siteSettings={siteSettings} />
-            <main className="flex-1">
+            <main id="main-content" className="flex-1">
               {children}
             </main>
             <Footer footerData={footerData} siteSettings={siteSettings} locale={locale} />

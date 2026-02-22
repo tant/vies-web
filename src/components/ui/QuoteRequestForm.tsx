@@ -283,7 +283,9 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
             {t('quoteRequest.email')}
           </label>
           <input
-            type="email"
+            type="text"
+            inputMode="email"
+            autoComplete="email"
             id="email"
             name="email"
             value={formData.email}

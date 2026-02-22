@@ -313,7 +313,12 @@ const seedData = async () => {
         { key: { vi: 'Ví dụ 6205', en: 'Example 6205' }, value: { vi: '25x52x15mm', en: '25x52x15mm' } },
       ],
       featured: true,
-      image: '/images/products-new/vong-bi-cau-1.jpg',
+      images: [
+        '/images/products-new/vong-bi-cau-1.jpg',
+        '/images/products-new/vong-bi-cau-2.jpg',
+        '/images/products-new/vong-bi-cau-3.jpg',
+        '/images/products-new/vong-bi-cau-4.jpg',
+      ],
     },
     {
       name: { vi: 'Vòng bi đũa trụ FAG', en: 'FAG Cylindrical Roller Bearings' },
@@ -575,10 +580,12 @@ const seedData = async () => {
       })
 
       if (existing.docs.length === 0) {
-        // Upload product image if available
-        let imageId: number | null = null
-        if (product.image) {
-          imageId = await uploadProductImage(payload, product.image, product.name.vi)
+        // Upload product images
+        const imageIds: number[] = []
+        const imagePaths = (product as any).images || ((product as any).image ? [(product as any).image] : [])
+        for (const imgPath of imagePaths) {
+          const id = await uploadProductImage(payload, imgPath, product.name.vi)
+          if (id) imageIds.push(id)
         }
 
         const created = await payload.create({
@@ -591,7 +598,7 @@ const seedData = async () => {
             description: makeRichText(product.description.vi),
             brand: brandMap[product.brand],
             categories: [categoryMap[product.category]],
-            images: imageId ? [{ image: imageId }] : [],
+            images: imageIds.map(id => ({ image: id })),
             specifications: product.specifications.map(spec => ({
               key: spec.key.vi,
               value: spec.value.vi,
@@ -624,6 +631,43 @@ const seedData = async () => {
     } catch (error) {
       console.error(`  ✗ Error creating product ${product.name.vi}:`, error)
     }
+  }
+
+  // Update vong-bi-cau-skf with multiple images for gallery testing
+  console.log('🖼️ Updating product gallery images...')
+  try {
+    const bearingProduct = await payload.find({
+      collection: 'products',
+      where: { slug: { equals: 'vong-bi-cau-skf' } },
+    })
+    if (bearingProduct.docs.length > 0) {
+      const product = bearingProduct.docs[0] as any
+      const currentImages = product.images || []
+      if (currentImages.length < 4) {
+        const extraImagePaths = [
+          '/images/products-new/vong-bi-cau-2.jpg',
+          '/images/products-new/vong-bi-cau-3.jpg',
+          '/images/products-new/vong-bi-cau-4.jpg',
+        ]
+        const newImageIds: number[] = currentImages.map((img: any) => typeof img.image === 'object' ? img.image.id : img.image)
+        for (const imgPath of extraImagePaths) {
+          const id = await uploadProductImage(payload, imgPath, 'Vòng bi cầu SKF')
+          if (id) newImageIds.push(id)
+        }
+        await payload.update({
+          collection: 'products',
+          id: product.id,
+          data: {
+            images: newImageIds.map((id: number) => ({ image: id })),
+          },
+        })
+        console.log(`  ✓ Updated product images: vong-bi-cau-skf (${newImageIds.length} images)`)
+      } else {
+        console.log(`  - Product already has ${currentImages.length} images`)
+      }
+    }
+  } catch (error) {
+    console.error('  ✗ Error updating product images:', error)
   }
 
   // Create news articles
@@ -667,6 +711,98 @@ const seedData = async () => {
         en: 'VIES is pleased to announce our official partnership as an authorized distributor of Lincoln Industrial - a world-leading brand in centralized lubrication systems. With this partnership, VIES will provide comprehensive Lincoln automatic lubrication solutions, including centralized lubrication systems, electric grease pumps and pneumatic grease pumps. This is an important step in our product portfolio expansion strategy, enabling VIES to better serve customers with comprehensive lubrication solutions.',
       },
       publishedAt: '2026-02-10T08:00:00.000Z',
+    },
+    // Additional news articles for pagination testing (need 7+ total for load-more)
+    {
+      title: { vi: 'So sánh vòng bi SKF và FAG: Đâu là lựa chọn tốt hơn?', en: 'SKF vs FAG Bearings: Which is the Better Choice?' },
+      slug: 'so-sanh-vong-bi-skf-va-fag',
+      excerpt: {
+        vi: 'Phân tích chi tiết ưu nhược điểm của hai thương hiệu vòng bi hàng đầu thế giới.',
+        en: 'Detailed analysis of pros and cons of two world-leading bearing brands.',
+      },
+      content: {
+        vi: 'SKF và FAG đều là những thương hiệu vòng bi hàng đầu thế giới với lịch sử phát triển hơn 100 năm. SKF nổi bật với công nghệ Explorer và hệ thống bôi trơn tiên tiến, trong khi FAG (thuộc Schaeffler Group) được biết đến với thiết kế cải tiến giúp tăng tải trọng hướng trục lên 50%. Việc lựa chọn phụ thuộc vào ứng dụng cụ thể của bạn.',
+        en: 'SKF and FAG are both world-leading bearing brands with over 100 years of development history. SKF stands out with Explorer technology and advanced lubrication systems, while FAG (part of Schaeffler Group) is known for improved designs that increase axial load capacity by 50%. The choice depends on your specific application.',
+      },
+      publishedAt: '2025-11-05T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Bảo trì phòng ngừa: Giảm 40% chi phí sửa chữa máy móc', en: 'Preventive Maintenance: Reduce Machinery Repair Costs by 40%' },
+      slug: 'bao-tri-phong-ngua-giam-chi-phi',
+      excerpt: {
+        vi: 'Tìm hiểu cách áp dụng bảo trì phòng ngừa hiệu quả để tiết kiệm chi phí vận hành.',
+        en: 'Learn how to apply effective preventive maintenance to save operating costs.',
+      },
+      content: {
+        vi: 'Bảo trì phòng ngừa là chiến lược bảo trì chủ động giúp phát hiện và xử lý các vấn đề tiềm ẩn trước khi chúng gây ra hỏng hóc. Theo nghiên cứu, doanh nghiệp áp dụng bảo trì phòng ngừa có thể giảm đến 40% chi phí sửa chữa và kéo dài tuổi thọ thiết bị thêm 20-30%.',
+        en: 'Preventive maintenance is a proactive strategy that helps detect and address potential issues before they cause failures. Studies show businesses applying preventive maintenance can reduce repair costs by up to 40% and extend equipment lifespan by 20-30%.',
+      },
+      publishedAt: '2025-10-20T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Xu hướng công nghệ vòng bi 2026: Từ tính, IoT và vật liệu mới', en: 'Bearing Technology Trends 2026: Magnetic, IoT and New Materials' },
+      slug: 'xu-huong-cong-nghe-vong-bi-2026',
+      excerpt: {
+        vi: 'Khám phá các xu hướng công nghệ mới nhất trong ngành vòng bi công nghiệp.',
+        en: 'Explore the latest technology trends in the industrial bearing industry.',
+      },
+      content: {
+        vi: 'Ngành vòng bi đang chứng kiến sự chuyển đổi lớn với ba xu hướng chính: vòng bi từ tính không tiếp xúc loại bỏ ma sát hoàn toàn, cảm biến IoT tích hợp cho giám sát thời gian thực, và vật liệu ceramic/polymer mới cho ứng dụng đặc biệt. SKF đi đầu với dòng vòng bi từ tính chủ động và hệ thống giám sát eLube.',
+        en: 'The bearing industry is witnessing major transformation with three key trends: contactless magnetic bearings eliminating friction entirely, integrated IoT sensors for real-time monitoring, and new ceramic/polymer materials for special applications. SKF leads with active magnetic bearings and eLube monitoring systems.',
+      },
+      publishedAt: '2025-09-15T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Hệ thống bôi trơn tự động: Tiết kiệm thời gian và nhân lực', en: 'Automatic Lubrication Systems: Save Time and Manpower' },
+      slug: 'he-thong-boi-tron-tu-dong',
+      excerpt: {
+        vi: 'Giới thiệu giải pháp bôi trơn tự động SKF P253 Smart cho nhà máy.',
+        en: 'Introduction to SKF P253 Smart automatic lubrication solution for factories.',
+      },
+      content: {
+        vi: 'Hệ thống bôi trơn tự động SKF P253 Smart là giải pháp tiên tiến giúp loại bỏ việc bôi trơn thủ công. Với kết nối Bluetooth và ứng dụng eLube, người vận hành có thể giám sát mức mỡ và tình trạng bơm từ xa mà không cần dừng máy. Hệ thống có 4 kích cỡ bình chứa lên đến 15 lít, phù hợp cho nhiều quy mô nhà máy.',
+        en: 'SKF P253 Smart automatic lubrication system is an advanced solution that eliminates manual lubrication. With Bluetooth connectivity and eLube app, operators can remotely monitor grease levels and pump status without stopping machines. Available in 4 reservoir sizes up to 15 liters, suitable for various factory scales.',
+      },
+      publishedAt: '2025-08-10T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Cách đọc ký hiệu vòng bi: Hướng dẫn cho người mới', en: 'How to Read Bearing Designations: A Beginner Guide' },
+      slug: 'cach-doc-ky-hieu-vong-bi',
+      excerpt: {
+        vi: 'Giải mã các ký hiệu và mã sản phẩm vòng bi phổ biến nhất.',
+        en: 'Decode the most common bearing designation codes and product numbers.',
+      },
+      content: {
+        vi: 'Ký hiệu vòng bi chứa nhiều thông tin quan trọng: loại vòng bi (6xxx = bi cầu, NU = bi đũa trụ, 222xx = bi tang trống), kích thước (05 = 25mm, 06 = 30mm), và loại phớt (2RS = phớt cao su, 2Z = nắp kim loại). Ví dụ: 6205-2RS nghĩa là vòng bi cầu, đường kính trong 25mm, có phớt cao su hai bên.',
+        en: 'Bearing designations contain important information: bearing type (6xxx = deep groove ball, NU = cylindrical roller, 222xx = spherical roller), dimensions (05 = 25mm, 06 = 30mm), and seal type (2RS = rubber seals, 2Z = metal shields). Example: 6205-2RS means deep groove ball bearing, 25mm bore, with rubber seals on both sides.',
+      },
+      publishedAt: '2025-07-25T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Ứng dụng vòng bi trong ngành thực phẩm và dược phẩm', en: 'Bearing Applications in Food and Pharmaceutical Industries' },
+      slug: 'ung-dung-vong-bi-nganh-thuc-pham',
+      excerpt: {
+        vi: 'Yêu cầu đặc biệt về vòng bi và bôi trơn trong môi trường sản xuất thực phẩm.',
+        en: 'Special bearing and lubrication requirements in food production environments.',
+      },
+      content: {
+        vi: 'Ngành thực phẩm và dược phẩm đòi hỏi vòng bi có tiêu chuẩn vệ sinh nghiêm ngặt. Vòng bi inox (AISI 440C) với mỡ bôi trơn cấp thực phẩm (NSF H1) là lựa chọn bắt buộc. SKF cung cấp dòng vòng bi Food Line với vật liệu chống ăn mòn và phớt đặc biệt ngăn vi khuẩn xâm nhập.',
+        en: 'Food and pharmaceutical industries require bearings with strict hygiene standards. Stainless steel bearings (AISI 440C) with food-grade lubricants (NSF H1) are mandatory. SKF offers the Food Line bearing range with corrosion-resistant materials and special seals to prevent bacterial ingress.',
+      },
+      publishedAt: '2025-06-15T08:00:00.000Z',
+    },
+    {
+      title: { vi: 'Hội thảo kỹ thuật VIES: Bảo trì vòng bi trong mùa mưa', en: 'VIES Technical Seminar: Bearing Maintenance in Rainy Season' },
+      slug: 'hoi-thao-bao-tri-mua-mua',
+      excerpt: {
+        vi: 'Tổng hợp kiến thức từ hội thảo kỹ thuật về bảo vệ vòng bi trong điều kiện ẩm ướt.',
+        en: 'Summary of technical seminar on protecting bearings in wet conditions.',
+      },
+      content: {
+        vi: 'Mùa mưa là giai đoạn khó khăn cho các thiết bị công nghiệp, đặc biệt là vòng bi. Độ ẩm cao gây ăn mòn và giảm hiệu quả bôi trơn. VIES khuyến nghị sử dụng mỡ chống nước SKF LGNL 2 và kiểm tra phớt thường xuyên. Đối với thiết bị ngoài trời, nên sử dụng gối đỡ kín hoàn toàn với IP65.',
+        en: 'Rainy season is challenging for industrial equipment, especially bearings. High humidity causes corrosion and reduces lubrication effectiveness. VIES recommends using SKF LGNL 2 water-resistant grease and regular seal inspections. For outdoor equipment, fully sealed housings with IP65 rating should be used.',
+      },
+      publishedAt: '2025-05-20T08:00:00.000Z',
     },
   ]
 
@@ -909,6 +1045,102 @@ const seedData = async () => {
     } catch (error) {
       console.error(`  ✗ Error creating page ${page.title}:`, error)
     }
+  }
+
+  // Create CMS page with layout blocks for testing
+  console.log('📄 Creating CMS page with layout blocks...')
+  try {
+    const existingBlocksPage = await payload.find({
+      collection: 'pages',
+      where: { slug: { equals: 'gioi-thieu-san-pham' } },
+    })
+
+    if (existingBlocksPage.docs.length === 0) {
+      // Upload images for hero and gallery blocks
+      const heroImageId = await uploadProductImage(payload, '/images/products-new/vong-bi-cau-1.jpg', 'Hero banner')
+      const galleryImageIds: number[] = []
+      const galleryPaths = [
+        '/images/products-new/vong-bi-cau-1.jpg',
+        '/images/products-new/vong-bi-tang-trong-1.jpg',
+        '/images/products-new/vong-bi-tiep-xuc-goc-1.jpg',
+        '/images/products-new/vong-bi-dua-1.jpg',
+      ]
+      for (const gPath of galleryPaths) {
+        const id = await uploadProductImage(payload, gPath, 'Gallery image')
+        if (id) galleryImageIds.push(id)
+      }
+
+      const blocksPage = await payload.create({
+        collection: 'pages',
+        data: {
+          title: 'Giới thiệu sản phẩm VIES',
+          slug: 'gioi-thieu-san-pham',
+          content: makeRichText('Trang giới thiệu tổng quan về các sản phẩm và dịch vụ của VIES.'),
+          layout: [
+            {
+              blockType: 'hero',
+              heading: 'Giải pháp vòng bi công nghiệp toàn diện',
+              subheading: 'VIES cung cấp vòng bi chính hãng từ các thương hiệu hàng đầu thế giới',
+              ...(heroImageId ? { image: heroImageId } : {}),
+            },
+            {
+              blockType: 'content',
+              content: makeRichText('VIES là nhà phân phối ủy quyền chính thức của các thương hiệu vòng bi hàng đầu thế giới tại Việt Nam. Chúng tôi cung cấp giải pháp toàn diện từ tư vấn kỹ thuật, cung cấp sản phẩm đến hỗ trợ sau bán hàng.'),
+            },
+            {
+              blockType: 'cta',
+              heading: 'Liên hệ ngay để được tư vấn',
+              description: 'Đội ngũ chuyên gia VIES sẵn sàng hỗ trợ bạn lựa chọn sản phẩm phù hợp nhất',
+              buttons: [
+                { label: 'Gọi ngay', link: 'tel:+84963048317', style: 'primary' },
+                { label: 'Xem sản phẩm', link: '/products', style: 'secondary' },
+              ],
+            },
+            {
+              blockType: 'faq',
+              heading: 'Câu hỏi thường gặp về sản phẩm',
+              items: [
+                {
+                  question: 'Sản phẩm có bảo hành không?',
+                  answer: makeRichText('Tất cả sản phẩm đều được bảo hành chính hãng từ 12-24 tháng tùy thương hiệu.'),
+                },
+                {
+                  question: 'Thời gian giao hàng là bao lâu?',
+                  answer: makeRichText('Sản phẩm có sẵn giao trong 1-3 ngày. Sản phẩm đặt hàng 2-4 tuần.'),
+                },
+              ],
+            },
+            {
+              blockType: 'gallery',
+              heading: 'Hình ảnh sản phẩm',
+              images: galleryImageIds.map((id, i) => ({
+                image: id,
+                caption: `Sản phẩm VIES ${i + 1}`,
+              })),
+            },
+          ],
+          _status: 'published',
+        },
+      })
+
+      // Update EN locale - title and content only (layout blocks mostly non-localized)
+      // Individual block text updates via REST API to avoid complex nested update issues
+      await payload.update({
+        collection: 'pages',
+        id: blocksPage.id,
+        locale: 'en',
+        data: {
+          title: 'VIES Product Introduction',
+          content: makeRichText('Overview page of VIES products and services.'),
+        },
+      })
+
+      console.log('  ✓ Created page with blocks: Giới thiệu sản phẩm VIES')
+    } else {
+      console.log('  - Blocks page exists: gioi-thieu-san-pham')
+    }
+  } catch (error) {
+    console.error('  ✗ Error creating blocks page:', error)
   }
 
   // Update Site Settings
