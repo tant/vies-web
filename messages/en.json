@@ -51,7 +51,7 @@
     "placeholder": "Search by product code, name or brand...",
     "placeholderHero": "Enter bearing code or product name...",
     "hints": "E.g.: 6205, SKF, bearing",
-    "resultsCount": "Found {count} products for '{query}'",
+    "resultsCount": "Found {count} products for ''{query}''",
     "viewAllResults": "View all results",
     "noResults": "No products found",
     "noResultsHint": "Contact our engineer: {phone}",

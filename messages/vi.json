@@ -51,7 +51,7 @@
     "placeholder": "Tìm theo mã sản phẩm, tên hoặc hãng...",
     "placeholderHero": "Nhập mã vòng bi hoặc tên sản phẩm...",
     "hints": "VD: 6205, SKF, vòng bi",
-    "resultsCount": "Tìm thấy {count} sản phẩm cho '{query}'",
+    "resultsCount": "Tìm thấy {count} sản phẩm cho ''{query}''",
     "viewAllResults": "Xem tất cả kết quả",
     "noResults": "Không tìm thấy sản phẩm",
     "noResultsHint": "Liên hệ kỹ sư tư vấn: {phone}",
