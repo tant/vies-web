@@ -22,6 +22,14 @@ interface SearchBarProps {
   consultPhone?: string
 }
 
+function formatPhone(phone: string): string {
+  const digits = phone.replace(/\D/g, '')
+  if (digits.length === 10) {
+    return `${digits.slice(0, 4)} ${digits.slice(4, 7)} ${digits.slice(7)}`
+  }
+  return phone
+}
+
 export function SearchBar({ variant = 'header', className, consultPhone = '0908748304' }: SearchBarProps) {
   const t = useTranslations('search')
   const locale = useLocale()
@@ -299,7 +307,7 @@ export function SearchBar({ variant = 'header', className, consultPhone = '09087
             <div className="px-4 py-6 text-center">
               <p className="text-text-muted text-sm">{t('noResults')}</p>
               <p className="text-text-muted text-xs mt-1">
-                {t('noResultsHint', { phone: consultPhone })}
+                {t('noResultsHint', { phone: formatPhone(consultPhone) })}
               </p>
             </div>
           )}

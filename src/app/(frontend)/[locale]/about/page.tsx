@@ -2,6 +2,8 @@ import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -13,6 +15,9 @@ export async function generateMetadata({ params }: Props) {
 
   return {
     title: t('title'),
+    alternates: {
+      languages: getHreflangAlternates('/about').languages,
+    },
   }
 }
 
@@ -20,6 +25,7 @@ export default async function AboutPage({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'about' })
   const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const payload = await getPayload({ config: await config })
 
@@ -81,6 +87,7 @@ export default async function AboutPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb items={[{ label: tNav('breadcrumb.about') }]} />
       {/* Hero */}
       <div className="bg-primary text-white py-16 lg:py-24">
         <div className="container mx-auto px-4">

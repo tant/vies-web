@@ -36,13 +36,11 @@ export function ProductCard({ product, locale }: ProductCardProps) {
     const firstImage = product.images?.[0]?.image
     if (typeof firstImage === 'object' && firstImage) {
       firstMediaImage = firstImage
-      imageAlt = firstImage.alt || product.name
     }
   } else {
     // Pre-processed ProductCardData - use directly
     brandName = product.brand?.name ?? null
     preProcessedImageUrl = product.image?.url ?? null
-    imageAlt = product.image?.alt || product.name
   }
 
   // Determine if we have any image to show

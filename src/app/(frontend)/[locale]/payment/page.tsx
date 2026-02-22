@@ -2,6 +2,9 @@ import Link from 'next/link'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { getTranslations } from 'next-intl/server'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -9,11 +12,15 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
     title: locale === 'vi' ? 'Hình thức thanh toán' : 'Payment Methods',
+    alternates: {
+      languages: getHreflangAlternates('/payment').languages,
+    },
   }
 }
 
 export default async function PaymentPage({ params }: Props) {
   const { locale } = await params
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const payload = await getPayload({ config: await config })
 
@@ -28,6 +35,7 @@ export default async function PaymentPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb items={[{ label: tNav('breadcrumb.payment') }]} />
       {/* Hero */}
       <div className="bg-primary text-white py-12">
         <div className="container mx-auto px-4">

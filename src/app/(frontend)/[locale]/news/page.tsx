@@ -6,6 +6,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { NewsCard } from '@/components/ui/NewsCard'
 import { NewsLoadMore } from './NewsLoadMore'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 import type { News } from '@/payload-types'
 
@@ -21,6 +22,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description: t('description'),
     alternates: {
       canonical: `${siteUrl}/${locale}/news`,
+      languages: getHreflangAlternates('/news').languages,
     },
     openGraph: {
       title: t('title'),

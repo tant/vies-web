@@ -43,7 +43,13 @@
       "categories": "Categories",
       "contact": "Contact",
       "about": "About",
-      "search": "Search"
+      "search": "Search",
+      "faq": "FAQ",
+      "payment": "Payment Methods",
+      "shipping": "Shipping & Returns",
+      "warranty": "Warranty Policy",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Use"
     }
   },
 

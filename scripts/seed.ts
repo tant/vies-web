@@ -508,7 +508,7 @@ const seedData = async () => {
         console.log(`  ✓ Created brand: ${brand.name}`)
       } else {
         // Update existing brand with logo if missing
-        const existingBrand = existing.docs[0] as Record<string, unknown>
+        const existingBrand = existing.docs[0] as unknown as Record<string, unknown>
         if (logoId && !existingBrand.logo) {
           await payload.update({
             collection: 'brands',
@@ -837,7 +837,7 @@ const seedData = async () => {
     const service = servicesData[i]
     try {
       // Create service with VI locale (default)
-      await payload.create({
+      const created = await payload.create({
         collection: 'services',
         data: {
           title: service.title.vi,
@@ -850,10 +850,24 @@ const seedData = async () => {
         },
       })
 
-      // Note: EN locale for services needs to be updated manually in admin
-      // due to PayloadCMS validation issues with required localized array fields
+      // Update EN locale - map benefits with existing item IDs
+      const enBenefits = (created.benefits || []).map((item: any, idx: number) => ({
+        id: item.id,
+        text: service.benefits.en[idx]?.text || item.text,
+      }))
 
-      console.log(`  ✓ Created service: ${service.title.vi}`)
+      await payload.update({
+        collection: 'services',
+        id: created.id,
+        locale: 'en',
+        data: {
+          title: service.title.en,
+          excerpt: service.excerpt.en,
+          benefits: enBenefits,
+        },
+      })
+
+      console.log(`  ✓ Created service: ${service.title.vi} (vi + en)`)
     } catch (error) {
       console.error(`  ✗ Error creating service ${service.title.vi}:`, error)
     }
@@ -922,7 +936,7 @@ const seedData = async () => {
     console.log('  ✓ Updated site settings')
 
     // Read back to get array item IDs for EN locale update
-    const siteSettingsData = await payload.findGlobal({ slug: 'site-settings' }) as Record<string, unknown>
+    const siteSettingsData = await payload.findGlobal({ slug: 'site-settings' }) as unknown as Record<string, unknown>
     const phoneItems = (siteSettingsData.contact as Record<string, unknown>)?.phone as Array<Record<string, unknown>>
     const phoneEnLabels = ['Hotline', 'Mr. Lam - Quote', 'Mr. Hien - Technical']
 
@@ -932,8 +946,8 @@ const seedData = async () => {
       data: {
         contact: {
           phone: phoneItems.map((item, i) => ({
-            id: item.id,
-            number: item.number,
+            id: item.id as string,
+            number: item.number as string,
             label: phoneEnLabels[i],
           })),
           address: '16 DD3-1 Street, Tan Hung Thuan Ward, District 12, Ho Chi Minh City',
@@ -975,7 +989,7 @@ const seedData = async () => {
     console.log('  ✓ Updated header')
 
     // Read back to get array item IDs for EN locale update
-    const headerData = await payload.findGlobal({ slug: 'header' }) as Record<string, unknown>
+    const headerData = await payload.findGlobal({ slug: 'header' }) as unknown as Record<string, unknown>
     const navItems = headerData.navigation as Array<Record<string, unknown>>
     const enNavLabels = ['Home', 'Products', 'Services', 'News', 'About', 'Contact']
     const enChildrenLabels: Record<number, string[]> = {
@@ -990,13 +1004,13 @@ const seedData = async () => {
           content: 'Hotline: (+84) 963 048 317 | Email: info@v-ies.com',
         },
         navigation: navItems.map((item, i) => ({
-          id: item.id,
+          id: item.id as string,
           label: enNavLabels[i],
-          link: item.link,
+          link: item.link as string,
           children: (item.children as Array<Record<string, unknown>> | undefined)?.map((child, j) => ({
-            id: child.id,
-            label: enChildrenLabels[i]?.[j] || child.label,
-            link: child.link,
+            id: child.id as string,
+            label: (enChildrenLabels[i]?.[j] || child.label) as string,
+            link: child.link as string,
           })),
         })),
       },
@@ -1046,7 +1060,7 @@ const seedData = async () => {
     console.log('  ✓ Updated footer')
 
     // Read back to get array item IDs for EN locale update
-    const footerData = await payload.findGlobal({ slug: 'footer' }) as Record<string, unknown>
+    const footerData = await payload.findGlobal({ slug: 'footer' }) as unknown as Record<string, unknown>
     const columns = footerData.columns as Array<Record<string, unknown>>
     const enFooter = [
       { title: 'Products', links: ['SKF Bearings', 'FAG Bearings', 'NTN Bearings', 'Maintenance Tools'] },
@@ -1059,12 +1073,12 @@ const seedData = async () => {
       locale: 'en',
       data: {
         columns: columns.map((col, i) => ({
-          id: col.id,
+          id: col.id as string,
           title: enFooter[i].title,
           links: (col.links as Array<Record<string, unknown>>).map((link, j) => ({
-            id: link.id,
+            id: link.id as string,
             label: enFooter[i].links[j],
-            url: link.url,
+            url: link.url as string,
           })),
         })),
         copyright: '© 2026 VIES. VIES Trading & Services Co., Ltd. Tax ID: 0318321326',
@@ -1079,10 +1093,10 @@ const seedData = async () => {
   console.log('📝 Creating forms...')
   try {
     const existingForms = await payload.find({ collection: 'forms', limit: 10 })
-    const existingTitles = existingForms.docs.map((f: Record<string, unknown>) => f.title)
+    const existingTitles = existingForms.docs.map((f: any) => f.title)
 
     if (!existingTitles.includes('Quote Request')) {
-      await payload.create({
+      await (payload.create as any)({
         collection: 'forms',
         data: {
           title: 'Quote Request',
@@ -1097,7 +1111,7 @@ const seedData = async () => {
             { blockType: 'text', name: 'productName', label: 'Product Name' },
             { blockType: 'text', name: 'productSku', label: 'Product SKU' },
           ],
-        } as Record<string, unknown>,
+        },
       })
       console.log('  ✓ Created form: Quote Request')
     } else {
@@ -1105,7 +1119,7 @@ const seedData = async () => {
     }
 
     if (!existingTitles.includes('Contact')) {
-      await payload.create({
+      await (payload.create as any)({
         collection: 'forms',
         data: {
           title: 'Contact',
@@ -1119,7 +1133,7 @@ const seedData = async () => {
             { blockType: 'text', name: 'company', label: 'Company' },
             { blockType: 'textarea', name: 'message', label: 'Message', required: true },
           ],
-        } as Record<string, unknown>,
+        },
       })
       console.log('  ✓ Created form: Contact')
     } else {

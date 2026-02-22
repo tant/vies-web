@@ -43,7 +43,13 @@
       "categories": "Danh mục",
       "contact": "Liên hệ",
       "about": "Giới thiệu",
-      "search": "Tìm kiếm"
+      "search": "Tìm kiếm",
+      "faq": "Câu hỏi thường gặp",
+      "payment": "Hình thức thanh toán",
+      "shipping": "Giao hàng & đổi trả",
+      "warranty": "Chính sách bảo hành",
+      "privacy": "Chính sách bảo mật",
+      "terms": "Điều khoản sử dụng"
     }
   },
 

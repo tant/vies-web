@@ -7,6 +7,7 @@ import { ContactForm } from '@/components/ui/ContactForm'
 import { ContactInfo } from '@/components/ui/ContactInfo'
 import { ContactMap } from '@/components/ui/ContactMap'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 interface ContactPageProps {
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: ContactPageProps): Promise<Me
     description: t('subtitle'),
     alternates: {
       canonical: `${siteUrl}/${locale}/contact`,
+      languages: getHreflangAlternates('/contact').languages,
     },
     openGraph: {
       title: t('title'),

@@ -7,6 +7,7 @@ import {
   ClockIcon,
   ZaloIcon,
 } from '@/components/layout/icons'
+import { formatTelHref } from '@/lib/utils'
 
 interface ContactInfoProps {
   contact: {
@@ -49,7 +50,7 @@ export async function ContactInfo({ contact, social, locale }: ContactInfoProps)
               {contact.phone.map((p, i) => (
                 <a
                   key={i}
-                  href={`tel:${p.number.replace(/[\s-]/g, '')}`}
+                  href={formatTelHref(p.number)}
                   className="block text-primary hover:underline text-sm"
                 >
                   {p.number}

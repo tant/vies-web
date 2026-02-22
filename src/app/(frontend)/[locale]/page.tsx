@@ -11,6 +11,7 @@ import {
 } from '@/components/layout/icons'
 import { CTASection } from '@/components/ui/CTASection'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 type Props = {
@@ -27,9 +28,10 @@ export async function generateMetadata({ params }: Props) {
     description: t('hero.subtitle'),
     alternates: {
       canonical: `${siteUrl}/${locale}`,
+      languages: getHreflangAlternates('').languages,
     },
     openGraph: {
-      title: t('hero.title'),
+      title: t('pageTitle'),
       description: t('hero.subtitle'),
       type: 'website',
       images: [{ url: getDefaultOgImage() }],

@@ -1,5 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -7,12 +9,16 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
     title: locale === 'vi' ? 'Câu hỏi thường gặp' : 'FAQ',
+    alternates: {
+      languages: getHreflangAlternates('/faq').languages,
+    },
   }
 }
 
 export default async function FAQPage({ params }: Props) {
   const { locale } = await params
   const tCommon = await getTranslations({ locale, namespace: 'common' })
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const faqs = [
     {
@@ -51,6 +57,7 @@ export default async function FAQPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb items={[{ label: tNav('breadcrumb.faq') }]} />
       <div className="bg-primary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">

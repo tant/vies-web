@@ -1,4 +1,7 @@
 import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
+import { Breadcrumb } from '@/components/ui/Breadcrumb'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 
 type Props = { params: Promise<{ locale: string }> }
 
@@ -6,11 +9,15 @@ export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   return {
     title: locale === 'vi' ? 'Chính sách bảo mật' : 'Privacy Policy',
+    alternates: {
+      languages: getHreflangAlternates('/privacy').languages,
+    },
   }
 }
 
 export default async function PrivacyPage({ params }: Props) {
   const { locale } = await params
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
 
   const content = {
     vi: {
@@ -45,6 +52,7 @@ export default async function PrivacyPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Breadcrumb items={[{ label: tNav('breadcrumb.privacy') }]} />
       <div className="bg-primary text-white py-12">
         <div className="container mx-auto px-4">
           <h1 className="text-3xl md:text-4xl font-bold mb-2">{c.title}</h1>

@@ -6,6 +6,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ServiceCard } from '@/components/ui/ServiceCard'
 import { CTASection } from '@/components/ui/CTASection'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 type Props = { params: Promise<{ locale: string }> }
@@ -24,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/services`,
+      languages: getHreflangAlternates('/services').languages,
     },
     openGraph: {
       title: t('title'),

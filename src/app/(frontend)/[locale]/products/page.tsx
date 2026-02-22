@@ -6,6 +6,7 @@ import { ProductsPageClient } from './ProductsPageClient'
 import { SearchIcon, PhoneIcon } from '@/components/layout/icons'
 import { formatTelHref } from '@/lib/utils'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Media, Brand, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -27,6 +28,7 @@ export async function generateMetadata({ params }: Props) {
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/products`,
+      languages: getHreflangAlternates('/products').languages,
     },
     openGraph: {
       title: t('title'),

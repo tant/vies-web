@@ -68,6 +68,7 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
+  const [touched, setTouched] = useState<Record<string, boolean>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [toast, setToast] = useState<ToastState>({ type: null, message: '' })
   const [lastSubmittedData, setLastSubmittedData] = useState<FormData | null>(null)
@@ -83,30 +84,42 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
     }
   }, [toast.type, onSuccess])
 
+  const validateField = useCallback(
+    (name: string, value: string): string | undefined => {
+      switch (name) {
+        case 'name':
+          if (!value.trim()) return tForms('validation.required')
+          return undefined
+        case 'phone':
+          if (!value.trim()) return tForms('validation.required')
+          if (!validatePhone(value)) return tForms('validation.invalidPhone')
+          return undefined
+        case 'email':
+          if (value && !validateEmail(value)) return tForms('validation.invalidEmail')
+          return undefined
+        case 'message':
+          if (!value.trim()) return tForms('validation.required')
+          return undefined
+        default:
+          return undefined
+      }
+    },
+    [tForms],
+  )
+
   const validateForm = useCallback((): boolean => {
     const newErrors: FormErrors = {}
+    const fields: (keyof FormErrors)[] = ['name', 'phone', 'email', 'message']
 
-    if (!formData.name.trim()) {
-      newErrors.name = tForms('validation.required')
-    }
-
-    if (!formData.phone.trim()) {
-      newErrors.phone = tForms('validation.required')
-    } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = tForms('validation.invalidPhone')
-    }
-
-    if (formData.email && !validateEmail(formData.email)) {
-      newErrors.email = tForms('validation.invalidEmail')
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = tForms('validation.required')
+    for (const field of fields) {
+      const error = validateField(field, formData[field])
+      if (error) newErrors[field] = error
     }
 
     setErrors(newErrors)
+    setTouched({ name: true, phone: true, email: true, message: true })
     return Object.keys(newErrors).length === 0
-  }, [formData, tForms])
+  }, [formData, validateField])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -145,15 +158,9 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
           message: tForms('toast.success'),
           detail: tForms('toast.successDetail'),
         })
-        // Reset form
-        setFormData({
-          name: '',
-          phone: '',
-          email: '',
-          subject: '',
-          company: '',
-          message: '',
-        })
+        setFormData({ name: '', phone: '', email: '', subject: '', company: '', message: '' })
+        setTouched({})
+        setErrors({})
       } else {
         throw new Error('Submission failed')
       }
@@ -180,13 +187,27 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
   ) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-    // Clear error on change
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }))
+    if (touched[name]) {
+      const error = validateField(name, value)
+      setErrors((prev) => ({ ...prev, [name]: error }))
     }
   }
 
-  const isFormValid = formData.name.trim() && formData.phone.trim() && formData.message.trim()
+  const handleBlur = (
+    e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target
+    setTouched((prev) => ({ ...prev, [name]: true }))
+    const error = validateField(name, value)
+    setErrors((prev) => ({ ...prev, [name]: error }))
+  }
+
+  const isFormValid =
+    formData.name.trim() &&
+    formData.phone.trim() &&
+    validatePhone(formData.phone) &&
+    formData.message.trim() &&
+    validateEmail(formData.email)
 
   return (
     <div>
@@ -241,15 +262,16 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder={t('namePlaceholder')}
             className={`w-full px-4 py-3 border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.name ? 'border-error' : 'border-border'
+              errors.name && touched.name ? 'border-error' : 'border-border'
             }`}
             aria-required="true"
-            aria-invalid={!!errors.name}
-            aria-describedby={errors.name ? 'name-error' : undefined}
+            aria-invalid={!!(errors.name && touched.name)}
+            aria-describedby={errors.name && touched.name ? 'name-error' : undefined}
           />
-          {errors.name && (
+          {errors.name && touched.name && (
             <p id="name-error" className="text-error text-sm mt-1">
               {errors.name}
             </p>
@@ -267,15 +289,16 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             name="phone"
             value={formData.phone}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder={t('phonePlaceholder')}
             className={`w-full px-4 py-3 border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.phone ? 'border-error' : 'border-border'
+              errors.phone && touched.phone ? 'border-error' : 'border-border'
             }`}
             aria-required="true"
-            aria-invalid={!!errors.phone}
-            aria-describedby={errors.phone ? 'phone-error' : undefined}
+            aria-invalid={!!(errors.phone && touched.phone)}
+            aria-describedby={errors.phone && touched.phone ? 'phone-error' : undefined}
           />
-          {errors.phone && (
+          {errors.phone && touched.phone && (
             <p id="phone-error" className="text-error text-sm mt-1">
               {errors.phone}
             </p>
@@ -293,14 +316,15 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder={t('emailPlaceholder')}
             className={`w-full px-4 py-3 border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary ${
-              errors.email ? 'border-error' : 'border-border'
+              errors.email && touched.email ? 'border-error' : 'border-border'
             }`}
-            aria-invalid={!!errors.email}
-            aria-describedby={errors.email ? 'email-error' : undefined}
+            aria-invalid={!!(errors.email && touched.email)}
+            aria-describedby={errors.email && touched.email ? 'email-error' : undefined}
           />
-          {errors.email && (
+          {errors.email && touched.email && (
             <p id="email-error" className="text-error text-sm mt-1">
               {errors.email}
             </p>
@@ -354,16 +378,17 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
             name="message"
             value={formData.message}
             onChange={handleChange}
+            onBlur={handleBlur}
             placeholder={t('messagePlaceholder')}
             rows={5}
             className={`w-full px-4 py-3 border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none ${
-              errors.message ? 'border-error' : 'border-border'
+              errors.message && touched.message ? 'border-error' : 'border-border'
             }`}
             aria-required="true"
-            aria-invalid={!!errors.message}
-            aria-describedby={errors.message ? 'message-error' : undefined}
+            aria-invalid={!!(errors.message && touched.message)}
+            aria-describedby={errors.message && touched.message ? 'message-error' : undefined}
           />
-          {errors.message && (
+          {errors.message && touched.message && (
             <p id="message-error" className="text-error text-sm mt-1">
               {errors.message}
             </p>
