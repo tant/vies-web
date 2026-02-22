@@ -581,7 +581,8 @@ const seedData = async () => {
             _status: 'published',
           },
         })
-        // Seed English locale
+        // Seed English locale - map spec IDs from created product to preserve array items
+        const createdSpecs = created.specifications ?? []
         await payload.update({
           collection: 'products',
           id: created.id,
@@ -590,7 +591,8 @@ const seedData = async () => {
             name: product.name.en,
             shortDescription: product.shortDescription?.en || '',
             description: makeRichText(product.description.en),
-            specifications: product.specifications.map(spec => ({
+            specifications: product.specifications.map((spec, i) => ({
+              id: createdSpecs[i]?.id ?? undefined,
               key: spec.key.en,
               value: spec.value.en,
             })),
@@ -777,6 +779,23 @@ const seedData = async () => {
       },
     })
     console.log('  ✓ Updated site settings')
+
+    // Seed English locale for site settings
+    await payload.updateGlobal({
+      slug: 'site-settings',
+      locale: 'en',
+      data: {
+        contact: {
+          phone: [
+            { number: '(+84) 963 048 317', label: 'Hotline' },
+            { number: '0903 326 309', label: 'Mr. Lam - Quote' },
+            { number: '0908 748 304', label: 'Mr. Hien - Technical' },
+          ],
+          address: '16 DD3-1 Street, Tan Hung Thuan Ward, District 12, Ho Chi Minh City',
+        },
+      },
+    })
+    console.log('  ✓ Updated site settings (EN)')
   } catch (error) {
     console.error('  ✗ Error updating site settings:', error)
   }
@@ -807,6 +826,31 @@ const seedData = async () => {
       },
     })
     console.log('  ✓ Updated header')
+
+    // Seed English locale for header
+    await payload.updateGlobal({
+      slug: 'header',
+      locale: 'en',
+      data: {
+        topBar: {
+          content: 'Hotline: (+84) 963 048 317 | Email: info@v-ies.com',
+        },
+        navigation: [
+          { label: 'Home', link: '/' },
+          { label: 'Products', link: '/products', children: [
+            { label: 'Bearings', link: '/products?category=vong-bi' },
+            { label: 'Lubrication', link: '/products?category=boi-tron' },
+            { label: 'Maintenance Tools', link: '/products?category=dung-cu-bao-tri' },
+            { label: 'Power Transmission', link: '/products?category=truyen-dong' },
+          ]},
+          { label: 'Services', link: '/services' },
+          { label: 'News', link: '/news' },
+          { label: 'About', link: '/about' },
+          { label: 'Contact', link: '/contact' },
+        ],
+      },
+    })
+    console.log('  ✓ Updated header (EN)')
   } catch (error) {
     console.error('  ✗ Error updating header:', error)
   }
@@ -849,6 +893,44 @@ const seedData = async () => {
       },
     })
     console.log('  ✓ Updated footer')
+
+    // Seed English locale for footer
+    await payload.updateGlobal({
+      slug: 'footer',
+      locale: 'en',
+      data: {
+        columns: [
+          {
+            title: 'Products',
+            links: [
+              { label: 'SKF Bearings', url: '/products?brand=skf' },
+              { label: 'FAG Bearings', url: '/products?brand=fag' },
+              { label: 'NTN Bearings', url: '/products?brand=ntn' },
+              { label: 'Maintenance Tools', url: '/products?category=dung-cu-bao-tri' },
+            ],
+          },
+          {
+            title: 'Services',
+            links: [
+              { label: 'Technical Consulting', url: '/services' },
+              { label: 'Vibration Analysis', url: '/services' },
+              { label: 'Installation & Lubrication', url: '/services' },
+            ],
+          },
+          {
+            title: 'Information',
+            links: [
+              { label: 'Shipping & Returns', url: '/shipping' },
+              { label: 'Payment Methods', url: '/payment' },
+              { label: 'Warranty Policy', url: '/warranty' },
+              { label: 'Contact', url: '/contact' },
+            ],
+          },
+        ],
+        copyright: '© 2026 VIES. VIES Trading & Services Co., Ltd. Tax ID: 0318321326',
+      },
+    })
+    console.log('  ✓ Updated footer (EN)')
   } catch (error) {
     console.error('  ✗ Error updating footer:', error)
   }
