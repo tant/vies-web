@@ -57,7 +57,11 @@ const uploadProductImage = async (
 
     // Read file and create buffer
     const fileBuffer = fs.readFileSync(absolutePath)
-    const mimeType = imagePath.endsWith('.png') ? 'image/png' : 'image/jpeg'
+    const mimeType = imagePath.endsWith('.png')
+      ? 'image/png'
+      : imagePath.endsWith('.svg')
+        ? 'image/svg+xml'
+        : 'image/jpeg'
 
     const created = await payload.create({
       collection: 'media',
@@ -475,6 +479,10 @@ const seedData = async () => {
         where: { slug: { equals: brand.slug } },
       })
 
+      // Upload brand logo
+      const logoPath = `/images/brands/${brand.slug}.svg`
+      const logoId = await uploadProductImage(payload, logoPath, `${brand.name} logo`)
+
       if (existing.docs.length === 0) {
         const created = await payload.create({
           collection: 'brands',
@@ -483,6 +491,7 @@ const seedData = async () => {
             slug: brand.slug,
             website: brand.website,
             description: makeRichText(brand.description.vi),
+            ...(logoId ? { logo: logoId } : {}),
           },
         })
         // Seed English locale
@@ -498,7 +507,17 @@ const seedData = async () => {
         brandMap[brand.slug] = created.id as number
         console.log(`  ✓ Created brand: ${brand.name}`)
       } else {
-        brandMap[brand.slug] = existing.docs[0].id as number
+        // Update existing brand with logo if missing
+        const existingBrand = existing.docs[0] as Record<string, unknown>
+        if (logoId && !existingBrand.logo) {
+          await payload.update({
+            collection: 'brands',
+            id: existingBrand.id as number,
+            data: { logo: logoId },
+          })
+          console.log(`  ✓ Updated brand logo: ${brand.name}`)
+        }
+        brandMap[brand.slug] = existingBrand.id as number
         console.log(`  - Brand exists: ${brand.name}`)
       }
     } catch (error) {
@@ -651,7 +670,20 @@ const seedData = async () => {
     },
   ]
 
-  for (const article of newsData) {
+  // Upload featured images for news articles (reuse product images)
+  const newsImages = [
+    { path: '/images/products-new/lgep-2-1.jpg', alt: 'Mỡ bôi trơn công nghiệp' },
+    { path: '/images/products-new/tmft-36-1.jpg', alt: 'Dụng cụ vòng bi' },
+    { path: '/images/products-new/bom-mo-p253-smart-1.jpg', alt: 'Hệ thống bôi trơn Lincoln' },
+  ]
+  const newsImageIds: (number | null)[] = []
+  for (const img of newsImages) {
+    const id = await uploadProductImage(payload, img.path, img.alt)
+    newsImageIds.push(id)
+  }
+
+  for (let i = 0; i < newsData.length; i++) {
+    const article = newsData[i]
     try {
       const existing = await payload.find({
         collection: 'news',
@@ -667,6 +699,7 @@ const seedData = async () => {
             excerpt: article.excerpt.vi,
             content: makeRichText(article.content.vi),
             publishedAt: article.publishedAt,
+            featuredImage: newsImageIds[i] ?? undefined,
             _status: 'published',
           },
         })
@@ -683,7 +716,18 @@ const seedData = async () => {
         })
         console.log(`  ✓ Created news: ${article.title.vi}`)
       } else {
-        console.log(`  - News exists: ${article.title.vi}`)
+        // Update existing with featuredImage if missing
+        const doc = existing.docs[0]
+        if (!doc.featuredImage && newsImageIds[i]) {
+          await payload.update({
+            collection: 'news',
+            id: doc.id,
+            data: { featuredImage: newsImageIds[i]! },
+          })
+          console.log(`  ✓ Updated news image: ${article.title.vi}`)
+        } else {
+          console.log(`  - News exists: ${article.title.vi}`)
+        }
       }
     } catch (error) {
       console.error(`  ✗ Error creating news ${article.title.vi}:`, error)
@@ -777,7 +821,20 @@ const seedData = async () => {
     console.log(`  🗑️ Deleted existing service: ${existing.title}`)
   }
 
-  for (const service of servicesData) {
+  // Upload featured images for services (reuse product images)
+  const serviceImages = [
+    { path: '/images/products-new/goi-uc-1.jpg', alt: 'Tư vấn kỹ thuật vòng bi' },
+    { path: '/images/products-new/skf-tih-thiet-bi-gia-nhiet-1.jpg', alt: 'Đo và phân tích rung động' },
+    { path: '/images/products-new/lgmt-2-1.jpg', alt: 'Lắp đặt và bôi trơn vòng bi' },
+  ]
+  const serviceImageIds: (number | null)[] = []
+  for (const img of serviceImages) {
+    const id = await uploadProductImage(payload, img.path, img.alt)
+    serviceImageIds.push(id)
+  }
+
+  for (let i = 0; i < servicesData.length; i++) {
+    const service = servicesData[i]
     try {
       // Create service with VI locale (default)
       await payload.create({
@@ -788,6 +845,7 @@ const seedData = async () => {
           excerpt: service.excerpt.vi,
           benefits: service.benefits.vi,
           order: service.order,
+          featuredImage: serviceImageIds[i] ?? undefined,
           _status: 'published',
         },
       })
@@ -863,17 +921,21 @@ const seedData = async () => {
     })
     console.log('  ✓ Updated site settings')
 
-    // Seed English locale for site settings
+    // Read back to get array item IDs for EN locale update
+    const siteSettingsData = await payload.findGlobal({ slug: 'site-settings' }) as Record<string, unknown>
+    const phoneItems = (siteSettingsData.contact as Record<string, unknown>)?.phone as Array<Record<string, unknown>>
+    const phoneEnLabels = ['Hotline', 'Mr. Lam - Quote', 'Mr. Hien - Technical']
+
     await payload.updateGlobal({
       slug: 'site-settings',
       locale: 'en',
       data: {
         contact: {
-          phone: [
-            { number: '(+84) 963 048 317', label: 'Hotline' },
-            { number: '0903 326 309', label: 'Mr. Lam - Quote' },
-            { number: '0908 748 304', label: 'Mr. Hien - Technical' },
-          ],
+          phone: phoneItems.map((item, i) => ({
+            id: item.id,
+            number: item.number,
+            label: phoneEnLabels[i],
+          })),
           address: '16 DD3-1 Street, Tan Hung Thuan Ward, District 12, Ho Chi Minh City',
         },
       },
@@ -897,9 +959,11 @@ const seedData = async () => {
           { label: 'Trang chủ', link: '/' },
           { label: 'Sản phẩm', link: '/products', children: [
             { label: 'Vòng bi', link: '/products?category=vong-bi' },
+            { label: 'Gối đỡ', link: '/products?category=goi-do' },
             { label: 'Bôi trơn', link: '/products?category=boi-tron' },
-            { label: 'Dụng cụ bảo trì', link: '/products?category=dung-cu-bao-tri' },
             { label: 'Truyền động', link: '/products?category=truyen-dong' },
+            { label: 'Dụng cụ bảo trì', link: '/products?category=dung-cu-bao-tri' },
+            { label: 'Khí nén', link: '/products?category=khi-nen' },
           ]},
           { label: 'Dịch vụ', link: '/services' },
           { label: 'Tin tức', link: '/news' },
@@ -910,7 +974,14 @@ const seedData = async () => {
     })
     console.log('  ✓ Updated header')
 
-    // Seed English locale for header
+    // Read back to get array item IDs for EN locale update
+    const headerData = await payload.findGlobal({ slug: 'header' }) as Record<string, unknown>
+    const navItems = headerData.navigation as Array<Record<string, unknown>>
+    const enNavLabels = ['Home', 'Products', 'Services', 'News', 'About', 'Contact']
+    const enChildrenLabels: Record<number, string[]> = {
+      1: ['Bearings', 'Bearing Housings', 'Lubrication', 'Power Transmission', 'Maintenance Tools', 'Pneumatics'],
+    }
+
     await payload.updateGlobal({
       slug: 'header',
       locale: 'en',
@@ -918,19 +989,16 @@ const seedData = async () => {
         topBar: {
           content: 'Hotline: (+84) 963 048 317 | Email: info@v-ies.com',
         },
-        navigation: [
-          { label: 'Home', link: '/' },
-          { label: 'Products', link: '/products', children: [
-            { label: 'Bearings', link: '/products?category=vong-bi' },
-            { label: 'Lubrication', link: '/products?category=boi-tron' },
-            { label: 'Maintenance Tools', link: '/products?category=dung-cu-bao-tri' },
-            { label: 'Power Transmission', link: '/products?category=truyen-dong' },
-          ]},
-          { label: 'Services', link: '/services' },
-          { label: 'News', link: '/news' },
-          { label: 'About', link: '/about' },
-          { label: 'Contact', link: '/contact' },
-        ],
+        navigation: navItems.map((item, i) => ({
+          id: item.id,
+          label: enNavLabels[i],
+          link: item.link,
+          children: (item.children as Array<Record<string, unknown>> | undefined)?.map((child, j) => ({
+            id: child.id,
+            label: enChildrenLabels[i]?.[j] || child.label,
+            link: child.link,
+          })),
+        })),
       },
     })
     console.log('  ✓ Updated header (EN)')
@@ -977,45 +1045,88 @@ const seedData = async () => {
     })
     console.log('  ✓ Updated footer')
 
-    // Seed English locale for footer
+    // Read back to get array item IDs for EN locale update
+    const footerData = await payload.findGlobal({ slug: 'footer' }) as Record<string, unknown>
+    const columns = footerData.columns as Array<Record<string, unknown>>
+    const enFooter = [
+      { title: 'Products', links: ['SKF Bearings', 'FAG Bearings', 'NTN Bearings', 'Maintenance Tools'] },
+      { title: 'Services', links: ['Technical Consulting', 'Vibration Analysis', 'Installation & Lubrication'] },
+      { title: 'Information', links: ['Shipping & Returns', 'Payment Methods', 'Warranty Policy', 'Contact'] },
+    ]
+
     await payload.updateGlobal({
       slug: 'footer',
       locale: 'en',
       data: {
-        columns: [
-          {
-            title: 'Products',
-            links: [
-              { label: 'SKF Bearings', url: '/products?brand=skf' },
-              { label: 'FAG Bearings', url: '/products?brand=fag' },
-              { label: 'NTN Bearings', url: '/products?brand=ntn' },
-              { label: 'Maintenance Tools', url: '/products?category=dung-cu-bao-tri' },
-            ],
-          },
-          {
-            title: 'Services',
-            links: [
-              { label: 'Technical Consulting', url: '/services' },
-              { label: 'Vibration Analysis', url: '/services' },
-              { label: 'Installation & Lubrication', url: '/services' },
-            ],
-          },
-          {
-            title: 'Information',
-            links: [
-              { label: 'Shipping & Returns', url: '/shipping' },
-              { label: 'Payment Methods', url: '/payment' },
-              { label: 'Warranty Policy', url: '/warranty' },
-              { label: 'Contact', url: '/contact' },
-            ],
-          },
-        ],
+        columns: columns.map((col, i) => ({
+          id: col.id,
+          title: enFooter[i].title,
+          links: (col.links as Array<Record<string, unknown>>).map((link, j) => ({
+            id: link.id,
+            label: enFooter[i].links[j],
+            url: link.url,
+          })),
+        })),
         copyright: '© 2026 VIES. VIES Trading & Services Co., Ltd. Tax ID: 0318321326',
       },
     })
     console.log('  ✓ Updated footer (EN)')
   } catch (error) {
     console.error('  ✗ Error updating footer:', error)
+  }
+
+  // Create Forms for form-builder plugin
+  console.log('📝 Creating forms...')
+  try {
+    const existingForms = await payload.find({ collection: 'forms', limit: 10 })
+    const existingTitles = existingForms.docs.map((f: Record<string, unknown>) => f.title)
+
+    if (!existingTitles.includes('Quote Request')) {
+      await payload.create({
+        collection: 'forms',
+        data: {
+          title: 'Quote Request',
+          confirmationType: 'message',
+          confirmationMessage: makeRichText('Thank you for your quote request. We will contact you shortly.'),
+          fields: [
+            { blockType: 'text', name: 'name', label: 'Name', required: true },
+            { blockType: 'text', name: 'phone', label: 'Phone', required: true },
+            { blockType: 'email', name: 'email', label: 'Email' },
+            { blockType: 'number', name: 'quantity', label: 'Quantity' },
+            { blockType: 'textarea', name: 'note', label: 'Note' },
+            { blockType: 'text', name: 'productName', label: 'Product Name' },
+            { blockType: 'text', name: 'productSku', label: 'Product SKU' },
+          ],
+        } as Record<string, unknown>,
+      })
+      console.log('  ✓ Created form: Quote Request')
+    } else {
+      console.log('  - Form exists: Quote Request')
+    }
+
+    if (!existingTitles.includes('Contact')) {
+      await payload.create({
+        collection: 'forms',
+        data: {
+          title: 'Contact',
+          confirmationType: 'message',
+          confirmationMessage: makeRichText('Thank you for contacting us. We will get back to you soon.'),
+          fields: [
+            { blockType: 'text', name: 'name', label: 'Name', required: true },
+            { blockType: 'text', name: 'phone', label: 'Phone', required: true },
+            { blockType: 'email', name: 'email', label: 'Email' },
+            { blockType: 'text', name: 'subject', label: 'Subject' },
+            { blockType: 'text', name: 'company', label: 'Company' },
+            { blockType: 'textarea', name: 'message', label: 'Message', required: true },
+          ],
+        } as Record<string, unknown>,
+      })
+      console.log('  ✓ Created form: Contact')
+    } else {
+      console.log('  - Form exists: Contact')
+    }
+  } catch (error) {
+    console.error('  ✗ Error creating forms:', error)
   }
 
   // Cleanup
