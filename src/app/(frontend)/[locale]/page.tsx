@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
 
   return {
-    title: t('hero.title'),
+    title: t('pageTitle'),
     description: t('hero.subtitle'),
     alternates: {
       canonical: `${siteUrl}/${locale}`,
