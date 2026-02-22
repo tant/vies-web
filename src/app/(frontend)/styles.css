@@ -84,10 +84,8 @@ p {
   line-height: 1.6;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
+/* Note: a { color: inherit } is handled by Tailwind v4 preflight in @layer base.
+   Do NOT add unlayered a{} rules here — they override Tailwind utilities on links. */
 
 img {
   max-width: 100%;

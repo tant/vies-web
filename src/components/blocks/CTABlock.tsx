@@ -11,8 +11,8 @@ interface CTABlockProps {
 
 const buttonStyles = {
   primary: 'bg-primary text-white hover:bg-primary-dark',
-  secondary: 'bg-secondary text-white hover:bg-secondary-dark',
-  outline: 'border-2 border-white text-white hover:bg-white hover:text-primary',
+  secondary: 'bg-white text-gray-900 hover:bg-gray-100',
+  outline: 'border-2 border-gray-900 text-gray-900 hover:bg-gray-900 hover:text-white',
 }
 
 export function CTABlock({ block, locale }: CTABlockProps) {
@@ -21,9 +21,9 @@ export function CTABlock({ block, locale }: CTABlockProps) {
   return (
     <section className="py-xl bg-accent">
       <div className="mx-auto max-w-[var(--container-max)] px-md text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white">{block.heading}</h2>
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{block.heading}</h2>
         {block.description && (
-          <p className="mt-md text-lg text-white/90 max-w-2xl mx-auto">{block.description}</p>
+          <p className="mt-md text-lg text-gray-800 max-w-2xl mx-auto">{block.description}</p>
         )}
         {buttons.length > 0 && (
           <div className="mt-lg flex flex-wrap items-center justify-center gap-md">
