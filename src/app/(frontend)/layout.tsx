@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getLocale } from 'next-intl/server'
 import { getPayload } from 'payload'
+import { unstable_cache } from 'next/cache'
 import configPromise from '@payload-config'
 import type { Locale } from '@/i18n/config'
 import { ContactBar } from '@/components/layout/ContactBar'
@@ -29,6 +30,20 @@ export const metadata = {
   keywords: ['vòng bi', 'bearing', 'SKF', 'FAG', 'NTN', 'TIMKEN', 'công nghiệp', 'VIES'],
 }
 
+const getLayoutData = unstable_cache(
+  async (locale: Locale) => {
+    const payload = await getPayload({ config: configPromise })
+    const [siteSettings, headerData, footerData] = await Promise.all([
+      payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true, logo: true, siteName: true, social: true, favicon: true } }),
+      payload.findGlobal({ slug: 'header', locale, select: { topBar: true, navigation: true } }),
+      payload.findGlobal({ slug: 'footer', locale }),
+    ])
+    return { siteSettings, headerData, footerData }
+  },
+  ['layout-data'],
+  { revalidate: 300, tags: ['layout-data'] }
+)
+
 export default async function RootLayout({
   children,
 }: {
@@ -37,13 +52,7 @@ export default async function RootLayout({
   const locale = (await getLocale()) as Locale
   const messages = await getMessages()
 
-  const payload = await getPayload({ config: configPromise })
-
-  const [siteSettings, headerData, footerData] = await Promise.all([
-    payload.findGlobal({ slug: 'site-settings', locale, select: { contact: true, logo: true, siteName: true, social: true, favicon: true } }),
-    payload.findGlobal({ slug: 'header', locale, select: { topBar: true, navigation: true } }),
-    payload.findGlobal({ slug: 'footer', locale }),
-  ])
+  const { siteSettings, headerData, footerData } = await getLayoutData(locale)
 
   return (
     <html lang={locale} className={inter.variable}>

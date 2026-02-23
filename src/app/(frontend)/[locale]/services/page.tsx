@@ -9,6 +9,8 @@ import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
+export const revalidate = 60
+
 type Props = { params: Promise<{ locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

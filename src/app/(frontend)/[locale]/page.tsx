@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { getPayload } from 'payload'
+import { unstable_cache } from 'next/cache'
 import config from '@/payload.config'
 import { BrandLogoBar } from '@/components/ui/BrandLogoBar'
 import { SearchBar } from '@/components/ui/SearchBar'
@@ -13,6 +14,8 @@ import { CTASection } from '@/components/ui/CTASection'
 import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
+
+export const revalidate = 60
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -44,27 +47,22 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'home' })
   const tCommon = await getTranslations({ locale, namespace: 'common' })
 
-  // Fetch data from Payload
-  const payload = await getPayload({ config: await config })
+  // Cache homepage data (brands, categories, site-settings rarely change)
+  const getHomeData = unstable_cache(
+    async (loc: string) => {
+      const payload = await getPayload({ config: await config })
+      const [brands, categories, siteSettings] = await Promise.all([
+        payload.find({ collection: 'brands', limit: 20, sort: 'name', locale: loc as Locale, depth: 1 }),
+        payload.find({ collection: 'categories', limit: 6, locale: loc as Locale }),
+        payload.findGlobal({ slug: 'site-settings', locale: loc as Locale }),
+      ])
+      return { brands, categories, siteSettings }
+    },
+    ['home-data'],
+    { revalidate: 300, tags: ['home-data'] }
+  )
 
-  const [brands, categories, siteSettings] = await Promise.all([
-    payload.find({
-      collection: 'brands',
-      limit: 20,
-      sort: 'name',
-      locale: locale as Locale,
-      depth: 1,
-    }),
-    payload.find({
-      collection: 'categories',
-      limit: 6,
-      locale: locale as Locale,
-    }),
-    payload.findGlobal({
-      slug: 'site-settings',
-      locale: locale as Locale,
-    }),
-  ])
+  const { brands, categories, siteSettings } = await getHomeData(locale)
 
   // Extract contact info from SiteSettings
   const primaryPhone = siteSettings.contact?.phone?.[0]?.number || '0963048317'

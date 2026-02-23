@@ -9,10 +9,12 @@ import { ProductCard } from '@/components/ui/ProductCard'
 import { ProductGallery } from '@/components/product/ProductGallery'
 import { SpecificationsTable } from '@/components/product/SpecificationsTable'
 import { RichTextContent } from '@/components/product/RichTextContent'
-import { QuoteRequestButton } from '@/components/ui/QuoteRequestForm'
+import { QuoteRequestButton } from '@/components/ui/QuoteRequestButton'
 import { MobileStickyBar } from '@/components/ui/MobileStickyBar'
 import type { Product, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
+
+export const revalidate = 60
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>

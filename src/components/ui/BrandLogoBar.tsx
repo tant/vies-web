@@ -53,7 +53,6 @@ export async function BrandLogoBar({ brands, locale }: Props) {
                     alt={logoAlt}
                     width={120}
                     height={48}
-                    unoptimized
                     className="h-10 md:h-12 w-auto min-w-[80px] object-contain"
                   />
                 ) : (

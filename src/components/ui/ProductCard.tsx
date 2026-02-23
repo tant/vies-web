@@ -15,6 +15,7 @@ export interface ProductCardData {
 export interface ProductCardProps {
   product: Product | ProductCardData
   locale: string
+  priority?: boolean
 }
 
 // Type guard to check if product is full Product type
@@ -22,7 +23,7 @@ function isFullProduct(product: Product | ProductCardData): product is Product {
   return 'images' in product
 }
 
-export function ProductCard({ product, locale }: ProductCardProps) {
+export function ProductCard({ product, locale, priority = false }: ProductCardProps) {
   let brandName: string | null = null
   let firstMediaImage: MediaType | null = null
   let preProcessedImageUrl: string | null = null
@@ -59,6 +60,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
               preferredSize="thumbnail"
               className="w-full h-full object-cover"
               alt={imageAlt}
+              priority={priority}
             />
           ) : preProcessedImageUrl ? (
             <Image
@@ -67,6 +69,7 @@ export function ProductCard({ product, locale }: ProductCardProps) {
               width={400}
               height={300}
               className="w-full h-full object-cover"
+              priority={priority}
             />
           ) : (
             <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">

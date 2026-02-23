@@ -8,8 +8,13 @@ import { usePathname } from '@/i18n/navigation'
 import { cn, formatTelHref } from '@/lib/utils'
 import type { Header as HeaderType, SiteSetting, Media } from '@/payload-types'
 import { PhoneIcon, MenuIcon, XIcon, ChevronDownIcon, SearchIcon } from './icons'
+import dynamic from 'next/dynamic'
 import { SearchBar } from '@/components/ui/SearchBar'
-import { MobileSearchOverlay } from '@/components/ui/MobileSearchOverlay'
+
+const MobileSearchOverlay = dynamic(
+  () => import('@/components/ui/MobileSearchOverlay').then((m) => ({ default: m.MobileSearchOverlay })),
+  { ssr: false },
+)
 
 interface NavigationHeaderProps {
   headerData: HeaderType

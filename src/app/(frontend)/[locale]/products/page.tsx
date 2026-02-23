@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server'
 import { getPayload } from 'payload'
+import { unstable_cache } from 'next/cache'
 import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductsPageClient } from './ProductsPageClient'
@@ -9,6 +10,8 @@ import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Media, Brand, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
+
+export const revalidate = 60
 
 type Props = {
   params: Promise<{ locale: string }>
@@ -74,8 +77,22 @@ export default async function ProductsPage({ params, searchParams }: Props) {
     return conditions.length > 0 ? { and: conditions } : undefined
   }
 
-  // Fetch products and filter options (Task 2.2, 2.3)
-  const [productsResult, brandsResult, categoriesResult] = await Promise.all([
+  // Cache filter options (brands & categories rarely change)
+  const getFilterData = unstable_cache(
+    async (loc: string) => {
+      const p = await getPayload({ config: await config })
+      const [brands, categories] = await Promise.all([
+        p.find({ collection: 'brands', limit: 50, sort: 'name', locale: loc as Locale }),
+        p.find({ collection: 'categories', limit: 50, sort: 'order', locale: loc as Locale }),
+      ])
+      return { brands, categories }
+    },
+    ['product-filters'],
+    { revalidate: 300, tags: ['product-filters'] }
+  )
+
+  // Fetch products (dynamic) and filter options (cached)
+  const [productsResult, filterData] = await Promise.all([
     payload.find({
       collection: 'products',
       where: buildWhereClause(),
@@ -85,19 +102,9 @@ export default async function ProductsPage({ params, searchParams }: Props) {
       locale: locale as Locale,
       depth: 1,
     }),
-    payload.find({
-      collection: 'brands',
-      limit: 100,
-      sort: 'name',
-      locale: locale as Locale,
-    }),
-    payload.find({
-      collection: 'categories',
-      limit: 100,
-      sort: 'order',
-      locale: locale as Locale,
-    }),
+    getFilterData(locale),
   ])
+  const { brands: brandsResult, categories: categoriesResult } = filterData
 
   // Transform products for ProductCard (Task 2.6)
   const products = productsResult.docs.map((product) => {

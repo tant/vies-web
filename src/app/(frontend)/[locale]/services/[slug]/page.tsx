@@ -10,6 +10,8 @@ import { RichTextContent } from '@/components/product/RichTextContent'
 import { CheckCircleIcon } from '@/components/layout/icons'
 import type { Locale } from '@/i18n/config'
 
+export const revalidate = 60
+
 type Props = {
   params: Promise<{ locale: string; slug: string }>
 }
