@@ -256,7 +256,7 @@
 | FORM-05 | Phone validation - wrong length | Nhập: 090123456 (9 số) | Hiện lỗi validation | P1 | ✅ | |
 | FORM-06 | Phone validation - letters | Nhập: 090abc1234 | Hiện lỗi validation | P1 | ✅ | "Số điện thoại không hợp lệ" |
 | FORM-07 | Email validation - valid | Nhập: test@example.com | Không có lỗi | P1 | ✅ | |
-| FORM-08 | Email validation - invalid | Nhập: "abc@" hoặc "abc.com" | Hiện lỗi email không hợp lệ | P1 | ⚠️ | HTML5 type="email" validation fires first (browser native popup), custom validation exists as backup |
+| FORM-08 | Email validation - invalid | Nhập: "abc@" hoặc "abc.com" | Hiện lỗi email không hợp lệ | P1 | ✅ | Fixed: type="text" + inputMode="email", custom validation shows "Invalid email address" on blur, no native popup |
 | FORM-09 | Email optional | Bỏ trống email, điền đủ name + phone | Submit thành công | P1 | ✅ | Email field has no asterisk, form submits with only name+phone |
 | FORM-10 | Submit thành công | Điền đầy đủ (name, phone), click Submit | Toast success hiển thị, form reset, modal tự đóng sau 5s | P0 | ✅ | "Request submitted successfully" + "VIES will contact you within 30 minutes", form reset |
 | FORM-11 | Submit - loading state | Click Submit, quan sát | Button disabled, hiện loading spinner | P2 | ✅ | Code: disabled={isSubmitting}, isSubmitting shows loading text |
@@ -338,8 +338,8 @@
 |---|-----------|---------------|-------------------|---|---------|---------|
 | I18N-06 | Navigation text | Chuyển EN/VI | Menu items, breadcrumbs đổi ngôn ngữ đúng | P0 | ✅ | EN: Home, Products, Services, News, About, Contact |
 | I18N-07 | Product content | Xem sản phẩm ở VI rồi EN | Tên, mô tả, thông số hiển thị đúng ngôn ngữ tương ứng | P0 | ✅ | EN product detail fully translated |
-| I18N-08 | Service content | Xem dịch vụ ở cả 2 ngôn ngữ | Tiêu đề, nội dung, lợi ích đổi ngôn ngữ đúng | P1 | ⚠️ | UI strings in EN, but CMS service content falls back to VI (EN not seeded) |
-| I18N-09 | News content | Xem tin tức ở cả 2 ngôn ngữ | Tiêu đề, excerpt, nội dung đổi đúng | P1 | ⏭️ | Same as I18N-08, depends on CMS content seeding |
+| I18N-08 | Service content | Xem dịch vụ ở cả 2 ngôn ngữ | Tiêu đề, nội dung, lợi ích đổi ngôn ngữ đúng | P1 | ✅ | VI: "Tư vấn kỹ thuật", EN: "Technical Consulting". List + detail pages fully translated (title, excerpt, benefits) |
+| I18N-09 | News content | Xem tin tức ở cả 2 ngôn ngữ | Tiêu đề, excerpt, nội dung đổi đúng | P1 | ✅ | VI: "VIES trở thành nhà phân phối...", EN: "VIES Becomes Authorized Lincoln Distributor...". Title, excerpt, content, date format all switch correctly |
 | I18N-10 | Form labels | Xem form ở cả 2 ngôn ngữ | Labels, placeholders, validation messages, buttons đổi đúng | P1 | ✅ | EN: Full Name, Phone Number, Email, Quantity, Notes, Submit |
 | I18N-11 | Error messages | Trigger validation error ở cả 2 ngôn ngữ | Messages hiện đúng ngôn ngữ | P1 | ✅ | VI: "Không tìm thấy trang", EN: "Page Not Found" |
 | I18N-12 | Toast messages | Submit form ở cả 2 ngôn ngữ | Toast success/error hiện đúng ngôn ngữ | P2 | ✅ | EN: "Request submitted successfully" |
@@ -404,13 +404,13 @@
 |---|-----------|---------------|-------------------|---|---------|---------|
 | A11Y-01 | Keyboard navigation | Dùng Tab/Shift+Tab duyệt toàn bộ trang | Tất cả elements interactive có focus visible, thứ tự logic | P1 | ✅ | Landmarks: banner, nav, main, contentinfo, region |
 | A11Y-02 | Focus visible | Tab qua các nút, link | Focus ring rõ ràng (ring-2) trên mọi element | P1 | ✅ | CSS focus styles verified |
-| A11Y-03 | Skip link | Nhấn Tab ngay khi load trang | Có "Skip to main content" link (nếu implemented) | P3 | ⚠️ | Not implemented - minor |
+| A11Y-03 | Skip link | Nhấn Tab ngay khi load trang | Có "Skip to main content" link (nếu implemented) | P3 | ✅ | Fixed: "Skip to main content" link added to layout.tsx, targets #main-content, sr-only focus:not-sr-only |
 | A11Y-04 | Image alt text | Inspect ảnh | Tất cả ảnh có alt text mô tả | P1 | ✅ | All images have alt text |
 | A11Y-05 | Form labels | Inspect form fields | Mỗi input có `<label>` liên kết đúng hoặc `aria-label` | P1 | ✅ | htmlFor + aria-label verified |
 | A11Y-06 | Form errors | Trigger validation | Error messages liên kết đến field (`aria-describedby`), `aria-invalid="true"` | P2 | ✅ | aria-invalid + aria-describedby in code |
 | A11Y-07 | ARIA attributes | Inspect dropdowns, modals | `aria-expanded`, `aria-haspopup`, `aria-modal`, `role` đúng | P2 | ✅ | role="dialog", aria-modal="true", aria-labelledby |
-| A11Y-08 | Color contrast | Dùng DevTools/axe check contrast | Text/background contrast ratio ≥ 4.5:1 (AA) | P2 | ⚠️ | Lighthouse: 3 failing elements - primary button link, accent CTA button, footer copyright (text-gray-500 on bg-gray-900) |
-| A11Y-09 | Screen reader | Dùng VoiceOver/NVDA test | Nội dung đọc được, navigation logic, form errors thông báo | P2 | ⚠️ | Landmarks OK (banner/nav/main/contentinfo), heading hierarchy OK (h1→h2→h3), all imgs have alt. Missing skip-to-content link |
+| A11Y-08 | Color contrast | Dùng DevTools/axe check contrast | Text/background contrast ratio ≥ 4.5:1 (AA) | P2 | ✅ | Fixed: removed unlayered `a{color:inherit}` (Tailwind v4 layer bug), CTABlock text-white→text-gray-900 on bg-accent, Footer text-gray-500→text-gray-400 |
+| A11Y-09 | Screen reader | Dùng VoiceOver/NVDA test | Nội dung đọc được, navigation logic, form errors thông báo | P2 | ⚠️ | Landmarks OK, heading hierarchy OK, all imgs have alt, skip-to-content added. Full VoiceOver/NVDA test cần thủ công |
 | A11Y-10 | Reduced motion | Enable `prefers-reduced-motion: reduce` | Animations bị tắt hoặc giảm thiểu | P3 | ✅ | CSS: @media (prefers-reduced-motion: reduce) disables animations. MobileStickyBar: matchMedia check sets transition:none |
 
 ---
@@ -419,8 +419,8 @@
 
 | # | Test Case | Bước thực hiện | Kết quả mong đợi | P | Kết quả | Ghi chú |
 |---|-----------|---------------|-------------------|---|---------|---------|
-| PERF-01 | Page load - Home | Lighthouse hoặc đo thủ công | FCP < 2s, LCP < 3s | P1 | ⚠️ | Lighthouse: FCP 1.3s ✅, LCP 6.9s ⚠️ (dev mode - unminified JS, redirects add 770ms), TBT 60ms ✅, Performance 76 |
-| PERF-02 | Page load - Products | Mở `/products` | Trang load trong < 3s | P1 | ⚠️ | Lighthouse: FCP 1.1s ✅, LCP 7.2s ⚠️ (dev mode), TBT 50ms ✅, Performance 76 |
+| PERF-01 | Page load - Home | Lighthouse hoặc đo thủ công | FCP < 2s, LCP < 3s | P1 | ⚠️ | Production: Score 91, FCP 1.1s ✅, LCP 3.5s ⚠️ (needs improvement 2.5-4s, LCP element is hero subtitle text), TBT 10ms ✅, CLS 0 ✅ |
+| PERF-02 | Page load - Products | Mở `/products` | Trang load trong < 3s | P1 | ⚠️ | Production: Score 86, FCP 1.5s ✅, LCP 4.1s ⚠️ (SSR + DB queries), TBT 0ms ✅, CLS 0 ✅ |
 | PERF-03 | Image optimization | DevTools → Network → Images | Ảnh serve đúng size (không serve ảnh gốc lớn cho thumbnail) | P2 | ✅ | Next.js Image component with sizes prop, 3 generated sizes (thumbnail/medium/large) |
 | PERF-04 | Search debounce | Gõ nhanh "abcdef" | Chỉ 1-2 API calls (không phải 6 calls) nhờ debounce 300ms | P2 | ✅ | Code: 300ms debounce in useSearch hook |
 | PERF-05 | No layout shift | Quan sát khi trang load | Không có content nhảy/shift sau khi load (CLS < 0.1) | P2 | ✅ | Lighthouse CLS: 0 (home), 0 (products) |
@@ -467,12 +467,12 @@
 | ADM-08 | List views & search | Kiểm tra danh sách, sort, pagination, search | Sortable columns, pagination, search bar, filters | P1 | ✅ | Products: sortable columns, pagination 1-10 of 20, search bar, filter button |
 | ADM-09 | Edit global - Header | Thay đổi navigation trong Header global | Frontend header cập nhật | P1 | ✅ | Header global verified: Top Bar (enabled + content), 6 nav items with children (Products has 6 category children), all localized |
 | ADM-10 | Edit global - Footer | Thay đổi footer columns | Frontend footer cập nhật | P1 | ✅ | Footer global verified: 3 columns (Products 4 links, Services 3 links, Information 4 links) + Copyright, all localized |
-| ADM-11 | Edit global - SiteSettings | Thay đổi SĐT trong SiteSettings | Contact bar, footer cập nhật SĐT mới | P1 | ⏭️ | Requires data modification - manual test |
+| ADM-11 | Edit global - SiteSettings | Thay đổi SĐT trong SiteSettings | Contact bar, footer cập nhật SĐT mới | P1 | ✅ | Changed Hotline to (+84) 999 888 777, saved → contact bar, footer, CTA all updated instantly. Reverted to original |
 | ADM-12 | SEO tab | Mở product → tab SEO | Hiện meta title, description, preview đúng | P2 | ✅ | Title (50-60 chars), Description (100-150 chars), Auto-generate buttons, search result preview, 0/3 checks (EN fields empty) |
 | ADM-13 | Form submissions | Vào Forms → Form Submissions | Danh sách submissions hiển thị, có thể xem chi tiết | P1 | ✅ | 6 submissions (4 Quote Request, 2 Contact), detail view with all fields |
 | ADM-14 | Localization | Sửa sản phẩm → chuyển sang locale EN | Có thể nhập nội dung tiếng Anh riêng | P1 | ✅ | VI: "Vòng bi cầu SKF" → EN: "SKF Deep Groove Ball Bearings", all fields localized separately |
 | ADM-15 | Version history | Mở sản phẩm đã edit nhiều lần → Versions | Hiện lịch sử versions, có thể xem bản cũ | P2 | ✅ | 2 versions: ID 20 (Currently Published), ID 19 (Previously Published) |
-| ADM-16 | Live Preview | Mở product → Live Preview | Preview frontend hiện đúng nội dung | P2 | ⚠️ | Panel opens with responsive controls (width/height, zoom, new window) but iframe points to port 3000 instead of 3002 - env config issue |
+| ADM-16 | Live Preview | Mở product → Live Preview | Preview frontend hiện đúng nội dung | P2 | ✅ | Panel opens with iframe rendering full product page (name, description, specs, related products). Responsive controls (861x833), zoom 100%, "Open in new window" link works |
 | ADM-17 | Category hierarchy | Tạo category con (chọn parent) | Hiện đúng hierarchy, frontend filter hoạt động | P2 | ✅ | 6 categories: Bearings, Lubrication, Maintenance Tools, Power Transmission, Bearing Housings, Pneumatics. Parent field available |
 | ADM-18 | Brand management | Tạo/sửa brand với logo | Brand hiện đúng trên frontend, logo hiện | P2 | ✅ | 7 brands (SKF, FAG, NTN, TIMKEN, Optibelt, Bando, Tsubaki) with SVG logos |
 | ADM-19 | Dynamic page | Tạo Page mới với multiple blocks | Trang render đúng trên frontend tại `/{slug}` | P1 | ✅ | 2 pages (shipping, payment): Title, Slug, Content (rich text), Layout blocks, Featured Image, SEO tab |
@@ -491,17 +491,17 @@
 | SVC - Dịch vụ | 8 | 8 | 0 | 0 | ✅ |
 | NEWS - Tin tức | 11 | 11 | 0 | 0 | ✅ |
 | SEARCH - Tìm kiếm | 24 | 23 | 0 | 1 | ✅ |
-| FORM - Forms | 31 | 30 | 0 | 1 | ✅ |
+| FORM - Forms | 31 | 31 | 0 | 0 | ✅ |
 | STATIC - Trang tĩnh | 11 | 11 | 0 | 0 | ✅ |
 | CMS - Dynamic Pages | 7 | 7 | 0 | 0 | ✅ |
-| I18N - Đa ngôn ngữ | 16 | 14 | 0 | 2 | ✅ |
+| I18N - Đa ngôn ngữ | 16 | 16 | 0 | 0 | ✅ |
 | SEO - Metadata | 12 | 12 | 0 | 0 | ✅ |
 | RESP - Responsive | 15 | 11 | 0 | 4 | ✅ |
-| A11Y - Accessibility | 10 | 7 | 0 | 3 | ⚠️ |
+| A11Y - Accessibility | 10 | 9 | 0 | 1 | ✅ |
 | PERF - Performance | 7 | 5 | 0 | 2 | ✅ |
 | ERR - Error Handling | 17 | 11 | 0 | 6 | ✅ |
-| ADMIN - PayloadCMS | 19 | 18 | 0 | 1 | ✅ |
-| **TỔNG** | **242** | **222** | **0** | **20** | **92%** |
+| ADMIN - PayloadCMS | 19 | 19 | 0 | 0 | ✅ |
+| **TỔNG** | **242** | **229** | **0** | **13** | **95%** |
 
 ### Tiêu chí Pass UAT
 
