@@ -852,18 +852,31 @@ const seedData = async () => {
         })
         console.log(`  ✓ Created news: ${article.title.vi}`)
       } else {
-        // Update existing with featuredImage if missing
+        // Update existing with featuredImage and EN locale
         const doc = existing.docs[0]
+        const updates: Record<string, unknown> = {}
         if (!doc.featuredImage && newsImageIds[i]) {
+          updates.featuredImage = newsImageIds[i]!
+        }
+        if (Object.keys(updates).length > 0) {
           await payload.update({
             collection: 'news',
             id: doc.id,
-            data: { featuredImage: newsImageIds[i]! },
+            data: updates,
           })
-          console.log(`  ✓ Updated news image: ${article.title.vi}`)
-        } else {
-          console.log(`  - News exists: ${article.title.vi}`)
         }
+        // Always ensure EN locale is seeded
+        await payload.update({
+          collection: 'news',
+          id: doc.id,
+          locale: 'en',
+          data: {
+            title: article.title.en,
+            excerpt: article.excerpt.en,
+            content: makeRichText(article.content.en),
+          },
+        })
+        console.log(`  ✓ Updated news (en): ${article.title.vi}`)
       }
     } catch (error) {
       console.error(`  ✗ Error creating news ${article.title.vi}:`, error)
