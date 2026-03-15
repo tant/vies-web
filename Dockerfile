@@ -62,8 +62,6 @@ RUN chown nextjs:nodejs /app/media
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Migration files — needed for prodMigrations to work at runtime
-COPY --from=builder --chown=nextjs:nodejs /app/src/migrations ./src/migrations
 
 USER nextjs
 
