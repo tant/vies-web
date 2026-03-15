@@ -19,12 +19,14 @@ RUN corepack enable pnpm && pnpm i --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 
-# Build-time args — PayloadCMS initializes during `next build` and needs DB access
-ARG DATABASE_URL
-ARG PAYLOAD_SECRET
+# Build-time env vars
+# DATABASE_URL uses a dummy value at build time — the real one is injected at runtime.
+# PayloadCMS needs a valid connection string format during `next build` but
+# prodMigrations handles actual DB setup at container startup.
 ARG NEXT_PUBLIC_SITE_URL
+ARG PAYLOAD_SECRET=build-time-secret-placeholder
 
-ENV DATABASE_URL=${DATABASE_URL}
+ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
 ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
 ENV NEXT_TELEMETRY_DISABLED=1
