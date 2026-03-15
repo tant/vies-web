@@ -5,7 +5,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts')
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Your Next.js config here
+  output: 'standalone',
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
@@ -31,6 +31,16 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: '**.v-ies.com',
+        pathname: '/api/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'staging.vies.com.vn',
+        pathname: '/api/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: '**.vies.com.vn',
         pathname: '/api/media/**',
       },
     ],
