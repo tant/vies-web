@@ -22,10 +22,10 @@
 
 ## Environments
 
-| Environment | URL                         | Branch | Auto-deploy |
-|-------------|-----------------------------|--------|-------------|
-| Staging     | https://staging.vies.com.vn | main   | Yes (Dokploy) |
-| Production  | https://v-ies.com           | main   | Manual      |
+| Environment | URL                         | Branch    | Auto-deploy |
+|-------------|-----------------------------|-----------|-------------|
+| Staging     | https://staging.vies.com.vn | staging   | Yes (Dokploy) |
+| Production  | https://v-ies.com           | main      | Manual      |
 
 ## Staging Deployment
 
@@ -36,7 +36,7 @@
 
 ### How It Works
 
-1. **Push to `main`** → Dokploy detects the change and triggers a build
+1. **Push to `staging`** → Dokploy detects the change and triggers a build
 2. **Docker build** → Multi-stage build using the project `Dockerfile`
 3. **Migrations** → Auto-run on container startup via `prodMigrations` in PayloadCMS config
 4. **Live** → App is accessible at `https://staging.vies.com.vn`
@@ -116,8 +116,10 @@ pnpm payload migrate:create
 git add .
 git commit -m "feat: describe your change"
 
-# 6. Push and create a PR
+# 6. Push and create a PR targeting `staging` branch
 git push origin feature/my-change
+# Create PR → merge into `staging` → auto-deploys to staging.vies.com.vn
+# When ready for production, merge `staging` into `main`
 ```
 
 ### Database Migrations
