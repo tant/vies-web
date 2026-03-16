@@ -1,4 +1,5 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { migrations } from './migrations'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { formBuilderPlugin } from '@payloadcms/plugin-form-builder'
@@ -76,6 +77,7 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URL || '',
     },
     push: true,
+    prodMigrations: migrations,
   }),
   localization: {
     locales: [

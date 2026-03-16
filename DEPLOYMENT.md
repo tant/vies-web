@@ -31,20 +31,38 @@
 
 ## Database Schema Management
 
-PayloadCMS sử dụng **`push: true`** (Drizzle ORM push mode) cho cả development và production:
+PayloadCMS sử dụng hai chế độ quản lý schema:
 
-- Khi app khởi động, PayloadCMS tự động so sánh schema trong config với database
+### Development (`push: true`)
+- Khi chạy `pnpm dev`, PayloadCMS tự động so sánh schema trong config với database
 - Nếu có thay đổi (thêm field, collection...), schema được sync trực tiếp vào DB
 - **Không cần tạo file migration thủ công** — mọi thứ tự động
 
-> **Tại sao không dùng `prodMigrations`?**
-> Migration modules không được bundle đúng trong Next.js standalone Docker build, nên dùng `push: true` thay thế.
+### Production (`prodMigrations`)
+- `push: true` **bị vô hiệu hóa** khi `NODE_ENV=production` (trong Docker)
+- Production dùng `prodMigrations` trong `payload.config.ts` để chạy migration khi container khởi động
+- Migration files nằm trong `src/migrations/`
+
+### Khi thay đổi schema (thêm/sửa field, collection...)
+
+```bash
+# 1. Thay đổi schema trong code (collections, globals...)
+# 2. Chạy dev để push tự động sync vào local DB
+pnpm dev
+
+# 3. Tạo migration file mới
+pnpm migrate:create
+
+# 4. Commit migration files cùng với code changes
+git add src/migrations/
+git commit -m "feat: add new field + migration"
+```
 
 ### Lưu ý quan trọng
 
-- `push: true` **tự động thêm** columns/tables mới nhưng **không tự xóa** columns/tables cũ
-- Nếu cần xóa column/table, phải thao tác trực tiếp trên database
-- Khi thay đổi collection/field, chỉ cần commit code và deploy — schema tự sync khi container khởi động
+- **Luôn tạo migration** sau khi thay đổi schema trước khi deploy
+- Migration tự động chạy khi container khởi động trong production
+- Nếu cần xóa column/table, phải thao tác trực tiếp trên database (push/migration chỉ thêm, không xóa)
 
 ---
 
