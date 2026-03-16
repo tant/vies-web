@@ -1,7 +1,11 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateLayoutData } from '@/lib/payload/hooks/revalidateCache'
 
 export const Footer: GlobalConfig = {
   slug: 'footer',
+  hooks: {
+    afterChange: [revalidateLayoutData],
+  },
   access: {
     read: () => true,
   },

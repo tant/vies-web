@@ -1,10 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
-import type { Brand } from '@/payload-types'
+import type { Media } from '@/payload-types'
+
+type BrandItem = {
+  id: number
+  name: string
+  slug: string
+  logo?: number | Media | null
+}
 
 type Props = {
-  brands: Brand[]
+  brands: BrandItem[]
   locale: string
 }
 

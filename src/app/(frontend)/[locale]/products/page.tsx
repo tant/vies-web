@@ -18,6 +18,19 @@ type Props = {
   searchParams: Promise<{ brand?: string; category?: string; page?: string }>
 }
 
+const getFilterData = unstable_cache(
+  async (loc: string) => {
+    const p = await getPayload({ config: await config })
+    const [brands, categories] = await Promise.all([
+      p.find({ collection: 'brands', limit: 50, sort: 'name', locale: loc as Locale, select: { name: true, slug: true } }),
+      p.find({ collection: 'categories', limit: 50, sort: 'order', locale: loc as Locale, select: { name: true, slug: true, parent: true } }),
+    ])
+    return { brands, categories }
+  },
+  ['product-filters'],
+  { revalidate: 300, tags: ['product-filters'] }
+)
+
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'products' })
@@ -76,20 +89,6 @@ export default async function ProductsPage({ params, searchParams }: Props) {
 
     return conditions.length > 0 ? { and: conditions } : undefined
   }
-
-  // Cache filter options (brands & categories rarely change)
-  const getFilterData = unstable_cache(
-    async (loc: string) => {
-      const p = await getPayload({ config: await config })
-      const [brands, categories] = await Promise.all([
-        p.find({ collection: 'brands', limit: 50, sort: 'name', locale: loc as Locale }),
-        p.find({ collection: 'categories', limit: 50, sort: 'order', locale: loc as Locale }),
-      ])
-      return { brands, categories }
-    },
-    ['product-filters'],
-    { revalidate: 300, tags: ['product-filters'] }
-  )
 
   // Fetch products (dynamic) and filter options (cached)
   const [productsResult, filterData] = await Promise.all([

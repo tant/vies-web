@@ -14,7 +14,7 @@ services:
       - .env
 
   postgres:
-    restart: always
+    restart: "no"
     image: postgres:16-alpine
     volumes:
       - pgdata:/var/lib/postgresql/data

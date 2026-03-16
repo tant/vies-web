@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { getTranslations } from 'next-intl/server'
 import Link from 'next/link'
 import { getPayload } from 'payload'
@@ -15,11 +16,45 @@ import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
-export const revalidate = 60
+export const revalidate = 3600
+
+export function generateStaticParams() {
+  return [{ locale: 'vi' }, { locale: 'en' }]
+}
 
 type Props = {
   params: Promise<{ locale: string }>
 }
+
+const getHomeData = unstable_cache(
+  async (loc: string) => {
+    const payload = await getPayload({ config: await config })
+    const [brands, categories, siteSettings] = await Promise.all([
+      payload.find({
+        collection: 'brands',
+        limit: 20,
+        sort: 'name',
+        locale: loc as Locale,
+        depth: 1,
+        select: { name: true, slug: true, logo: true },
+      }),
+      payload.find({
+        collection: 'categories',
+        limit: 6,
+        locale: loc as Locale,
+        select: { name: true, slug: true },
+      }),
+      payload.findGlobal({
+        slug: 'site-settings',
+        locale: loc as Locale,
+        select: { contact: true, social: true },
+      }),
+    ])
+    return { brands, categories, siteSettings }
+  },
+  ['home-data'],
+  { revalidate: 3600, tags: ['home-data'] }
+)
 
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
@@ -46,21 +81,6 @@ export default async function HomePage({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'home' })
   const tCommon = await getTranslations({ locale, namespace: 'common' })
-
-  // Cache homepage data (brands, categories, site-settings rarely change)
-  const getHomeData = unstable_cache(
-    async (loc: string) => {
-      const payload = await getPayload({ config: await config })
-      const [brands, categories, siteSettings] = await Promise.all([
-        payload.find({ collection: 'brands', limit: 20, sort: 'name', locale: loc as Locale, depth: 1 }),
-        payload.find({ collection: 'categories', limit: 6, locale: loc as Locale }),
-        payload.findGlobal({ slug: 'site-settings', locale: loc as Locale }),
-      ])
-      return { brands, categories, siteSettings }
-    },
-    ['home-data'],
-    { revalidate: 300, tags: ['home-data'] }
-  )
 
   const { brands, categories, siteSettings } = await getHomeData(locale)
 
@@ -189,7 +209,9 @@ export default async function HomePage({ params }: Props) {
       </section>
 
       {/* Partner Brands Logo Bar */}
-      <BrandLogoBar brands={brands.docs} locale={locale} />
+      <Suspense fallback={<BrandLogoBarSkeleton />}>
+        <BrandLogoBar brands={brands.docs} locale={locale} />
+      </Suspense>
 
       {/* CTA Section */}
       <CTASection
@@ -201,5 +223,20 @@ export default async function HomePage({ params }: Props) {
         zaloLabel={tCommon('zaloChat')}
       />
     </>
+  )
+}
+
+function BrandLogoBarSkeleton() {
+  return (
+    <section className="bg-white py-16 lg:py-20">
+      <div className="container mx-auto px-4">
+        <div className="h-6 w-48 bg-gray-200 rounded mx-auto mb-8 animate-pulse" />
+        <div className="flex justify-center gap-6">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="w-[120px] h-[48px] bg-gray-100 rounded-lg animate-pulse" />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }

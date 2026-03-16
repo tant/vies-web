@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
+import { revalidateHomeData } from '@/lib/payload/hooks/revalidateCache'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -8,6 +9,9 @@ export const Categories: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'parent'],
     group: 'Content',
+  },
+  hooks: {
+    afterChange: [revalidateHomeData],
   },
   access: {
     read: anyone,

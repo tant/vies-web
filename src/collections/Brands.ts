@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { anyone, isAdmin } from '@/lib/payload/access'
 import { formatSlug } from '@/lib/payload/slugHook'
+import { revalidateHomeData } from '@/lib/payload/hooks/revalidateCache'
 
 export const Brands: CollectionConfig = {
   slug: 'brands',
@@ -8,6 +9,9 @@ export const Brands: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'logo'],
     group: 'Content',
+  },
+  hooks: {
+    afterChange: [revalidateHomeData],
   },
   access: {
     read: anyone,

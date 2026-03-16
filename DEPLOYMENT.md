@@ -27,54 +27,24 @@
 | Staging     | https://staging.vies.com.vn | staging   | Yes (Dokploy) |
 | Production  | https://v-ies.com           | main      | Manual      |
 
-## Staging Deployment
+---
 
-### Prerequisites
+## Database Schema Management
 
-- Access to [Dokploy dashboard](https://wedeploy.carp.vn)
-- Git push access to `https://github.com/tant/vies-web.git`
+PayloadCMS sử dụng **`push: true`** (Drizzle ORM push mode) cho cả development và production:
 
-### How It Works
+- Khi app khởi động, PayloadCMS tự động so sánh schema trong config với database
+- Nếu có thay đổi (thêm field, collection...), schema được sync trực tiếp vào DB
+- **Không cần tạo file migration thủ công** — mọi thứ tự động
 
-1. **Push to `staging`** → Dokploy detects the change and triggers a build
-2. **Docker build** → Multi-stage build using the project `Dockerfile`
-3. **Migrations** → Auto-run on container startup via `prodMigrations` in PayloadCMS config
-4. **Live** → App is accessible at `https://staging.vies.com.vn`
+> **Tại sao không dùng `prodMigrations`?**
+> Migration modules không được bundle đúng trong Next.js standalone Docker build, nên dùng `push: true` thay thế.
 
-### Deploy Manually from Dokploy
+### Lưu ý quan trọng
 
-1. Go to https://wedeploy.carp.vn
-2. Navigate to **Projects → vies → staging**
-3. Click on **vies-app** service
-4. Click **Deploy** (or **Redeploy**)
-5. Monitor the build logs in the **Deployments** tab
-
-### Environment Variables
-
-These are configured in Dokploy under the app service settings:
-
-| Variable               | Description                          | Example                                              |
-|------------------------|--------------------------------------|------------------------------------------------------|
-| `DATABASE_URL`         | PostgreSQL connection string         | `postgresql://vies:pass@vies-staging-db:5432/vies`   |
-| `PAYLOAD_SECRET`       | Auth token encryption key (64+ chars)| `<random-string>`                                    |
-| `NEXT_PUBLIC_SITE_URL` | Public URL for SEO and media links   | `https://staging.vies.com.vn`                        |
-
-> **Build args**: `DATABASE_URL`, `PAYLOAD_SECRET`, and `NEXT_PUBLIC_SITE_URL` must also be set as **build-time arguments** in Dokploy because PayloadCMS initializes during `next build`.
-
-### Database
-
-- **Service**: `vies-staging-db` (PostgreSQL 16 Alpine)
-- **Internal hostname**: `vies-staging-db` (accessible from app via Docker network)
-- **Credentials**: Configured in Dokploy database service settings
-- **Backups**: Configure automated backups in Dokploy → Database → Backups
-
-### Media Files
-
-Uploaded media files are stored at `/app/media` inside the container. A **persistent volume** must be mounted at this path in Dokploy to prevent data loss on redeployment.
-
-To configure in Dokploy:
-1. Go to **vies-app** → **Advanced** → **Volumes**
-2. Add: `/app/media` → persistent volume
+- `push: true` **tự động thêm** columns/tables mới nhưng **không tự xóa** columns/tables cũ
+- Nếu cần xóa column/table, phải thao tác trực tiếp trên database
+- Khi thay đổi collection/field, chỉ cần commit code và deploy — schema tự sync khi container khởi động
 
 ---
 
@@ -109,10 +79,7 @@ pnpm dev
 pnpm test:int          # Unit tests (Vitest)
 pnpm test:e2e          # E2E tests (Playwright)
 
-# 4. If you changed Payload collections/schemas, create a migration:
-pnpm payload migrate:create
-
-# 5. Commit (include migration files if any)
+# 4. Commit
 git add .
 git commit -m "feat: describe your change"
 
@@ -122,47 +89,56 @@ git push origin feature/my-change
 # When ready for production, merge `staging` into `main`
 ```
 
-### Database Migrations
+---
 
-Migrations are auto-applied on deployment via `prodMigrations`. But you must **create** them locally:
+## Staging Deployment
 
-```bash
-# After changing any collection schema:
-pnpm payload migrate:create
+### Prerequisites
 
-# This generates a file in src/migrations/
-# Commit the migration file — it will auto-run on next deploy
-```
+- Access to [Dokploy dashboard](https://wedeploy.carp.vn)
+- Git push access to `https://github.com/tant/vies-web.git`
 
-### Testing Against Staging
+### How It Works
 
-After your PR is merged to `main` and deployed:
+1. **Push to `staging`** → Dokploy detects the change and triggers a build
+2. **Docker build** → Multi-stage build using the project `Dockerfile`
+3. **Container starts** → `push: true` auto-syncs database schema
+4. **Live** → App is accessible at `https://staging.vies.com.vn`
 
-1. **Visit** https://staging.vies.com.vn — verify frontend renders correctly
-2. **Admin panel** — https://staging.vies.com.vn/admin — test CMS operations
-3. **Check all locales** — `/vi/` and `/en/` routes
-4. **Test media uploads** — Upload an image in admin, verify it displays on frontend
-5. **Test forms** — Submit a contact form, verify submission appears in admin
+### Deploy Manually from Dokploy
 
-### Troubleshooting
+1. Go to https://wedeploy.carp.vn
+2. Navigate to **Projects → vies → staging**
+3. Click on **vies-app** service
+4. Click **Deploy** (or **Redeploy**)
+5. Monitor the build logs in the **Deployments** tab
 
-**Build fails:**
-- Check Dokploy build logs under **Deployments** tab
-- Common cause: Missing build-time env vars (DATABASE_URL, PAYLOAD_SECRET)
-- Verify the database service is running before building
+### Environment Variables
 
-**App crashes on startup:**
-- Check container logs in Dokploy
-- Usually a DATABASE_URL connection issue — verify the DB service hostname matches
+These are configured in Dokploy under the app service settings:
 
-**Media files missing after redeploy:**
-- Ensure persistent volume is mounted at `/app/media`
-- Check Dokploy → vies-app → Advanced → Volumes
+| Variable               | Description                          | Example                                              |
+|------------------------|--------------------------------------|------------------------------------------------------|
+| `DATABASE_URL`         | PostgreSQL connection string         | `postgresql://vies:pass@vies-staging-db:5432/vies`   |
+| `PAYLOAD_SECRET`       | Auth token encryption key (64+ chars)| `<random-string>`                                    |
+| `NEXT_PUBLIC_SITE_URL` | Public URL for SEO and media links   | `https://staging.vies.com.vn`                        |
 
-**Migration fails:**
-- Check logs for SQL errors
-- You may need to manually fix the migration or reset the `payload_migrations` table
-- Connect to DB: Dokploy → vies-staging-db → Terminal
+> **Build args**: `PAYLOAD_SECRET` and `NEXT_PUBLIC_SITE_URL` must also be set as **build-time arguments** in Dokploy. `DATABASE_URL` uses a placeholder at build time (hardcoded in Dockerfile) and the real value is injected at runtime.
+
+### Database
+
+- **Service**: `vies-staging-db` (PostgreSQL 16 Alpine)
+- **Internal hostname**: `vies-staging-db` (accessible from app via Docker network)
+- **Credentials**: Configured in Dokploy database service settings
+- **Backups**: Configure automated backups in Dokploy → Database → Backups
+
+### Media Files
+
+Uploaded media files are stored at `/app/media` inside the container. A **persistent volume** must be mounted at this path in Dokploy to prevent data loss on redeployment.
+
+To configure in Dokploy:
+1. Go to **vies-app** → **Advanced** → **Volumes**
+2. Add: `/app/media` → persistent volume
 
 ---
 
@@ -171,7 +147,6 @@ After your PR is merged to `main` and deployed:
 ```bash
 # Build the Docker image locally
 docker build \
-  --build-arg DATABASE_URL="postgresql://vies:vies_dev@host.docker.internal:5432/vies" \
   --build-arg PAYLOAD_SECRET="test-secret-for-local-build-only" \
   --build-arg NEXT_PUBLIC_SITE_URL="http://localhost:3000" \
   -t vies:local .
@@ -197,3 +172,26 @@ pnpm seed
 ```
 
 Or from Dokploy terminal in the app service container.
+
+---
+
+## Troubleshooting
+
+**Build fails:**
+- Check Dokploy build logs under **Deployments** tab
+- Common cause: Missing build-time env vars (PAYLOAD_SECRET, NEXT_PUBLIC_SITE_URL)
+- Verify the database service is running before building
+
+**App crashes on startup:**
+- Check container logs in Dokploy
+- Usually a DATABASE_URL connection issue — verify the DB service hostname matches
+
+**Media files missing after redeploy:**
+- Ensure persistent volume is mounted at `/app/media`
+- Check Dokploy → vies-app → Advanced → Volumes
+
+**Migration fails:**
+- Check logs for SQL errors
+- Run `pnpm migrate:status` to see which migrations are pending/applied
+- You may need to manually fix the migration or reset the `payload_migrations` table
+- Connect to DB: Dokploy → vies-staging-db → Terminal

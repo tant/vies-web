@@ -1,7 +1,11 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateLayoutData } from '@/lib/payload/hooks/revalidateCache'
 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
+  hooks: {
+    afterChange: [revalidateLayoutData],
+  },
   access: {
     read: () => true,
   },

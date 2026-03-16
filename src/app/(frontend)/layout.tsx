@@ -41,7 +41,7 @@ const getLayoutData = unstable_cache(
     return { siteSettings, headerData, footerData }
   },
   ['layout-data'],
-  { revalidate: 300, tags: ['layout-data'] }
+  { revalidate: 3600, tags: ['layout-data'] }
 )
 
 export default async function RootLayout({
