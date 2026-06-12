@@ -7,8 +7,9 @@
 │                   Dokploy Server                     │
 │              wedeploy.carp.vn                        │
 │                                                      │
+│  Project: vies  /  Environment: production           │
 │  ┌─────────────────┐    ┌──────────────────────┐    │
-│  │  vies-staging-db │    │   vies-staging-app    │    │
+│  │     vies-db      │    │       vies-app        │    │
 │  │  PostgreSQL 16   │◄───│   Next.js + Payload   │    │
 │  │  (port 5432)     │    │   (port 3000)         │    │
 │  └─────────────────┘    └──────────────────────┘    │
@@ -17,15 +18,24 @@
 │                                 │                    │
 └─────────────────────────────────┼────────────────────┘
                                   │
-                     https://staging.vies.com.vn
+                       https://vies.com.vn
 ```
 
 ## Environments
 
-| Environment | URL                         | Branch    | Auto-deploy |
-|-------------|-----------------------------|-----------|-------------|
-| Staging     | https://staging.vies.com.vn | staging   | Yes (Dokploy) |
-| Production  | https://v-ies.com           | main      | Manual      |
+| Environment | URL                   | Branch | Build            | Auto-deploy |
+|-------------|-----------------------|--------|------------------|-------------|
+| Production  | https://vies.com.vn   | main   | Dockerfile       | Manual      |
+
+> Production runs on the Dokploy project **vies** (environment `production`) with two
+> services: **vies-app** (application, custom-git source → `github.com/tant/vies-web.git`,
+> Dockerfile build) and **vies-db** (PostgreSQL 16). The app reaches the DB over the
+> internal Docker network using the DB service hostname.
+
+### DNS
+
+`vies.com.vn` must have an A record pointing to the Dokploy server's origin IP for
+Traefik routing and Let's Encrypt certificate issuance to work.
 
 ---
 
@@ -199,6 +209,14 @@ Or from Dokploy terminal in the app service container.
 - Check Dokploy build logs under **Deployments** tab
 - Common cause: Missing build-time env vars (PAYLOAD_SECRET, NEXT_PUBLIC_SITE_URL)
 - Verify the database service is running before building
+- `ERR_PNPM_UNSUPPORTED_ENGINE` during `pnpm i`: the toolchain pulled a pnpm major newer
+  than `engines.pnpm`. The `packageManager` field in `package.json` pins the exact pnpm
+  version corepack uses — keep it in sync with `engines.pnpm`.
+
+**"cannot connect to Postgres" lines during the Docker build are expected.** `next build`
+boots Payload against the placeholder `DATABASE_URL` (no DB at build time); the real
+connection and migrations run at container startup via `prodMigrations`. The build still
+succeeds.
 
 **App crashes on startup:**
 - Check container logs in Dokploy
