@@ -108,8 +108,10 @@ const makeRichText = (text: string) => ({
   },
 })
 
-const seedData = async () => {
-  const payload = await getPayload({ config: await config })
+export const seedData = async (
+  existingPayload?: Awaited<ReturnType<typeof getPayload>>,
+) => {
+  const payload = existingPayload ?? (await getPayload({ config: await config }))
 
   console.log('🌱 Starting seed...')
 
@@ -1394,10 +1396,17 @@ const seedData = async () => {
   }
 
   console.log('\n✅ Seed completed!')
-  process.exit(0)
+  return { ok: true }
 }
 
-seedData().catch((error) => {
-  console.error('Seed failed:', error)
-  process.exit(1)
-})
+// Only auto-run when executed directly as a CLI script (tsx scripts/seed.ts),
+// not when imported (e.g. from an API route running inside the app).
+const invokedPath = process.argv[1] || ''
+if (invokedPath.includes('scripts/seed')) {
+  seedData()
+    .then(() => process.exit(0))
+    .catch((error) => {
+      console.error('Seed failed:', error)
+      process.exit(1)
+    })
+}
