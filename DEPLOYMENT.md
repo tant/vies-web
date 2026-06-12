@@ -162,11 +162,29 @@ These are configured in Dokploy under the app service settings:
 
 ### Media Files
 
-Uploaded media files are stored at `/app/media` inside the container. A **persistent volume** must be mounted at this path in Dokploy to prevent data loss on redeployment.
+Uploaded media files are stored at `/app/media` inside the container. A **persistent
+volume** (`vies-media`) is mounted at this path in the production app so uploads survive
+redeployments. To inspect/recreate in Dokploy: **vies-app → Advanced → Volumes**, mount
+`/app/media` as a volume.
 
-To configure in Dokploy:
-1. Go to **vies-app** → **Advanced** → **Volumes**
-2. Add: `/app/media` → persistent volume
+> **Important:** media files live on the server's volume, not in the database. Running
+> `pnpm seed` from a laptop writes media to the *local* disk, so those files never reach
+> production. Seed media must be generated **on the server** (see Seeding below).
+
+### Rendering
+
+Content pages (`home`, `products`, `news`, `services`, `contact`, and detail pages) use
+`export const dynamic = 'force-dynamic'` so they always render from the live database.
+This is required because the Docker image is built with a placeholder `DATABASE_URL`
+(see Build args), so static prerendering at build time would bake in empty content.
+
+### Seeding Production
+
+The production database starts empty. To populate it (globals + demo catalog) with media
+landing on the server volume, run the seed **inside the app container**, not locally.
+The repo includes an exportable `seedData()` (`scripts/seed.ts`); wire it to a temporary
+guarded route or container command, run once, then remove it. A local `pnpm seed` only
+works against a database you can reach and stores media on the local disk.
 
 ---
 
