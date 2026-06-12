@@ -1,7 +1,7 @@
 # Multi-stage Dockerfile for Next.js + PayloadCMS production deployment
 # Requires `output: 'standalone'` in next.config.mjs
 
-FROM node:22.17.0-alpine AS base
+FROM node:24-alpine AS base
 
 # ---------------------------------------------------------------------------
 # Stage 1: Install dependencies
