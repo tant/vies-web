@@ -16,7 +16,7 @@ import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
-export const revalidate = 3600
+export const dynamic = 'force-dynamic'
 
 export function generateStaticParams() {
   return [{ locale: 'vi' }, { locale: 'en' }]

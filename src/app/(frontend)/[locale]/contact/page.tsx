@@ -10,6 +10,8 @@ import { getDefaultOgImage } from '@/lib/seo/getDefaultOgImage'
 import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
+export const dynamic = 'force-dynamic'
+
 interface ContactPageProps {
   params: Promise<{ locale: Locale }>
 }

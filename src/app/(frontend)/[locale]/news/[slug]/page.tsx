@@ -11,7 +11,7 @@ import { RichTextContent } from '@/components/product/RichTextContent'
 import { CalendarIcon, ArrowRightIcon, FacebookIcon } from '@/components/layout/icons'
 import type { Locale } from '@/i18n/config'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>

@@ -14,7 +14,7 @@ import { MobileStickyBar } from '@/components/ui/MobileStickyBar'
 import type { Product, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
-export const revalidate = 60
+export const dynamic = 'force-dynamic'
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>
