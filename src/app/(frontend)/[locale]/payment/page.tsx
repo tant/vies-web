@@ -85,8 +85,8 @@ export default async function PaymentPage({ params }: Props) {
                     icon: OfficeIcon,
                     title: locale === 'vi' ? 'Thanh toán tại văn phòng' : 'Payment at Office',
                     description: locale === 'vi'
-                      ? 'Thu tiền mặt tại văn phòng Công ty VIES. Địa chỉ: Số 16, đường DD3-1, P. Tân Hưng Thuận, Quận 12, Tp. HCM.'
-                      : 'Cash payment at VIES office. Address: No. 16, DD3-1 Street, District 12, HCMC.',
+                      ? 'Thu tiền mặt tại văn phòng Công ty VIES. Địa chỉ: Số 16 đường DD3-1, P. Đông Hưng Thuận, TP. Hồ Chí Minh.'
+                      : 'Cash payment at VIES office. Address: No. 16 DD3-1 Street, Dong Hung Thuan Ward, Ho Chi Minh City.',
                   },
                 ].map((method, idx) => (
                   <div key={idx} className="bg-white rounded-xl shadow-sm p-6 lg:p-8 flex items-start gap-6">

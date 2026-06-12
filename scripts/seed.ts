@@ -1170,7 +1170,7 @@ const seedData = async () => {
             { number: '0908 748 304', label: 'Mr. Hiển - Kỹ thuật' },
           ],
           email: 'info@v-ies.com',
-          address: 'Số 16, Đường DD3-1, Phường Tân Hưng Thuận, Quận 12, TP. Hồ Chí Minh',
+          address: 'Số 16 đường DD3-1, Phường Đông Hưng Thuận, Thành phố Hồ Chí Minh',
         },
         social: {
           facebook: 'https://facebook.com/vies.vietnam',
@@ -1195,7 +1195,7 @@ const seedData = async () => {
             number: item.number as string,
             label: phoneEnLabels[i],
           })),
-          address: '16 DD3-1 Street, Tan Hung Thuan Ward, District 12, Ho Chi Minh City',
+          address: '16 DD3-1 Street, Dong Hung Thuan Ward, Ho Chi Minh City, Vietnam',
         },
       },
     })
@@ -1299,7 +1299,7 @@ const seedData = async () => {
             ],
           },
         ],
-        copyright: '© 2026 VIES. Công ty TNHH TM & DV VIES. MST: 0318321326',
+        copyright: '© 2026 VIES. Công ty TNHH Thương mại và Dịch vụ VIES. MST: 0318321326',
       },
     })
     console.log('  ✓ Updated footer')
@@ -1326,7 +1326,7 @@ const seedData = async () => {
             url: link.url as string,
           })),
         })),
-        copyright: '© 2026 VIES. VIES Trading & Services Co., Ltd. Tax ID: 0318321326',
+        copyright: '© 2026 VIES. VIES Service and Trading Co., Ltd. Tax ID: 0318321326',
       },
     })
     console.log('  ✓ Updated footer (EN)')
