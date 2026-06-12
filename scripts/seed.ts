@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '../src/payload.config'
 import fs from 'fs'
 import path from 'path'
+import os from 'os'
 import https from 'https'
 import http from 'http'
 
@@ -115,8 +116,9 @@ export const seedData = async (
 
   console.log('🌱 Starting seed...')
 
-  // Create temp directory for downloads
-  const tempDir = path.join(process.cwd(), 'temp-images')
+  // Create temp directory for downloads (use the OS temp dir so it works when the
+  // app runs as a non-root user with a read-only working directory, e.g. in Docker)
+  const tempDir = path.join(os.tmpdir(), 'vies-temp-images')
   if (!fs.existsSync(tempDir)) {
     fs.mkdirSync(tempDir, { recursive: true })
   }
