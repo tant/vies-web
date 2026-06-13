@@ -71,7 +71,9 @@ export async function BrandLogoBar({ brands, locale }: Props) {
                     src={logoUrl}
                     alt={logoAlt}
                     loading="lazy"
-                    className="h-10 md:h-12 w-auto max-w-[150px] object-contain"
+                    // inline styles override the global `img { max-width:100%; height:auto }`
+                    // base rule, which otherwise lets large SVG logos render at intrinsic size
+                    style={{ height: '2.75rem', width: 'auto', maxWidth: '150px', objectFit: 'contain' }}
                   />
                 ) : (
                   <span className="text-lg md:text-xl font-bold text-primary h-10 md:h-12 flex items-center px-2">
