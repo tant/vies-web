@@ -1,8 +1,8 @@
-import Link from 'next/link'
 import Image from 'next/image'
+import { Link } from '@/i18n/navigation'
 import type { Footer as FooterType, SiteSetting, Media } from '@/payload-types'
 import { formatTelHref } from '@/lib/utils'
-import { PhoneIcon, MailIcon, MapPinIcon, FacebookIcon, YouTubeIcon } from './icons'
+import { PhoneIcon, MailIcon, MapPinIcon, FacebookIcon, YouTubeIcon, ZaloIcon } from './icons'
 
 interface FooterProps {
   footerData: FooterType
@@ -10,7 +10,9 @@ interface FooterProps {
   locale: string
 }
 
-function FooterLink({ url, label, locale }: { url: string; label: string; locale: string }) {
+const FALLBACK_LOGO = '/images/logo/vies-logo.webp'
+
+function FooterLink({ url, label }: { url: string; label: string }) {
   const isExternal = url.startsWith('http') || url.startsWith('//')
   if (isExternal) {
     return (
@@ -24,15 +26,14 @@ function FooterLink({ url, label, locale }: { url: string; label: string; locale
       </a>
     )
   }
-  const localizedUrl = url.startsWith('/') ? `/${locale}${url}` : url
   return (
-    <Link href={localizedUrl} className="text-gray-400 hover:text-white transition-colors text-sm">
+    <Link href={url} className="text-gray-400 hover:text-white transition-colors text-sm">
       {label}
     </Link>
   )
 }
 
-export function Footer({ footerData, siteSettings, locale }: FooterProps) {
+export function Footer({ footerData, siteSettings }: FooterProps) {
   const columns = (footerData.columns ?? []).slice(0, 4)
   const contact = siteSettings.contact
   const social = siteSettings.social
@@ -44,23 +45,16 @@ export function Footer({ footerData, siteSettings, locale }: FooterProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
           {/* Company Info — always first column */}
           <div>
-            <Link href={`/${locale}`} className="flex items-center gap-2 mb-md">
-              {logo?.url ? (
+            <Link href="/" className="inline-flex mb-md" aria-label={siteSettings.siteName || 'VIES'}>
+              <span className="inline-flex items-center justify-center rounded-md bg-white p-2">
                 <Image
-                  src={logo.url}
-                  alt={logo.alt || siteSettings.siteName || 'VIES'}
-                  width={120}
-                  height={40}
-                  className="h-10 w-auto brightness-0 invert"
+                  src={logo?.url || FALLBACK_LOGO}
+                  alt={logo?.alt || siteSettings.siteName || 'VIES'}
+                  width={48}
+                  height={48}
+                  className="h-12 w-auto"
                 />
-              ) : (
-                <div className="flex items-center gap-2">
-                  <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-                    <span className="text-white font-bold text-xl">V</span>
-                  </div>
-                  <span className="font-bold text-xl text-white">VIES</span>
-                </div>
-              )}
+              </span>
             </Link>
 
             {/* Contact info */}
@@ -116,7 +110,7 @@ export function Footer({ footerData, siteSettings, locale }: FooterProps) {
                   className="w-10 h-10 bg-gray-800 rounded-lg flex items-center justify-center hover:bg-primary transition-colors"
                   aria-label="Zalo"
                 >
-                  <span className="text-sm font-bold">Zalo</span>
+                  <ZaloIcon className="w-5 h-5" />
                 </a>
               )}
               {social?.youtube && (
@@ -140,7 +134,7 @@ export function Footer({ footerData, siteSettings, locale }: FooterProps) {
               <ul className="space-y-sm">
                 {column.links?.map((link, linkIndex) => (
                   <li key={link.id ?? linkIndex}>
-                    <FooterLink url={link.url} label={link.label} locale={locale} />
+                    <FooterLink url={link.url} label={link.label} />
                   </li>
                 ))}
               </ul>
