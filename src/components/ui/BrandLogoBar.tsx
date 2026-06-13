@@ -1,4 +1,3 @@
-import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
 import type { Media } from '@/payload-types'
@@ -67,12 +66,12 @@ export async function BrandLogoBar({ brands, locale }: Props) {
                 aria-label={brand.name}
               >
                 {logoUrl ? (
-                  <Image
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
                     src={logoUrl}
                     alt={logoAlt}
-                    width={120}
-                    height={48}
-                    className="h-10 md:h-12 w-auto min-w-[80px] object-contain"
+                    loading="lazy"
+                    className="h-10 md:h-12 w-auto max-w-[150px] object-contain"
                   />
                 ) : (
                   <span className="text-lg md:text-xl font-bold text-primary h-10 md:h-12 flex items-center px-2">
