@@ -1,5 +1,5 @@
 /**
- * Script to scrape products from v-ies.com
+ * Script to scrape products from vies.com.vn
  * Run with: npx tsx scripts/scrape-products.ts
  */
 
@@ -14,36 +14,36 @@ const __dirname = path.dirname(__filename)
 // Product URLs from the old website
 const PRODUCT_URLS = [
   // Bôi trơn - Chất bôi trơn
-  'https://v-ies.com/product/lgnl-2/',
-  'https://v-ies.com/product/lgep-2/',
-  'https://v-ies.com/product/lgmt-3/',
-  'https://v-ies.com/product/lgmt-2/',
+  'https://vies.com.vn/product/lgnl-2/',
+  'https://vies.com.vn/product/lgep-2/',
+  'https://vies.com.vn/product/lgmt-3/',
+  'https://vies.com.vn/product/lgmt-2/',
   // Bôi trơn - Progressive system
-  'https://v-ies.com/product/bom-mo-p253-smart/',
+  'https://vies.com.vn/product/bom-mo-p253-smart/',
   // Truyền động - Dây đai
-  'https://v-ies.com/product/dai-dong-bo/',
-  'https://v-ies.com/product/dai-hinh-luoc/',
-  'https://v-ies.com/product/dai-luc-giac/',
-  'https://v-ies.com/product/dai-thang-ghep-lien/',
-  'https://v-ies.com/product/dai-bien-toc/',
-  'https://v-ies.com/product/dai-thang-rang/',
-  'https://v-ies.com/product/dai-thang-cai-tien/',
-  'https://v-ies.com/product/dai-thang-thuong/',
+  'https://vies.com.vn/product/dai-dong-bo/',
+  'https://vies.com.vn/product/dai-hinh-luoc/',
+  'https://vies.com.vn/product/dai-luc-giac/',
+  'https://vies.com.vn/product/dai-thang-ghep-lien/',
+  'https://vies.com.vn/product/dai-bien-toc/',
+  'https://vies.com.vn/product/dai-thang-rang/',
+  'https://vies.com.vn/product/dai-thang-cai-tien/',
+  'https://vies.com.vn/product/dai-thang-thuong/',
   // Truyền động - Xích
-  'https://v-ies.com/product/xich-1-day-tsubaki/',
+  'https://vies.com.vn/product/xich-1-day-tsubaki/',
   // Dụng cụ bảo trì
-  'https://v-ies.com/product/skf-tmbh-5-may-gia-nhiet-cam-tay/',
-  'https://v-ies.com/product/skf-tih-thiet-bi-gia-nhiet/',
-  'https://v-ies.com/product/skf-tmma/',
-  'https://v-ies.com/product/tmft-36/',
+  'https://vies.com.vn/product/skf-tmbh-5-may-gia-nhiet-cam-tay/',
+  'https://vies.com.vn/product/skf-tih-thiet-bi-gia-nhiet/',
+  'https://vies.com.vn/product/skf-tmma/',
+  'https://vies.com.vn/product/tmft-36/',
   // Vòng bi
-  'https://v-ies.com/product/vong-bi-tru-dua-fag/',
-  'https://v-ies.com/product/goi-uc/',
-  'https://v-ies.com/product/vong-bi-tu-tinh/',
-  'https://v-ies.com/product/vong-bi-dua/',
-  'https://v-ies.com/product/vong-bi-tang-trong/',
-  'https://v-ies.com/product/vong-bi-tiep-xuc-goc/',
-  'https://v-ies.com/product/vong-bi-cau/',
+  'https://vies.com.vn/product/vong-bi-tru-dua-fag/',
+  'https://vies.com.vn/product/goi-uc/',
+  'https://vies.com.vn/product/vong-bi-tu-tinh/',
+  'https://vies.com.vn/product/vong-bi-dua/',
+  'https://vies.com.vn/product/vong-bi-tang-trong/',
+  'https://vies.com.vn/product/vong-bi-tiep-xuc-goc/',
+  'https://vies.com.vn/product/vong-bi-cau/',
 ]
 
 // Category mapping

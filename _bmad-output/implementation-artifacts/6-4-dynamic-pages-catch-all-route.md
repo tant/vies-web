@@ -178,7 +178,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? page.featuredImage.sizes?.large?.url ?? page.featuredImage.url
       : null
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   return {
     title: `${page.meta?.title || page.title} | VIES`,

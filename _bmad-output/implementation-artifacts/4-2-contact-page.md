@@ -165,7 +165,7 @@ Contact Page (Server)
 ```typescript
 contact: {
   phone: Array<{ number: string; label?: string }>,  // e.g., [{number: "0903326309", label: "Báo giá"}]
-  email: string,  // e.g., "info@v-ies.com"
+  email: string,  // e.g., "info@vies.com.vn"
   address: string,  // localized, multiline
 },
 social: {

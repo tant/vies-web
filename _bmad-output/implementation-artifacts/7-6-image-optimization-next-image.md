@@ -55,7 +55,7 @@ so that images are automatically optimized for better performance and Core Web V
 
 - [x] Task 3: Configure next.config.mjs (AC: #3)
   - [x] 3.1 Add `images.remotePatterns` for localhost (development)
-  - [x] 3.2 Add `images.remotePatterns` for production domain (v-ies.com)
+  - [x] 3.2 Add `images.remotePatterns` for production domain (vies.com.vn)
   - [x] 3.3 Configure `images.deviceSizes` and `images.imageSizes` if needed
   - [x] 3.4 Test build with new config
 
@@ -312,12 +312,12 @@ images: {
     },
     {
       protocol: 'https',
-      hostname: 'v-ies.com',
+      hostname: 'vies.com.vn',
       pathname: '/api/media/**',
     },
     {
       protocol: 'https',
-      hostname: '*.v-ies.com',
+      hostname: '*.vies.com.vn',
       pathname: '/api/media/**',
     },
   ],
@@ -568,7 +568,7 @@ N/A
 
 - Created reusable `Media` component wrapper following PayloadCMS official template patterns
 - Implemented `getMediaUrl` utility with cache busting (`?v={timestamp}`) and size fallback hierarchy
-- Configured `next.config.mjs` with `images.remotePatterns` for localhost:3000 and v-ies.com domains
+- Configured `next.config.mjs` with `images.remotePatterns` for localhost:3000 and vies.com.vn domains
 - Migrated all card components (ProductCard, ServiceCard, NewsCard) to use Media component
 - ProductCard uses explicit width/height mode (400x300) with thumbnail size
 - ServiceCard and NewsCard use fill mode with 16:9 aspect ratio and responsive sizes
@@ -580,7 +580,7 @@ N/A
 ### Code Review Fixes Applied
 
 - MEDIUM: Removed unused `getMediaDimensions` function from getMediaUrl.ts (dead code cleanup)
-- MEDIUM: Changed wildcard hostname pattern from `*.v-ies.com` to `**.v-ies.com` for nested subdomain support
+- MEDIUM: Changed wildcard hostname pattern from `*.vies.com.vn` to `**.vies.com.vn` for nested subdomain support
 - LOW: Added `priority` prop to category header image for LCP optimization
 
 ### Change Log

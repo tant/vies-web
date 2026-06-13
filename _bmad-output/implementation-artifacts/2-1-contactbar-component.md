@@ -12,7 +12,7 @@ So that I can quickly contact VIES for quotes or consultation.
 
 1. **Given** trang bất kỳ trên website **When** trang load **Then** topbar hiện ở đầu trang với background steel blue (`bg-primary` = `#0F4C75`), text trắng, font size `text-sm` (14px)
 2. **Given** topbar render **When** user nhìn vào **Then** hiện SĐT báo giá (0903 326 309) và SĐT tư vấn (0908 748 304) dưới dạng clickable `tel:` links với icon điện thoại
-3. **Given** topbar render trên desktop **When** viewport >= 768px (md) **Then** hiện email `info@v-ies.com` dưới dạng clickable `mailto:` link
+3. **Given** topbar render trên desktop **When** viewport >= 768px (md) **Then** hiện email `info@vies.com.vn` dưới dạng clickable `mailto:` link
 4. **Given** topbar render **When** user click language switcher **Then** chuyển locale giữa VI/EN, URL cập nhật đúng locale mới
 5. **Given** topbar render trên mobile (< 768px) **When** viewport nhỏ **Then** ẩn email, chỉ hiện SĐT chính + language switcher
 6. **Given** ContactBar là component riêng biệt **When** tách ra khỏi Header hiện tại **Then** data lấy từ SiteSettings global (`contact.phone`, `contact.email`) + Header global (`topBar.enabled`)
@@ -239,7 +239,7 @@ contact?: {
     label?: string | null   // "Báo giá" (localized)
     id?: string | null
   }> | null
-  email?: string | null     // "info@v-ies.com"
+  email?: string | null     // "info@vies.com.vn"
   address?: string | null
 }
 

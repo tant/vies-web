@@ -31,22 +31,17 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'v-ies.com',
-        pathname: '/api/media/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '**.v-ies.com',
-        pathname: '/api/media/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'staging.vies.com.vn',
+        hostname: 'vies.com.vn',
         pathname: '/api/media/**',
       },
       {
         protocol: 'https',
         hostname: '**.vies.com.vn',
+        pathname: '/api/media/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'staging.vies.com.vn',
         pathname: '/api/media/**',
       },
     ],

@@ -27,7 +27,7 @@ export default async function FAQPage({ params }: Props) {
     },
     {
       q: locale === 'vi' ? 'Làm thế nào để đặt hàng?' : 'How do I place an order?',
-      a: locale === 'vi' ? 'Quý khách có thể liên hệ trực tiếp qua hotline (+84) 963 048 317, email info@v-ies.com hoặc điền form yêu cầu báo giá trên website. Đội ngũ của chúng tôi sẽ phản hồi trong vòng 24 giờ.' : 'You can contact us directly via hotline (+84) 963 048 317, email info@v-ies.com, or fill out the quote request form on our website. Our team will respond within 24 hours.',
+      a: locale === 'vi' ? 'Quý khách có thể liên hệ trực tiếp qua hotline (+84) 963 048 317, email info@vies.com.vn hoặc điền form yêu cầu báo giá trên website. Đội ngũ của chúng tôi sẽ phản hồi trong vòng 24 giờ.' : 'You can contact us directly via hotline (+84) 963 048 317, email info@vies.com.vn, or fill out the quote request form on our website. Our team will respond within 24 hours.',
     },
     {
       q: locale === 'vi' ? 'Thời gian giao hàng là bao lâu?' : 'What is the delivery time?',

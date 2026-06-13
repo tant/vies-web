@@ -401,7 +401,7 @@ payload.find({
       { "number": "0903326309", "label": { "vi": "Báo giá", "en": "Quote" } },
       { "number": "0908748304", "label": { "vi": "Tư vấn", "en": "Consultation" } }
     ],
-    "email": "info@v-ies.com",
+    "email": "info@vies.com.vn",
     "address": { "vi": "...", "en": "..." }
   },
   "social": { "zalo": "...", "facebook": "..." }

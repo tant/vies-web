@@ -110,7 +110,7 @@ Plugin adds `meta` field to collections:
 
 ```typescript
 // Use NEXT_PUBLIC_SITE_URL from environment
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
 return {
   alternates: {
@@ -138,7 +138,7 @@ openGraph: {
 ```typescript
 // src/lib/seo/getDefaultOgImage.ts
 export function getDefaultOgImage(): string {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
   return `${siteUrl}/vies-logo.png` // or fetch from SiteSettings.logo
 }
 ```
@@ -169,7 +169,7 @@ import { Metadata } from 'next'
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   // Fetch data if needed
   const data = await fetchData(slug, locale)

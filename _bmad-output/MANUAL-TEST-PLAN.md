@@ -359,7 +359,7 @@
 | SEO-03 | Meta description | Kiểm tra meta description mỗi trang | Mỗi trang có description riêng, không trống | P1 | ✅ | |
 | SEO-04 | OG tags | Kiểm tra Open Graph tags | og:title, og:description, og:image, og:type, og:url đều có | P1 | ✅ | Product page has full OG tags |
 | SEO-05 | OG image | Kiểm tra og:image trên trang sản phẩm | Hiện ảnh sản phẩm (medium size) | P2 | ✅ | |
-| SEO-06 | Canonical URL | Kiểm tra `<link rel="canonical">` | Mỗi trang có canonical URL đúng, bao gồm locale | P1 | ✅ | https://v-ies.com/en/product/vong-bi-cau-skf |
+| SEO-06 | Canonical URL | Kiểm tra `<link rel="canonical">` | Mỗi trang có canonical URL đúng, bao gồm locale | P1 | ✅ | https://vies.com.vn/en/product/vong-bi-cau-skf |
 | SEO-07 | Sitemap | Truy cập `/sitemap.xml` | Sitemap XML hợp lệ, liệt kê tất cả trang (cả vi và en) | P1 | ✅ | 82K+ content |
 | SEO-08 | Sitemap - products | Kiểm tra trong sitemap | Tất cả products published có trong sitemap | P2 | ✅ | Product has meta description + og:title verified |
 | SEO-09 | Robots.txt | Truy cập `/robots.txt` | Cho phép crawl `/`, chặn `/admin/` và `/api/`, khai báo sitemap | P1 | ✅ | Allow /, Disallow /admin/ /api/, Sitemap URL |

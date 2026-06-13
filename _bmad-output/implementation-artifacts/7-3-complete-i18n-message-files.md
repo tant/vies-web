@@ -182,7 +182,7 @@ From Story 7.2 (sitemap.xml):
 - URL format: `${siteUrl}/${locale}/${path}`
 
 From Story 7.1 (SEO meta tags):
-- Site URL: `process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'`
+- Site URL: `process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'`
 - Canonical format: consistent with locale prefix
 
 ### Potential Missing Translations to Check

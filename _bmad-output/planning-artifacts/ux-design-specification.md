@@ -545,7 +545,7 @@ flowchart TD
 **ContactBar**
 - Desktop: topbar full-width (steel blue), SĐT + email bên trái, language switcher bên phải
 - Mobile: compact, `tel:` links tap-to-call
-- Content: ☎ Báo giá: 0903 326 309 · ☎ Tư vấn: 0908 748 304 · info@v-ies.com | VI / EN
+- Content: ☎ Báo giá: 0903 326 309 · ☎ Tư vấn: 0908 748 304 · info@vies.com.vn | VI / EN
 
 **NavigationHeader**
 - Desktop: Logo + Menu (Dịch vụ, Sản phẩm, Tin tức, Về chúng tôi) + SearchBar compact + CTA "Liên hệ" (amber)

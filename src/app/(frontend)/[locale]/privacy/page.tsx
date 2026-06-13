@@ -30,7 +30,7 @@ export default async function PrivacyPage({ params }: Props) {
         { title: '4. Chia sẻ thông tin', content: 'Chúng tôi không bán, trao đổi hoặc chuyển giao thông tin cá nhân của bạn cho bên thứ ba, ngoại trừ: đối tác vận chuyển để giao hàng, cơ quan chức năng khi có yêu cầu pháp lý, với sự đồng ý của bạn.' },
         { title: '5. Cookie', content: 'Website sử dụng cookie để cải thiện trải nghiệm người dùng. Bạn có thể từ chối cookie trong cài đặt trình duyệt, tuy nhiên điều này có thể ảnh hưởng đến một số chức năng của website.' },
         { title: '6. Quyền của bạn', content: 'Bạn có quyền: yêu cầu truy cập thông tin cá nhân của mình, yêu cầu chỉnh sửa thông tin không chính xác, yêu cầu xóa thông tin cá nhân, từ chối nhận email marketing.' },
-        { title: '7. Liên hệ', content: 'Nếu có bất kỳ câu hỏi nào về chính sách bảo mật, vui lòng liên hệ: Email: info@v-ies.com, Điện thoại: (+84) 963 048 317' },
+        { title: '7. Liên hệ', content: 'Nếu có bất kỳ câu hỏi nào về chính sách bảo mật, vui lòng liên hệ: Email: info@vies.com.vn, Điện thoại: (+84) 963 048 317' },
       ],
     },
     en: {
@@ -43,7 +43,7 @@ export default async function PrivacyPage({ params }: Props) {
         { title: '4. Information Sharing', content: 'We do not sell, trade, or transfer your personal information to third parties, except: shipping partners for delivery, authorities when legally required, with your consent.' },
         { title: '5. Cookies', content: 'Our website uses cookies to improve user experience. You can decline cookies in your browser settings, however this may affect some website functionality.' },
         { title: '6. Your Rights', content: 'You have the right to: request access to your personal information, request correction of inaccurate information, request deletion of personal information, opt-out of marketing emails.' },
-        { title: '7. Contact', content: 'If you have any questions about our privacy policy, please contact: Email: info@v-ies.com, Phone: (+84) 963 048 317' },
+        { title: '7. Contact', content: 'If you have any questions about our privacy policy, please contact: Email: info@vies.com.vn, Phone: (+84) 963 048 317' },
       ],
     },
   }

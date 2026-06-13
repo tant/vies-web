@@ -76,7 +76,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Return array of sitemap entries
   return [
     {
-      url: 'https://v-ies.com',
+      url: 'https://vies.com.vn',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
@@ -109,7 +109,7 @@ const { docs: products } = await payload.find({
 ### Site URL Configuration
 
 ```typescript
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 ```
 
 ### Locale Configuration
@@ -180,7 +180,7 @@ import config from '@payload-config'
 import { locales } from '@/i18n/config'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
   const payload = await getPayload({ config: await config })
 
   const entries: MetadataRoute.Sitemap = []
@@ -236,7 +236,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 import type { MetadataRoute } from 'next'
 
 export default function robots(): MetadataRoute.Robots {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   return {
     rules: {
@@ -282,7 +282,7 @@ export default function robots(): MetadataRoute.Robots {
 ### Previous Story Intelligence (7.1 - SEO Meta Tags)
 
 Story 7.1 established:
-- Site URL pattern: `process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'`
+- Site URL pattern: `process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'`
 - Canonical URL format: `${siteUrl}/${locale}/${path}`
 - SEO plugin configured for products, news, services, pages
 - OG image pattern using media sizes

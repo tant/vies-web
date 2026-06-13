@@ -1174,7 +1174,7 @@ export const seedData = async (
             { number: '0903 326 309', label: 'Mr. Lâm - Báo giá' },
             { number: '0908 748 304', label: 'Mr. Hiển - Kỹ thuật' },
           ],
-          email: 'info@v-ies.com',
+          email: 'info@vies.com.vn',
           address: 'Số 16 đường DD3-1, Phường Đông Hưng Thuận, Thành phố Hồ Chí Minh',
         },
         social: {
@@ -1217,7 +1217,7 @@ export const seedData = async (
       data: {
         topBar: {
           enabled: true,
-          content: 'Hotline: (+84) 963 048 317 | Email: info@v-ies.com',
+          content: 'Hotline: (+84) 963 048 317 | Email: info@vies.com.vn',
         },
         navigation: [
           { label: 'Trang chủ', link: '/' },
@@ -1251,7 +1251,7 @@ export const seedData = async (
       locale: 'en',
       data: {
         topBar: {
-          content: 'Hotline: (+84) 963 048 317 | Email: info@v-ies.com',
+          content: 'Hotline: (+84) 963 048 317 | Email: info@vies.com.vn',
         },
         navigation: navItems.map((item, i) => ({
           id: item.id as string,

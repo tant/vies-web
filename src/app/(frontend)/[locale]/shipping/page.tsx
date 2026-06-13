@@ -213,8 +213,8 @@ export default async function ShippingPage({ params }: Props) {
               <a href="tel:+84963048317" className="bg-primary hover:bg-primary-dark text-white px-6 py-3 rounded-lg font-semibold transition-colors">
                 0963 048 317
               </a>
-              <a href="mailto:info@v-ies.com" className="bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-lg font-semibold transition-colors border">
-                info@v-ies.com
+              <a href="mailto:info@vies.com.vn" className="bg-white hover:bg-gray-50 text-gray-900 px-6 py-3 rounded-lg font-semibold transition-colors border">
+                info@vies.com.vn
               </a>
             </div>
           </div>
