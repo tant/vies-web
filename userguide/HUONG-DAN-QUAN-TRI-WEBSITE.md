@@ -31,11 +31,23 @@ Tài liệu này hướng dẫn cách đăng nhập, đăng sản phẩm, viết
 
 > **Bảo mật:** không chia sẻ tài khoản; mỗi người một tài khoản riêng. Đăng xuất khi dùng máy chung (góc trên bên phải → **Log out**).
 
+**Màn hình đăng nhập:**
+
+![Màn hình đăng nhập](images/12-login.png)
+
+**Màn hình tạo tài khoản đầu tiên** (chỉ hiện 1 lần khi site chưa có tài khoản nào):
+
+![Tạo tài khoản đầu tiên](images/01-create-first-user.png)
+
 ---
 
 ## 2. Tổng quan trang quản trị
 
-Sau khi đăng nhập, cột menu bên trái chia theo nhóm:
+Sau khi đăng nhập, bạn thấy **Dashboard** với các nhóm chức năng:
+
+![Trang Dashboard](images/02-dashboard.png)
+
+Cột/màn hình chia theo nhóm:
 
 | Nhóm | Mục | Dùng để |
 |---|---|---|
@@ -83,6 +95,8 @@ Mọi hình đều lấy từ kho **Media**. Khi chọn ảnh, có nút **Upload
 
 **Menu → Media**.
 
+![Kho hình ảnh Media](images/07-media.png)
+
 **Tải ảnh mới:** **Create New** → kéo-thả hoặc chọn file → điền **Alt text** (mô tả ảnh, quan trọng cho SEO, vd "Vòng bi cầu SKF 6205-2RS") → **Save**.
 
 Lưu ý:
@@ -97,7 +111,15 @@ Lưu ý:
 
 ## 5. Đăng & sửa SẢN PHẨM
 
-**Menu → Products → Create New.**
+**Menu → Products** để xem danh sách (lọc, tìm, xem trạng thái Draft/Published):
+
+![Danh sách sản phẩm](images/03-products-list.png)
+
+Bấm **Create New** để thêm sản phẩm mới:
+
+![Form tạo sản phẩm — tab Content](images/04-product-form.png)
+
+Lưu ý trên màn hình: góc trên có ô **Locale** (ngôn ngữ), nút **Save Draft** / **Publish changes**, và 2 tab **Content** · **SEO**.
 
 Điền các trường (ở tab **Content**):
 
@@ -150,6 +172,8 @@ Cấu trúc **2 cấp**: Nhóm cha → Nhóm con.
 
 **Menu → News → Create New.**
 
+![Form tạo bài viết](images/08-news-form.png)
+
 | Trường | Hướng dẫn |
 |---|---|
 | **Title** (Tiêu đề) | Tiêu đề bài, hấp dẫn, có từ khoá |
@@ -180,13 +204,18 @@ Cấu trúc **2 cấp**: Nhóm cha → Nhóm con.
 
 Mỗi Sản phẩm / Tin tức / Dịch vụ / Trang có **tab "SEO"** (bên cạnh tab Content) ở màn hình sửa.
 
+![Tab SEO với bộ đếm ký tự và xem trước Google](images/05-product-seo.png)
+
+Màn hình SEO hiển thị **"x/3 checks are passing"**, bộ đếm ký tự cho từng trường, nút **Auto-generate** (tự tạo từ nội dung) và **Preview** (xem trước kết quả trên Google).
+
 ### Các trường SEO
 | Trường | Khuyến nghị |
 |---|---|
-| **Meta Title** | Tiêu đề hiển thị trên Google. **50–60 ký tự**. Có từ khoá + tên/mã. Hệ thống tự thêm "\| VIES" ở cuối nên **không cần gõ "VIES"**. VD: `Vòng bi cầu SKF 6205-2RS1 25×52×15mm` |
-| **Meta Description** | Đoạn mô tả dưới tiêu đề trên Google. **120–160 ký tự**, có từ khoá + lời kêu gọi. VD: `Vòng bi cầu SKF 6205-2RS1 chính hãng (25×52×15mm). Lắp lẫn FAG/NTN/NSK. Báo giá nhanh tại VIES.` |
+| **Title** (Meta Title) | Tiêu đề hiển thị trên Google. **50–60 ký tự**. Có từ khoá + tên/mã. Hệ thống tự thêm "\| VIES" ở cuối nên **không cần gõ "VIES"**. VD: `Vòng bi cầu SKF 6205-2RS1 25×52×15mm` |
+| **Description** (Meta Description) | Đoạn mô tả dưới tiêu đề trên Google. **100–150 ký tự**, có từ khoá + lời kêu gọi. VD: `Vòng bi cầu SKF 6205-2RS1 chính hãng (25×52×15mm). Lắp lẫn FAG/NTN/NSK. Báo giá nhanh tại VIES.` |
 
-> Có **bộ đếm ký tự** và thanh màu (xanh = tốt, đỏ = quá dài/ngắn) ngay tại trường. Cố giữ ở mức **xanh**.
+> Có **bộ đếm ký tự** ngay dưới mỗi ô: nhãn đỏ **"Missing"** khi còn trống/thiếu, đủ ký tự sẽ chuyển xanh. Cố đạt **"3/3 checks passing"**.
+> Bấm **Auto-generate** để hệ thống tự điền nhanh từ Tên/Tóm tắt — sau đó chỉnh lại cho hay.
 
 ### Quy tắc SEO khi đăng nội dung
 1. **Điền Meta Title + Meta Description cho CẢ tiếng Việt và English** (đổi ngôn ngữ ở góc trên rồi điền lại).
@@ -209,6 +238,10 @@ Mỗi Sản phẩm / Tin tức / Dịch vụ / Trang có **tab "SEO"** (bên c�
 
 **Menu → Globals** (Cài đặt chung). Sửa xong bấm **Save** (áp dụng ngay, song ngữ).
 
+![Site Settings — thông tin liên hệ, mạng xã hội](images/09-site-settings.png)
+
+![Header — top bar và menu điều hướng](images/10-header-menu.png)
+
 - **Site Settings:** Tên site, **Liên hệ** (số điện thoại — nhiều số kèm nhãn, email, **địa chỉ**), **Mạng xã hội** (Facebook, Zalo, YouTube). → Hiện ở Header, Footer, trang Liên hệ.
 - **Header:** **Top bar** (dòng hotline trên cùng), **Navigation** (menu). Menu "Sản phẩm" có **submenu** trỏ tới các nhóm — khi thêm nhóm mới, thêm 1 dòng con tại đây (Label + Link dạng `/products?category=slug-nhom`).
 - **Footer:** các cột link + dòng **Copyright** (có tên công ty + MST).
@@ -221,6 +254,8 @@ Mỗi Sản phẩm / Tin tức / Dịch vụ / Trang có **tab "SEO"** (bên c�
 
 - **Forms:** mẫu **Quote Request** (yêu cầu báo giá) và **Contact** (liên hệ) — chỉnh các trường nếu cần (thường để nguyên).
 - **Submissions:** **dữ liệu khách gửi** từ các form. Vào đây để xem/đọc yêu cầu báo giá & liên hệ của khách. Nên kiểm tra hằng ngày.
+
+![Form Submissions — dữ liệu khách gửi](images/11-submissions.png)
 
 ---
 

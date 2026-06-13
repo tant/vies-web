@@ -56,3 +56,6 @@ node_modules/
 
 # Screenshots (temporary)
 *.png
+
+# User guide screenshots (keep tracked despite *.png rule)
+!userguide/images/*.png
