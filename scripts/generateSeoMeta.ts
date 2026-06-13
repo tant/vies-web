@@ -83,13 +83,20 @@ export const generateSeoMeta = async (existingPayload?: Payload) => {
           skipped++
           continue
         }
-        await payload.update({
-          collection: slug,
-          id: doc.id as number,
-          locale: loc,
-          data: { meta: { title, description } } as never,
-        })
-        filled++
+        try {
+          await payload.update({
+            collection: slug,
+            id: doc.id as number,
+            locale: loc,
+            data: { meta: { title, description } } as never,
+          })
+          filled++
+        } catch (e) {
+          // One invalid doc (e.g. a page whose localized block fails validation) must
+          // not abort the whole run.
+          console.log(`  ! skip ${slug}#${doc.id} (${loc}): ${(e as Error).message?.slice(0, 70)}`)
+          skipped++
+        }
       }
     }
     console.log(`  ✓ ${slug}: filled ${filled}, skipped ${skipped} (vi+en)`)
