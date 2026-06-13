@@ -11,6 +11,9 @@ import { SpecificationsTable } from '@/components/product/SpecificationsTable'
 import { RichTextContent } from '@/components/product/RichTextContent'
 import { QuoteRequestButton } from '@/components/ui/QuoteRequestButton'
 import { MobileStickyBar } from '@/components/ui/MobileStickyBar'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { getSiteUrl, productSchema, breadcrumbSchema } from '@/lib/seo/schema'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Product, Category } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -40,30 +43,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
   }
 
+  // SEO plugin meta (editor-overridable) takes precedence over generated values
+  const meta = (product as { meta?: { title?: string | null; description?: string | null; image?: unknown } }).meta
+  const metaImage = meta?.image && typeof meta.image === 'object'
+    ? ((meta.image as { sizes?: { medium?: { url?: string } }; url?: string }).sizes?.medium?.url ?? (meta.image as { url?: string }).url)
+    : null
+
   // Extract first image for og:image
   const firstImage = product.images?.[0]?.image
   const ogImageUrl =
-    typeof firstImage === 'object' && firstImage
+    metaImage ??
+    (typeof firstImage === 'object' && firstImage
       ? firstImage.sizes?.medium?.url ?? firstImage.url
-      : null
+      : null)
 
   const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
   const skuLabel = tMeta('skuLabel')
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = getSiteUrl()
 
-  const description = product.sku
-    ? `${product.name} - ${skuLabel}: ${product.sku} - VIES`
-    : `${product.name} - VIES`
+  const title = meta?.title || product.name
+  const description = meta?.description ||
+    (product.sku
+      ? `${product.name} - ${skuLabel}: ${product.sku} - VIES`
+      : `${product.name} - VIES`)
 
   return {
-    title: product.name,
+    title,
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/product/${slug}`,
+      languages: getHreflangAlternates(`/product/${slug}`).languages,
     },
     openGraph: {
-      title: product.name,
+      title,
       description,
       type: 'website',
       images: ogImageUrl ? [{ url: ogImageUrl }] : undefined,
@@ -135,8 +148,33 @@ export default async function ProductDetailPage({ params }: Props) {
   const quotePhone = siteSettings.contact?.phone?.[0]?.number || '0903326309'
   const zaloUrl = siteSettings.social?.zalo || `https://zalo.me/${quotePhone}`
 
+  // Structured data (Product + BreadcrumbList)
+  const siteUrl = getSiteUrl()
+  const firstImg = images[0]?.image
+  const rawImage =
+    typeof firstImg === 'object' && firstImg ? firstImg.sizes?.large?.url ?? firstImg.url : null
+  const absImage = rawImage ? (rawImage.startsWith('http') ? rawImage : `${siteUrl}${rawImage}`) : null
+  const productUrl = `${siteUrl}/${locale}/product/${slug}`
+  const jsonLd = [
+    productSchema({
+      name: product.name,
+      description: product.shortDescription || undefined,
+      image: absImage,
+      sku: product.sku,
+      brand: brand?.name,
+      category: categories[0]?.name,
+      url: productUrl,
+    }),
+    breadcrumbSchema([
+      { name: 'VIES', url: `${siteUrl}/${locale}` },
+      { name: tNav('breadcrumb.products'), url: `${siteUrl}/${locale}/products` },
+      { name: product.name, url: productUrl },
+    ]),
+  ]
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       {/* Breadcrumb (Task 1.4): Home > Sản phẩm > [Product Name] */}
       <Breadcrumb
         items={[

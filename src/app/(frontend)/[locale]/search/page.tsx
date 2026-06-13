@@ -18,7 +18,7 @@ type Props = {
 export async function generateMetadata({ params, searchParams }: Props) {
   const { locale } = await params
   const { q } = await searchParams
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   const tMeta = await getTranslations({ locale: locale as Locale, namespace: 'meta' })
   const baseTitle = tMeta('searchTitle')

@@ -8,6 +8,7 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { CTASection } from '@/components/ui/CTASection'
 import { RichTextContent } from '@/components/product/RichTextContent'
 import { CheckCircleIcon } from '@/components/layout/icons'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 export const dynamic = 'force-dynamic'
@@ -38,13 +39,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? service.featuredImage.sizes?.large?.url ?? service.featuredImage.url
       : null
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   return {
     title: service.title,
     description: service.excerpt ?? undefined,
     alternates: {
       canonical: `${siteUrl}/${locale}/services/${slug}`,
+      languages: getHreflangAlternates(`/services/${slug}`).languages,
     },
     openGraph: {
       title: service.title,

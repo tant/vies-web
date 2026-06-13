@@ -10,6 +10,8 @@ import { ContactBar } from '@/components/layout/ContactBar'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { ToastProvider } from '@/components/ui/ToastProvider'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { organizationSchema, websiteSchema } from '@/lib/seo/schema'
 import './styles.css'
 
 const inter = Inter({
@@ -18,7 +20,7 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,6 +30,10 @@ export const metadata = {
   },
   description: 'VIES - Nhà phân phối vòng bi và linh kiện công nghiệp chính hãng SKF, FAG, NTN, TIMKEN tại Việt Nam',
   keywords: ['vòng bi', 'bearing', 'SKF', 'FAG', 'NTN', 'TIMKEN', 'công nghiệp', 'VIES'],
+}
+
+export const viewport = {
+  themeColor: '#0F4C75',
 }
 
 const getLayoutData = unstable_cache(
@@ -57,6 +63,12 @@ export default async function RootLayout({
   return (
     <html lang={locale} className={inter.variable}>
       <body className="antialiased min-h-screen flex flex-col">
+        <JsonLd
+          data={[
+            organizationSchema({ contact: siteSettings.contact, social: siteSettings.social }),
+            websiteSchema(),
+          ]}
+        />
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">
           {locale === 'vi' ? 'Chuyển đến nội dung chính' : 'Skip to main content'}
         </a>

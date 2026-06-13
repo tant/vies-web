@@ -9,6 +9,7 @@ import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductCard } from '@/components/ui/ProductCard'
 import { Media } from '@/components/ui/Media'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Media as MediaType } from '@/payload-types'
 import type { Locale } from '@/i18n/config'
 
@@ -47,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? category.image.sizes?.medium?.url ?? category.image.url
       : null
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
   const description = tMeta('categoryDescription', { category: category.name })
 
   return {
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/categories/${slug}`,
+      languages: getHreflangAlternates(`/categories/${slug}`).languages,
     },
     openGraph: {
       title: category.name,

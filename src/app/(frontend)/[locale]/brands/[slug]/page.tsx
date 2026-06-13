@@ -8,6 +8,7 @@ import config from '@/payload.config'
 import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { ProductCard } from '@/components/ui/ProductCard'
 import { RichText } from '@payloadcms/richtext-lexical/react'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 type Props = {
@@ -45,7 +46,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? brand.logo.sizes?.medium?.url ?? brand.logo.url
       : null
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   // Task 4.1 & 4.3: Title format and description
   const description =
@@ -58,6 +59,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description,
     alternates: {
       canonical: `${siteUrl}/${locale}/brands/${slug}`,
+      languages: getHreflangAlternates(`/brands/${slug}`).languages,
     },
     openGraph: {
       title: brand.name,

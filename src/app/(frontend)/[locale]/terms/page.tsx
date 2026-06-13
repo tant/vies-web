@@ -23,7 +23,7 @@ export default async function TermsPage({ params }: Props) {
       title: 'Điều khoản sử dụng',
       updated: 'Cập nhật lần cuối: Tháng 1, 2026',
       sections: [
-        { title: '1. Chấp nhận điều khoản', content: 'Bằng việc truy cập và sử dụng website v-ies.com, bạn đồng ý tuân thủ các điều khoản và điều kiện được nêu dưới đây. Nếu không đồng ý với bất kỳ điều khoản nào, vui lòng không sử dụng website.' },
+        { title: '1. Chấp nhận điều khoản', content: 'Bằng việc truy cập và sử dụng website vies.com.vn, bạn đồng ý tuân thủ các điều khoản và điều kiện được nêu dưới đây. Nếu không đồng ý với bất kỳ điều khoản nào, vui lòng không sử dụng website.' },
         { title: '2. Thông tin sản phẩm', content: 'Chúng tôi nỗ lực cung cấp thông tin sản phẩm chính xác nhất có thể. Tuy nhiên, thông số kỹ thuật, hình ảnh và giá cả có thể thay đổi mà không cần thông báo trước. Giá hiển thị trên website chỉ mang tính tham khảo, giá chính thức sẽ được xác nhận khi báo giá.' },
         { title: '3. Đặt hàng và thanh toán', content: 'Đơn hàng chỉ được xác nhận sau khi VIES gửi email/điện thoại xác nhận. Chúng tôi có quyền từ chối đơn hàng nếu phát hiện thông tin không chính xác hoặc có dấu hiệu gian lận. Thanh toán phải được thực hiện theo phương thức đã thỏa thuận.' },
         { title: '4. Giao hàng', content: 'Thời gian giao hàng là ước tính và có thể thay đổi tùy thuộc vào tình trạng kho hàng và địa điểm giao. VIES không chịu trách nhiệm cho các chậm trễ do nguyên nhân bất khả kháng như thiên tai, dịch bệnh.' },
@@ -37,7 +37,7 @@ export default async function TermsPage({ params }: Props) {
       title: 'Terms of Service',
       updated: 'Last updated: January 2026',
       sections: [
-        { title: '1. Acceptance of Terms', content: 'By accessing and using v-ies.com website, you agree to comply with the terms and conditions stated below. If you do not agree with any terms, please do not use the website.' },
+        { title: '1. Acceptance of Terms', content: 'By accessing and using vies.com.vn website, you agree to comply with the terms and conditions stated below. If you do not agree with any terms, please do not use the website.' },
         { title: '2. Product Information', content: 'We strive to provide the most accurate product information possible. However, specifications, images, and prices may change without prior notice. Prices displayed on the website are for reference only; official prices will be confirmed upon quotation.' },
         { title: '3. Orders and Payment', content: 'Orders are only confirmed after VIES sends email/phone confirmation. We reserve the right to reject orders if inaccurate information or signs of fraud are detected. Payment must be made according to the agreed method.' },
         { title: '4. Delivery', content: 'Delivery times are estimates and may vary depending on stock availability and delivery location. VIES is not responsible for delays due to force majeure such as natural disasters or epidemics.' },

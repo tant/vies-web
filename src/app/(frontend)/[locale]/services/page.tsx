@@ -16,7 +16,7 @@ type Props = { params: Promise<{ locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'services' })
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   const description = locale === 'vi'
     ? 'Dịch vụ tư vấn kỹ thuật vòng bi, đo rung động, lắp đặt và bôi trơn từ VIES'

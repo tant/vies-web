@@ -7,7 +7,7 @@ import { locales } from '@/i18n/config'
 export const dynamic = 'force-dynamic'
 
 function getSiteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  return process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

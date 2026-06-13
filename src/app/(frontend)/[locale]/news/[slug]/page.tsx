@@ -9,6 +9,9 @@ import { Breadcrumb } from '@/components/ui/Breadcrumb'
 import { NewsCard } from '@/components/ui/NewsCard'
 import { RichTextContent } from '@/components/product/RichTextContent'
 import { CalendarIcon, ArrowRightIcon, FacebookIcon } from '@/components/layout/icons'
+import { JsonLd } from '@/components/seo/JsonLd'
+import { getSiteUrl, articleSchema, breadcrumbSchema } from '@/lib/seo/schema'
+import { getHreflangAlternates } from '@/lib/seo/alternates'
 import type { Locale } from '@/i18n/config'
 
 export const dynamic = 'force-dynamic'
@@ -35,26 +38,34 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { title: tMeta('articleNotFound') }
   }
 
+  const meta = (article as { meta?: { title?: string | null; description?: string | null; image?: unknown } }).meta
+  const metaImage = meta?.image && typeof meta.image === 'object'
+    ? ((meta.image as { sizes?: { large?: { url?: string } }; url?: string }).sizes?.large?.url ?? (meta.image as { url?: string }).url)
+    : null
+
   // Extract og:image from featuredImage
   const imageUrl =
-    typeof article.featuredImage === 'object' && article.featuredImage
+    metaImage ??
+    (typeof article.featuredImage === 'object' && article.featuredImage
       ? article.featuredImage.sizes?.large?.url ?? article.featuredImage.url
-      : null
+      : null)
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const title = meta?.title || article.title
+  const description = meta?.description ?? article.excerpt ?? undefined
 
   return {
-    title: article.title,
-    description: article.excerpt ?? undefined,
+    title,
+    description,
     openGraph: {
-      title: article.title,
-      description: article.excerpt ?? undefined,
+      title,
+      description,
       images: imageUrl ? [{ url: imageUrl }] : undefined,
       type: 'article',
       publishedTime: article.publishedAt ?? undefined,
     },
     alternates: {
-      canonical: `${siteUrl}/${locale}/news/${slug}`,
+      canonical: `${getSiteUrl()}/${locale}/news/${slug}`,
+      languages: getHreflangAlternates(`/news/${slug}`).languages,
     },
   }
 }
@@ -66,7 +77,7 @@ export default async function NewsDetailPage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'news' })
   const tNav = await getTranslations({ locale, namespace: 'nav' })
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = getSiteUrl()
 
   // Fetch article by slug with locale (publishedOnly access handles draft filtering)
   const { docs } = await payload.find({
@@ -112,8 +123,27 @@ export default async function NewsDetailPage({ params }: Props) {
       )
     : null
 
+  const articleUrl = `${siteUrl}/${locale}/news/${slug}`
+  const absImage = imageUrl ? (imageUrl.startsWith('http') ? imageUrl : `${siteUrl}${imageUrl}`) : null
+  const jsonLd = [
+    articleSchema({
+      title: article.title,
+      description: article.excerpt,
+      image: absImage,
+      url: articleUrl,
+      datePublished: article.publishedAt,
+      dateModified: article.updatedAt,
+    }),
+    breadcrumbSchema([
+      { name: 'VIES', url: `${siteUrl}/${locale}` },
+      { name: tNav('breadcrumb.news'), url: `${siteUrl}/${locale}/news` },
+      { name: article.title, url: articleUrl },
+    ]),
+  ]
+
   return (
     <>
+      <JsonLd data={jsonLd} />
       {/* Breadcrumb: Home > Tin tức > [Title] */}
       <Breadcrumb
         items={[
