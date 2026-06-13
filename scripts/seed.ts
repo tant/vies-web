@@ -6,6 +6,7 @@ import path from 'path'
 import os from 'os'
 import https from 'https'
 import http from 'http'
+import { applyTaxonomy } from './applyTaxonomy'
 
 const downloadImage = (url: string, filepath: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -1396,6 +1397,10 @@ export const seedData = async (
   if (fs.existsSync(tempDir)) {
     fs.rmSync(tempDir, { recursive: true })
   }
+
+  // Apply the two-level product taxonomy (groups + sub-categories), update the
+  // header navigation, and remap seeded products onto their sub-categories.
+  await applyTaxonomy(payload)
 
   console.log('\n✅ Seed completed!')
   return { ok: true }
