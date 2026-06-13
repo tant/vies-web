@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { getTranslations } from 'next-intl/server'
 import type { Media } from '@/payload-types'
 
@@ -13,6 +13,17 @@ type BrandItem = {
 type Props = {
   brands: BrandItem[]
   locale: string
+}
+
+// Official brand logos served as static assets from /public, keyed by brand slug.
+const BRAND_LOGOS: Record<string, string> = {
+  skf: '/images/brands/skf.svg',
+  fag: '/images/brands/fag.svg',
+  ntn: '/images/brands/ntn.svg',
+  timken: '/images/brands/timken.svg',
+  optibelt: '/images/brands/optibelt.svg',
+  tsubaki: '/images/brands/tsubaki.png',
+  bando: '/images/brands/bando.svg',
 }
 
 export async function BrandLogoBar({ brands, locale }: Props) {
@@ -36,11 +47,12 @@ export async function BrandLogoBar({ brands, locale }: Props) {
         {/* Mobile: horizontal scroll, Desktop: flex wrap centered */}
         <div className="flex overflow-x-auto md:overflow-visible md:flex-wrap md:justify-center gap-6 md:gap-8 pb-4 md:pb-0 -mx-md px-md md:mx-0 md:px-0 snap-x snap-mandatory md:snap-none">
           {brands.map((brand) => {
-            // Extract logo URL from Media relationship
+            // Prefer the official static logo; fall back to the CMS logo relationship
             const logoUrl =
-              typeof brand.logo === 'object' && brand.logo
+              BRAND_LOGOS[brand.slug] ??
+              (typeof brand.logo === 'object' && brand.logo
                 ? brand.logo.sizes?.thumbnail?.url ?? brand.logo.url
-                : null
+                : null)
 
             const logoAlt =
               typeof brand.logo === 'object' && brand.logo
@@ -50,7 +62,7 @@ export async function BrandLogoBar({ brands, locale }: Props) {
             return (
               <Link
                 key={brand.id}
-                href={`/${locale}/brands/${brand.slug}`}
+                href={`/brands/${brand.slug}`}
                 className="snap-start flex-shrink-0 flex items-center justify-center p-4 bg-white border border-border rounded-lg hover:border-primary hover:shadow-sm transition-all focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 aria-label={brand.name}
               >

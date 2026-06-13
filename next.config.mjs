@@ -19,6 +19,9 @@ const nextConfig = {
   images: {
     qualities: [75, 85, 95],
     formats: ['image/avif', 'image/webp'],
+    // Brand logos are first-party trusted SVGs served from /public
+    dangerouslyAllowSVG: true,
+    contentDispositionType: 'attachment',
     remotePatterns: [
       {
         protocol: 'http',
