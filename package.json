@@ -22,7 +22,8 @@
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
     "seed": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/seed.ts",
-    "taxonomy": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/applyTaxonomy.ts"
+    "taxonomy": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/applyTaxonomy.ts",
+    "add-skf": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" tsx scripts/addSkfProducts.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.85.1",

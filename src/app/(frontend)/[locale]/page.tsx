@@ -1,11 +1,13 @@
 import { Suspense } from 'react'
 import { getTranslations } from 'next-intl/server'
-import Link from 'next/link'
+import { Link } from '@/i18n/navigation'
 import { getPayload } from 'payload'
 import { unstable_cache } from 'next/cache'
 import config from '@/payload.config'
 import { BrandLogoBar } from '@/components/ui/BrandLogoBar'
 import { SearchBar } from '@/components/ui/SearchBar'
+import { ProductCard } from '@/components/ui/ProductCard'
+import { NewsCard } from '@/components/ui/NewsCard'
 import {
   CheckCircleIcon,
   ArrowRightIcon,
@@ -29,7 +31,7 @@ type Props = {
 const getHomeData = unstable_cache(
   async (loc: string) => {
     const payload = await getPayload({ config: await config })
-    const [brands, categories, siteSettings] = await Promise.all([
+    const [brands, categories, featuredProducts, latestNews, siteSettings] = await Promise.all([
       payload.find({
         collection: 'brands',
         limit: 20,
@@ -38,11 +40,30 @@ const getHomeData = unstable_cache(
         depth: 1,
         select: { name: true, slug: true, logo: true },
       }),
+      // Top-level product groups only (sub-categories are filtered out)
       payload.find({
         collection: 'categories',
-        limit: 6,
+        where: { parent: { exists: false } },
+        limit: 8,
+        sort: 'order',
         locale: loc as Locale,
         select: { name: true, slug: true },
+      }),
+      payload.find({
+        collection: 'products',
+        where: { featured: { equals: true }, _status: { equals: 'published' } },
+        limit: 8,
+        sort: '-createdAt',
+        locale: loc as Locale,
+        depth: 1,
+      }),
+      payload.find({
+        collection: 'news',
+        where: { _status: { equals: 'published' } },
+        limit: 3,
+        sort: '-publishedAt',
+        locale: loc as Locale,
+        depth: 1,
       }),
       payload.findGlobal({
         slug: 'site-settings',
@@ -50,7 +71,7 @@ const getHomeData = unstable_cache(
         select: { contact: true, social: true },
       }),
     ])
-    return { brands, categories, siteSettings }
+    return { brands, categories, featuredProducts, latestNews, siteSettings }
   },
   ['home-data'],
   { revalidate: 3600, tags: ['home-data'] }
@@ -59,7 +80,7 @@ const getHomeData = unstable_cache(
 export async function generateMetadata({ params }: Props) {
   const { locale } = await params
   const t = await getTranslations({ locale, namespace: 'home' })
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://v-ies.com'
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
 
   return {
     title: t('pageTitle'),
@@ -82,7 +103,7 @@ export default async function HomePage({ params }: Props) {
   const t = await getTranslations({ locale, namespace: 'home' })
   const tCommon = await getTranslations({ locale, namespace: 'common' })
 
-  const { brands, categories, siteSettings } = await getHomeData(locale)
+  const { brands, categories, featuredProducts, latestNews, siteSettings } = await getHomeData(locale)
 
   // Extract contact info from SiteSettings
   const primaryPhone = siteSettings.contact?.phone?.[0]?.number || '0963048317'
@@ -130,7 +151,7 @@ export default async function HomePage({ params }: Props) {
             {searchHints.map((hint) => (
               <Link
                 key={hint.query}
-                href={`/${locale}/search?q=${encodeURIComponent(hint.query)}`}
+                href={`/search?q=${encodeURIComponent(hint.query)}`}
                 className="px-3 py-1 text-sm bg-primary/10 text-primary hover:bg-primary/20 rounded transition-colors"
               >
                 {hint.label}
@@ -161,7 +182,7 @@ export default async function HomePage({ params }: Props) {
                 ))}
               </ul>
               <Link
-                href={`/${locale}/services`}
+                href="/services"
                 className="inline-flex items-center gap-2 bg-white text-primary px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
               >
                 {t('dualSection.services.cta')}
@@ -183,7 +204,7 @@ export default async function HomePage({ params }: Props) {
                 {categories.docs.slice(0, 6).map((category) => (
                   <Link
                     key={category.id}
-                    href={`/${locale}/products?category=${category.slug}`}
+                    href={`/products?category=${category.slug}`}
                     className="flex items-center gap-2 p-3 bg-bg-alt rounded-lg hover:bg-primary/10 transition-colors group focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
                     <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 group-hover:bg-primary/20 transition-colors">
@@ -197,7 +218,7 @@ export default async function HomePage({ params }: Props) {
               </div>
 
               <Link
-                href={`/${locale}/products`}
+                href="/products"
                 className="inline-flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary/90 transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 {t('dualSection.products.cta')}
@@ -208,10 +229,56 @@ export default async function HomePage({ params }: Props) {
         </div>
       </section>
 
+      {/* Featured Products */}
+      {featuredProducts.docs.length > 0 && (
+        <section className="py-16 lg:py-20 bg-white">
+          <div className="container mx-auto px-4">
+            <div className="flex items-end justify-between mb-8">
+              <h2 className="text-2xl lg:text-3xl font-bold text-text">{t('featuredProducts')}</h2>
+              <Link
+                href="/products"
+                className="inline-flex items-center gap-1 text-primary font-semibold hover:underline"
+              >
+                {tCommon('viewAll')}
+                <ArrowRightIcon className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+              {featuredProducts.docs.map((product, i) => (
+                <ProductCard key={product.id} product={product} locale={locale} priority={i < 4} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Partner Brands Logo Bar */}
       <Suspense fallback={<BrandLogoBarSkeleton />}>
         <BrandLogoBar brands={brands.docs} locale={locale} />
       </Suspense>
+
+      {/* Latest News */}
+      {latestNews.docs.length > 0 && (
+        <section className="py-16 lg:py-20 bg-bg-alt">
+          <div className="container mx-auto px-4">
+            <div className="flex items-end justify-between mb-8">
+              <h2 className="text-2xl lg:text-3xl font-bold text-text">{t('latestNews')}</h2>
+              <Link
+                href="/news"
+                className="inline-flex items-center gap-1 text-primary font-semibold hover:underline"
+              >
+                {tCommon('viewAll')}
+                <ArrowRightIcon className="w-4 h-4" aria-hidden="true" />
+              </Link>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6">
+              {latestNews.docs.map((article) => (
+                <NewsCard key={article.id} news={article} locale={locale} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <CTASection
