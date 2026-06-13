@@ -53,44 +53,45 @@
   --max-width-7xl: 1280px;
 }
 
-/* Base styles */
-* {
-  box-sizing: border-box;
-}
+/* Base styles — kept in @layer base so Tailwind utilities (mx-auto, h-12, margins…)
+   can override these element defaults. Unlayered rules would win over utilities and
+   silently break alignment/spacing across the site. */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-html {
-  font-size: 16px;
-  scroll-behavior: smooth;
-}
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
 
-body {
-  font-family: var(--font-sans);
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    margin: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-/* Typography */
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
-  line-height: 1.2;
-  margin: 0;
-}
+  /* Typography */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0;
+  }
 
-p {
-  margin: 0;
-  line-height: 1.6;
-}
+  p {
+    margin: 0;
+    line-height: 1.6;
+  }
 
-/* Note: a { color: inherit } is handled by Tailwind v4 preflight in @layer base.
-   Do NOT add unlayered a{} rules here — they override Tailwind utilities on links. */
-
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
 }
 
 /* Container - using Tailwind's container with custom max-width via @theme */
