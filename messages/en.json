@@ -30,6 +30,7 @@
     "news": "News",
     "aboutUs": "About us",
     "contact": "Contact",
+    "legal": "Legal",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "expandSubmenu": "Expand {label}",
@@ -175,6 +176,10 @@
       "error": "Failed to submit request",
       "errorDetail": "Please try again or contact us directly",
       "retry": "Retry"
+    },
+    "consent": {
+      "label": "I agree to let VIES collect and process my personal data for the purpose of receiving and responding to my request, in accordance with the <link>Privacy Policy</link>.",
+      "required": "Please agree to the Privacy Policy to continue"
     }
   },
 

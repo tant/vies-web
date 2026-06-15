@@ -30,6 +30,7 @@
     "news": "Tin tức",
     "aboutUs": "Về chúng tôi",
     "contact": "Liên hệ",
+    "legal": "Pháp lý",
     "openMenu": "Mở menu",
     "closeMenu": "Đóng menu",
     "expandSubmenu": "Mở rộng {label}",
@@ -175,6 +176,10 @@
       "error": "Gửi yêu cầu thất bại",
       "errorDetail": "Vui lòng thử lại hoặc liên hệ trực tiếp",
       "retry": "Thử lại"
+    },
+    "consent": {
+      "label": "Tôi đồng ý để VIES thu thập và xử lý thông tin cá nhân của tôi nhằm mục đích tiếp nhận và phản hồi yêu cầu, theo <link>Chính sách bảo mật</link>.",
+      "required": "Vui lòng đồng ý với Chính sách bảo mật để tiếp tục"
     }
   },
 

@@ -21,7 +21,7 @@ export default async function TermsPage({ params }: Props) {
   const content = {
     vi: {
       title: 'Điều khoản sử dụng',
-      updated: 'Cập nhật lần cuối: Tháng 1, 2026',
+      updated: 'Cập nhật lần cuối: Tháng 6, 2026',
       sections: [
         { title: '1. Chấp nhận điều khoản', content: 'Bằng việc truy cập và sử dụng website vies.com.vn, bạn đồng ý tuân thủ các điều khoản và điều kiện được nêu dưới đây. Nếu không đồng ý với bất kỳ điều khoản nào, vui lòng không sử dụng website.' },
         { title: '2. Thông tin sản phẩm', content: 'Chúng tôi nỗ lực cung cấp thông tin sản phẩm chính xác nhất có thể. Tuy nhiên, thông số kỹ thuật, hình ảnh và giá cả có thể thay đổi mà không cần thông báo trước. Giá hiển thị trên website chỉ mang tính tham khảo, giá chính thức sẽ được xác nhận khi báo giá.' },
@@ -31,11 +31,13 @@ export default async function TermsPage({ params }: Props) {
         { title: '6. Quyền sở hữu trí tuệ', content: 'Tất cả nội dung trên website bao gồm văn bản, hình ảnh, logo, thiết kế đều thuộc quyền sở hữu của VIES hoặc các đối tác. Nghiêm cấm sao chép, phân phối mà không có sự cho phép bằng văn bản.' },
         { title: '7. Giới hạn trách nhiệm', content: 'VIES không chịu trách nhiệm cho bất kỳ thiệt hại trực tiếp, gián tiếp, ngẫu nhiên phát sinh từ việc sử dụng hoặc không thể sử dụng website hoặc sản phẩm, trừ khi có quy định khác của pháp luật.' },
         { title: '8. Thay đổi điều khoản', content: 'VIES có quyền sửa đổi các điều khoản này bất cứ lúc nào. Các thay đổi sẽ có hiệu lực ngay khi được đăng tải trên website. Việc tiếp tục sử dụng website đồng nghĩa với việc bạn chấp nhận các thay đổi.' },
+        { title: '9. Thông tin doanh nghiệp', content: 'Đơn vị sở hữu và vận hành website vies.com.vn: Công ty TNHH Thương mại và Dịch vụ VIES. Mã số thuế: 0318321326. Địa chỉ: Số 16 đường DD3-1, Phường Đông Hưng Thuận, Thành phố Hồ Chí Minh. Email: info@vies.com.vn. Điện thoại: (+84) 963 048 317.' },
+        { title: '10. Luật áp dụng và giải quyết tranh chấp', content: 'Các điều khoản này được điều chỉnh và giải thích theo pháp luật Việt Nam. Mọi tranh chấp phát sinh sẽ được ưu tiên giải quyết thông qua thương lượng, hòa giải; trường hợp không đạt được thỏa thuận, tranh chấp sẽ được giải quyết tại Tòa án có thẩm quyền tại Việt Nam theo quy định của pháp luật.' },
       ],
     },
     en: {
       title: 'Terms of Service',
-      updated: 'Last updated: January 2026',
+      updated: 'Last updated: June 2026',
       sections: [
         { title: '1. Acceptance of Terms', content: 'By accessing and using vies.com.vn website, you agree to comply with the terms and conditions stated below. If you do not agree with any terms, please do not use the website.' },
         { title: '2. Product Information', content: 'We strive to provide the most accurate product information possible. However, specifications, images, and prices may change without prior notice. Prices displayed on the website are for reference only; official prices will be confirmed upon quotation.' },
@@ -45,6 +47,8 @@ export default async function TermsPage({ params }: Props) {
         { title: '6. Intellectual Property', content: 'All content on the website including text, images, logos, and designs are owned by VIES or its partners. Copying or distributing without written permission is strictly prohibited.' },
         { title: '7. Limitation of Liability', content: 'VIES is not liable for any direct, indirect, or incidental damages arising from the use or inability to use the website or products, unless otherwise required by law.' },
         { title: '8. Changes to Terms', content: 'VIES reserves the right to modify these terms at any time. Changes will be effective immediately upon posting on the website. Continued use of the website means you accept the changes.' },
+        { title: '9. Business Information', content: 'The owner and operator of vies.com.vn: VIES Service and Trading Co., Ltd. Tax ID: 0318321326. Address: No. 16 DD3-1 Street, Dong Hung Thuan Ward, Ho Chi Minh City. Email: info@vies.com.vn. Phone: (+84) 963 048 317.' },
+        { title: '10. Governing Law and Dispute Resolution', content: 'These terms are governed by and construed in accordance with the laws of Vietnam. Any dispute shall first be resolved through negotiation and mediation; if no agreement is reached, the dispute shall be settled by the competent court in Vietnam in accordance with the law.' },
       ],
     },
   }

@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { XIcon, CheckCircleIcon, XCircleIcon, LoadingSpinner } from '@/components/layout/icons'
 
 interface QuoteRequestFormProps {
@@ -59,6 +60,7 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
   })
 
   const [errors, setErrors] = useState<FormErrors>({})
+  const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [toast, setToast] = useState<ToastState>({ type: null, message: '' })
   const [lastSubmittedData, setLastSubmittedData] = useState<FormData | null>(null)
@@ -135,6 +137,7 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
         })
         // Reset form
         setFormData({ name: '', phone: '', email: '', quantity: '', note: '' })
+        setConsent(false)
       } else {
         const errorData = await response.json().catch(() => null)
         const errorMessage = errorData?.message || errorData?.errors?.[0]?.message
@@ -169,7 +172,7 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
     }
   }
 
-  const isFormValid = formData.name.trim() && formData.phone.trim()
+  const isFormValid = formData.name.trim() && formData.phone.trim() && consent
 
   return (
     <div className="p-6">
@@ -335,6 +338,32 @@ export function QuoteRequestForm({ productName, productSku, locale, onClose }: Q
             rows={3}
             className="w-full px-4 py-3 border border-border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary resize-none"
           />
+        </div>
+
+        {/* Consent (PDPD - Nghị định 13/2023) */}
+        <div className="flex items-start gap-2">
+          <input
+            type="checkbox"
+            id="consent"
+            name="consent"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-1 h-4 w-4 shrink-0 accent-primary"
+            aria-required="true"
+          />
+          <label htmlFor="consent" className="text-sm text-text-muted leading-snug">
+            {t.rich('consent.label', {
+              link: (chunks) => (
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="text-primary underline hover:no-underline"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </label>
         </div>
 
         {/* Submit Button */}

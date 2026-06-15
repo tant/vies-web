@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import { useTranslations } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 import { XIcon, CheckCircleIcon, XCircleIcon, LoadingSpinner } from '@/components/layout/icons'
 
 interface ContactFormProps {
@@ -69,6 +70,7 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
 
   const [errors, setErrors] = useState<FormErrors>({})
   const [touched, setTouched] = useState<Record<string, boolean>>({})
+  const [consent, setConsent] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [toast, setToast] = useState<ToastState>({ type: null, message: '' })
   const [lastSubmittedData, setLastSubmittedData] = useState<FormData | null>(null)
@@ -161,6 +163,7 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
         setFormData({ name: '', phone: '', email: '', subject: '', company: '', message: '' })
         setTouched({})
         setErrors({})
+        setConsent(false)
       } else {
         throw new Error('Submission failed')
       }
@@ -207,7 +210,8 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
     formData.phone.trim() &&
     validatePhone(formData.phone) &&
     formData.message.trim() &&
-    validateEmail(formData.email)
+    validateEmail(formData.email) &&
+    consent
 
   return (
     <div>
@@ -395,6 +399,32 @@ export function ContactForm({ locale, onSuccess }: ContactFormProps) {
               {errors.message}
             </p>
           )}
+        </div>
+
+        {/* Consent (PDPD - Nghị định 13/2023) */}
+        <div className="flex items-start gap-2">
+          <input
+            type="checkbox"
+            id="consent"
+            name="consent"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            className="mt-1 h-4 w-4 shrink-0 accent-primary"
+            aria-required="true"
+          />
+          <label htmlFor="consent" className="text-sm text-text-muted leading-snug">
+            {tForms.rich('consent.label', {
+              link: (chunks) => (
+                <Link
+                  href="/privacy"
+                  target="_blank"
+                  className="text-primary underline hover:no-underline"
+                >
+                  {chunks}
+                </Link>
+              ),
+            })}
+          </label>
         </div>
 
         {/* Submit Button */}

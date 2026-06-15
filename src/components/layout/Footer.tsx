@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Footer as FooterType, SiteSetting, Media } from '@/payload-types'
 import { formatTelHref } from '@/lib/utils'
@@ -33,7 +34,8 @@ function FooterLink({ url, label }: { url: string; label: string }) {
   )
 }
 
-export function Footer({ footerData, siteSettings }: FooterProps) {
+export async function Footer({ footerData, siteSettings, locale }: FooterProps) {
+  const tNav = await getTranslations({ locale, namespace: 'nav' })
   const columns = (footerData.columns ?? []).slice(0, 4)
   const contact = siteSettings.contact
   const social = siteSettings.social
@@ -143,10 +145,21 @@ export function Footer({ footerData, siteSettings }: FooterProps) {
         </div>
       </div>
 
-      {/* Bottom Bar — copyright */}
+      {/* Bottom Bar — copyright + legal links */}
       <div className="border-t border-gray-800">
-        <div className="mx-auto max-w-[var(--container-max)] px-md py-lg">
-          <p className="text-center text-sm text-gray-400">{footerData.copyright}</p>
+        <div className="mx-auto max-w-[var(--container-max)] px-md py-lg flex flex-col sm:flex-row items-center justify-between gap-sm">
+          <p className="text-sm text-gray-400 text-center sm:text-left">{footerData.copyright}</p>
+          <nav aria-label={tNav('legal')} className="flex flex-wrap items-center justify-center gap-x-md gap-y-1 text-sm">
+            <Link href="/terms" className="text-gray-400 hover:text-white transition-colors">
+              {tNav('breadcrumb.terms')}
+            </Link>
+            <Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">
+              {tNav('breadcrumb.privacy')}
+            </Link>
+            <Link href="/faq" className="text-gray-400 hover:text-white transition-colors">
+              {tNav('breadcrumb.faq')}
+            </Link>
+          </nav>
         </div>
       </div>
     </footer>
