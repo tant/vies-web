@@ -1,4 +1,5 @@
 import React from 'react'
+import Script from 'next/script'
 import { Inter } from 'next/font/google'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getLocale } from 'next-intl/server'
@@ -21,6 +22,10 @@ const inter = Inter({
 })
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://vies.com.vn'
+
+// Umami — phân tích tự host, không cookie, không cần consent.
+const umamiHost = process.env.NEXT_PUBLIC_UMAMI_HOST
+const umamiWebsiteId = process.env.NEXT_PUBLIC_UMAMI_WEBSITE_ID
 
 export const metadata = {
   metadataBase: new URL(siteUrl),
@@ -69,6 +74,14 @@ export default async function RootLayout({
             websiteSchema(),
           ]}
         />
+        {umamiHost && umamiWebsiteId && (
+          <Script
+            defer
+            data-website-id={umamiWebsiteId}
+            src={`${umamiHost}/script.js`}
+            strategy="afterInteractive"
+          />
+        )}
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:bg-primary focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:text-sm focus:font-semibold">
           {locale === 'vi' ? 'Chuyển đến nội dung chính' : 'Skip to main content'}
         </a>
