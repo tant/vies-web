@@ -24,11 +24,15 @@ WORKDIR /app
 # PayloadCMS needs a valid connection string format during `next build` but
 # prodMigrations handles actual DB setup at container startup.
 ARG NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_UMAMI_HOST
+ARG NEXT_PUBLIC_UMAMI_WEBSITE_ID
 ARG PAYLOAD_SECRET=build-time-secret-placeholder
 
 ENV DATABASE_URL=postgresql://placeholder:placeholder@localhost:5432/placeholder
 ENV PAYLOAD_SECRET=${PAYLOAD_SECRET}
 ENV NEXT_PUBLIC_SITE_URL=${NEXT_PUBLIC_SITE_URL}
+ENV NEXT_PUBLIC_UMAMI_HOST=${NEXT_PUBLIC_UMAMI_HOST}
+ENV NEXT_PUBLIC_UMAMI_WEBSITE_ID=${NEXT_PUBLIC_UMAMI_WEBSITE_ID}
 ENV NEXT_TELEMETRY_DISABLED=1
 
 COPY --from=deps /app/node_modules ./node_modules
