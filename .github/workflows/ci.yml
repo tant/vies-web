@@ -1,0 +1,139 @@
+# Bộ kiểm trước khi merge, và triển khai ngay sau khi merge (SDO-300).
+#
+# Vòng đời một thay đổi:
+#   mở PR   -> chạy `kiem` + `anh`; đỏ thì branch protection không cho merge
+#   push main (merge hoặc đẩy thẳng)
+#           -> chạy lại cả hai trên commit đó, xanh thì `trien-khai` đẩy lên
+#              https://vies.com.vn; đỏ thì production giữ nguyên bản cũ
+#
+# Đây là cửa DUY NHẤT ra production: repo cố ý không có webhook nào trỏ thẳng
+# về Dokploy, để không commit nào lên site mà chưa qua bộ kiểm.
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # Hai lần đẩy liên tiếp lên main: huỷ lần trước, đừng để hai deploy chồng nhau.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  kiem:
+    name: Bo kiem
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+      - name: Bat pnpm
+        run: corepack enable
+      - name: Cai goi
+        run: pnpm install --frozen-lockfile
+      # Chỉ typecheck. `pnpm lint` đang hỏng sẵn (cấu hình FlatCompat lỗi vòng
+      # tròn với eslint-config-next 16), còn cả bốn bài trong tests/int gọi
+      # getPayload() nên cần Postgres thật — hai việc đó theo ticket riêng.
+      - name: Kiem kieu
+        run: pnpm exec tsc --noEmit
+
+  anh:
+    name: Dung anh Docker
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      # Dựng thật, không chỉ đọc cú pháp: Dokploy dựng lại đúng Dockerfile này
+      # từ cùng commit, nên `next build` hỏng phải đỏ TẠI ĐÂY chứ không phải lúc
+      # đã vào main. Build-arg Umami/PAYLOAD_SECRET để trống: Dockerfile có giá
+      # trị giữ chỗ, và ảnh này chỉ để kiểm, không chạy.
+      - name: Dung
+        run: docker build -t vies:ci-${{ github.sha }} .
+      # Vân tay ghi trong ảnh phải bằng vân tay tính từ mã nguồn. Lệch thì bước
+      # chờ của `trien-khai` sẽ không bao giờ khớp — bắt nó tại đây, ở PR.
+      - name: Van tay trong anh khop ma nguon
+        run: |
+          set -eu
+          can=$(sh scripts/van-tay.sh)
+          co=$(docker run --rm --entrypoint cat vies:ci-${{ github.sha }} /app/public/version.txt)
+          echo "ma nguon: $can — trong anh: $co"
+          [ "$co" = "$can" ]
+
+  trien-khai:
+    name: Trien khai
+    needs: [kiem, anh]
+    # push main HOẶC bấm tay (workflow_dispatch) trên main — bấm tay là cách
+    # triển khai lại mà không cần commit mới. PR thì không bao giờ triển khai.
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      # Cần mã nguồn để tính lại vân tay ở bước cuối.
+      - uses: actions/checkout@v7
+
+      # Bí mật là NGUYÊN đường dẫn webhook của Dokploy, dạng
+      # https://<dokploy>/api/deploy/<refreshToken>. Cố ý không dùng API key của
+      # Dokploy: key đó mở được mọi ứng dụng trên máy, còn refreshToken chỉ bấm
+      # được đúng vies-app.
+      #
+      # ⚠️ Webhook chỉ chạy khi ứng dụng bật autoDeploy. Tắt cờ đó là bước này chết.
+      #
+      # Payload dạng push của Gitea (`x-gitea-event`), giống mọi repo khác trong
+      # fleet: Dokploy lấy nhánh từ `ref` so với nhánh của ứng dụng (nguồn
+      # custom git cũng đọc được dạng này). POST rỗng thì nhánh rỗng và nó trả
+      # 301 "Branch Not Match" — 301, không phải 4xx.
+      - name: Bao Dokploy dung lai va chay
+        env:
+          URL: ${{ secrets.DOKPLOY_DEPLOY_URL }}
+          SHA: ${{ github.sha }}
+          LOI: ${{ github.event.head_commit.message }}
+        run: |
+          set -eu
+          [ -n "${URL:-}" ] || { echo "Thieu secret DOKPLOY_DEPLOY_URL"; exit 1; }
+          # Dựng JSON bằng python để lời commit có nháy hay xuống dòng cũng không vỡ.
+          python3 - > /tmp/payload.json <<'PY'
+          import json, os
+          msg = (os.environ.get("LOI") or "NEW COMMIT").splitlines()[0]
+          json.dump({
+              "ref": "refs/heads/main",
+              "after": os.environ.get("SHA", ""),
+              "commits": [{"message": msg, "added": [], "modified": [], "removed": []}],
+          }, open("/dev/stdout", "w"))
+          PY
+          # `|| true`: curl thoát khác 0 khi không nối được, mà `set -e` sẽ giết
+          # kịch bản trước khi kịp in ra chuyện gì đã xảy ra. Để mã HTTP quyết.
+          ma=$(curl -sS -o /tmp/ra -w '%{http_code}' --max-time 60 \
+                 --retry 3 --retry-delay 5 --retry-all-errors -X POST "$URL" \
+                 -H 'Content-Type: application/json' \
+                 -H 'x-gitea-event: push' \
+                 --data-binary @/tmp/payload.json || true)
+          echo "HTTP $ma"; cat /tmp/ra; echo
+          case "$ma" in 2??) ;; *) echo "::error::Dokploy tu choi lenh trien khai — production van chay ban cu"; exit 1 ;; esac
+
+      # Dokploy dựng ảnh ở nền và trả lời ngay, nên phải đợi rồi mới kết luận.
+      # Dựng ảnh hỏng thì container CŨ ở nguyên đó và vẫn trả 200, nên đợi vân
+      # tay nội dung: Dockerfile chạy scripts/van-tay.sh rồi ghi ra
+      # public/version.txt; ở đây chạy lại đúng script đó trên mã nguồn.
+      - name: Doi dung ban vua day len song
+        run: |
+          set -eu
+          can=$(sh scripts/van-tay.sh)
+          echo "Van tay cua commit vua day: $can"
+          for i in $(seq 1 90); do
+            sleep 10
+            # Query mỗi lần một khác để không bao giờ đọc phải bản cache.
+            co=$(curl -s --max-time 10 "https://vies.com.vn/version.txt?t=$(date +%s)" || true)
+            echo "lan $i: site bao '$co'"
+            if [ "$co" = "$can" ]; then
+              echo "Khop — dung ban vua day dang chay."
+              exit 0
+            fi
+          done
+          echo "::error::Qua 15 phut ma vies.com.vn van chua chay ban vua day — xem nhat ky deployment tren Dokploy" >&2
+          exit 1
