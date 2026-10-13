@@ -59,3 +59,6 @@ node_modules/
 
 # User guide screenshots (keep tracked despite *.png rule)
 !userguide/images/*.png
+
+# Vân tay nội dung, sinh lúc dựng ảnh (SDO-300) — không commit.
+public/version.txt

@@ -38,6 +38,10 @@ ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Vân tay nội dung (SDO-300) — CI đợi vies.com.vn/version.txt trả đúng giá trị
+# này sau khi triển khai. Xem scripts/van-tay.sh.
+RUN sh scripts/van-tay.sh > public/version.txt
+
 RUN corepack enable pnpm && pnpm run build
 
 # ---------------------------------------------------------------------------

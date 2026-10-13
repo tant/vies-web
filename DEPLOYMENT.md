@@ -25,7 +25,7 @@
 
 | Environment | URL                   | Branch | Build            | Auto-deploy |
 |-------------|-----------------------|--------|------------------|-------------|
-| Production  | https://vies.com.vn   | main   | Dockerfile       | Manual      |
+| Production  | https://vies.com.vn   | main   | Dockerfile       | Qua CI (GitHub Actions) |
 
 > Production runs on the Dokploy project **vies** (environment `production`) with two
 > services: **vies-app** (application, custom-git source → `github.com/tant/vies-web.git`,
@@ -118,6 +118,22 @@ git push origin feature/my-change
 ```
 
 ---
+
+## Triển khai production qua CI (SDO-300)
+
+Cửa duy nhất ra production là [`.github/workflows/ci.yml`](.github/workflows/ci.yml), theo chuẩn chung của mọi ứng dụng trên Dokploy:
+
+1. **PR vào `main`** → `Bo kiem` (typecheck `tsc --noEmit`) và `Dung anh Docker` (build đúng Dockerfile, so vân tay trong ảnh với mã nguồn).
+2. **Push `main`** → chạy lại hai job trên; xanh thì `Trien khai` gọi webhook `refreshToken` của Dokploy và đợi `https://vies.com.vn/version.txt` khớp vân tay của commit vừa đẩy ([`scripts/van-tay.sh`](scripts/van-tay.sh)), tối đa 15 phút.
+
+Đỏ ở bất kỳ bước nào thì production giữ nguyên container cũ.
+
+- Repo **cố ý không có webhook** trỏ thẳng Dokploy (webhook cũ đã gỡ) — đừng thêm lại, nếu không commit sẽ lên production mà không qua bộ kiểm. App `vies-app` phải bật **autoDeploy** (webhook `refreshToken` cần cờ này).
+- Secret repo `DOKPLOY_DEPLOY_URL` = `https://wedeploy.carp.vn/api/deploy/<refreshToken>`. App bị tạo lại thì `refreshToken` đổi, phải cập nhật secret.
+- Chạy lại triển khai không cần commit mới: Actions → CI → Run workflow trên `main`.
+- Build-arg Umami (`NEXT_PUBLIC_UMAMI_*`) và `PAYLOAD_SECRET` vẫn khai trong Dokploy; build ở CI chỉ để kiểm nên chạy không cần chúng.
+
+> Môi trường staging (`staging.vies.com.vn`) đã gỡ ngày 08/08/2026. Mục bên dưới giữ lại để tra cứu.
 
 ## Staging Deployment
 
