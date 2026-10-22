@@ -1,7 +1,8 @@
 # Multi-stage Dockerfile for Next.js + PayloadCMS production deployment
 # Requires `output: 'standalone'` in next.config.mjs
 
-FROM node:24-alpine AS base
+# Ghim bản vá bảo mật Node 21/10/2026 (SDO-316); tag trôi node:24-alpine dễ dùng lại base cũ trong cache.
+FROM node:24.22.1-alpine AS base
 
 # ---------------------------------------------------------------------------
 # Stage 1: Install dependencies
