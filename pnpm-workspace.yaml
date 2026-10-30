@@ -1,0 +1,9 @@
+# pnpm 12 đọc danh sách gói được phép chạy script cài đặt ở đây,
+# không còn đọc `pnpm.onlyBuiltDependencies` trong package.json.
+allowBuilds:
+  esbuild: true
+  sharp: true
+  unrs-resolver: true
+  # Trước đây không nằm trong onlyBuiltDependencies nên chưa từng chạy; giữ nguyên hành vi.
+  '@parcel/watcher': false
+  '@swc/core': false

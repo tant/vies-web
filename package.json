@@ -4,7 +4,7 @@
   "description": "VIES - Industrial bearings and components distributor website",
   "license": "MIT",
   "type": "module",
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@12.16.1",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
     "ci": "payload migrate && pnpm build",
@@ -69,13 +69,6 @@
   },
   "engines": {
     "node": ">=22.0.0",
-    "pnpm": "^10"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
+    "pnpm": ">=12"
   }
 }
