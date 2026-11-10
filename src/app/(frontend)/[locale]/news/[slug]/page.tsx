@@ -66,6 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `${getSiteUrl()}/${locale}/news/${slug}`,
       languages: getHreflangAlternates(`/news/${slug}`).languages,
+      types: { 'application/rss+xml': `${getSiteUrl()}/${locale}/news/feed.xml` },
     },
   }
 }

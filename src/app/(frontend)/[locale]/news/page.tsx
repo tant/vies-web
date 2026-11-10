@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: `${siteUrl}/${locale}/news`,
       languages: getHreflangAlternates('/news').languages,
+      types: { 'application/rss+xml': `${siteUrl}/${locale}/news/feed.xml` },
     },
     openGraph: {
       title: t('title'),
